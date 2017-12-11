@@ -1,0 +1,58 @@
+04_20_2017_17:38:10:622[D]>> IO.initLogs(): Logging started
+04_20_2017_17:38:10:644[D]>> saved config file
+04_20_2017_17:38:10:659[D]>> Language switched to English
+04_20_2017_17:38:10:659[D]>> saved Settings File
+04_20_2017_17:38:10:775[D]>> Settings.set(): showConsole = true
+04_20_2017_17:38:10:806[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=366,y=194]
+04_20_2017_17:38:10:922[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=366,y=194]
+04_20_2017_17:38:10:990[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=668,height=360]
+04_20_2017_17:38:11:006[D]>> ProgressPanel - Text changed to: Searching Soundfiles...
+04_20_2017_17:38:11:006[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=668,height=360]
+04_20_2017_17:38:11:006[D]>> ProgressPanel - Text changed to: LOADING_IMAGES
+04_20_2017_17:38:11:191[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=366,y=194]
+04_20_2017_17:38:11:222[D]>> initialized image: bauer_schwarz.png
+04_20_2017_17:38:11:260[D]>> initialized image: bauer_weis.png
+04_20_2017_17:38:11:275[D]>> initialized image: dame_schwarz.png
+04_20_2017_17:38:11:307[D]>> initialized image: dame_weis.png
+04_20_2017_17:38:11:360[D]>> initialized image: fieldmarker.png
+04_20_2017_17:38:11:391[D]>> initialized image: koenig_schwarz.png
+04_20_2017_17:38:11:442[D]>> initialized image: koenig_weis.png
+04_20_2017_17:38:11:466[D]>> initialized image: laeufer_schwarz.png
+04_20_2017_17:38:11:483[D]>> initialized image: laeufer_weis.png
+04_20_2017_17:38:11:497[D]>> initialized image: springer_schwarz.png
+04_20_2017_17:38:11:517[D]>> initialized image: springer_weis.png
+04_20_2017_17:38:11:528[D]>> initialized image: turm_schwarz.png
+04_20_2017_17:38:11:543[D]>> initialized image: turm_weis.png
+04_20_2017_17:38:11:544[D]>> ProgressPanel - Text changed to: READY
+04_20_2017_17:38:11:544[D]>> ProgressPanel - Text changed to: FINISH
+04_20_2017_17:38:11:634[I]>> HELLO
+04_20_2017_17:38:49:642[N]>> SCREENWIDTH <int>
+04_20_2017_17:38:49:658[N]>> Sets screenwidth
+04_20_2017_17:38:49:658[N]>> SCREENHEIGHT <int>
+04_20_2017_17:38:49:658[N]>> Sets screenheight
+04_20_2017_17:38:49:673[N]>> SHOWCLOSEWARNING <Boolean>
+04_20_2017_17:38:49:673[N]>> Sets showclosewarning
+04_20_2017_17:38:49:673[N]>> LOGGINGENABLED <Boolean>
+04_20_2017_17:38:49:673[N]>> Sets loggingenabled
+04_20_2017_17:38:49:673[N]>> SOUNDON <Boolean>
+04_20_2017_17:38:49:689[N]>> Sets soundon
+04_20_2017_17:38:49:689[N]>> SHOWCONSOLE <Boolean>
+04_20_2017_17:38:49:689[N]>> Sets showconsole
+04_20_2017_17:38:49:689[N]>> AUTOKEYADD <Boolean>
+04_20_2017_17:38:49:689[N]>> Sets autokeyadd
+04_20_2017_17:38:49:689[N]>> HELP
+04_20_2017_17:38:49:689[N]>> Shows Help text
+04_20_2017_17:38:49:705[N]>> FONTSIZE <size>
+04_20_2017_17:38:49:705[N]>> Sets the Fontsize
+04_20_2017_17:38:49:705[N]>> SETFONT <Name> <style> <size>
+04_20_2017_17:38:49:705[N]>> Sets the Font
+04_20_2017_17:38:49:705[N]>> BGCOLOR <Red> <Green> <Blue>
+04_20_2017_17:38:49:705[N]>> Sets the background color
+04_20_2017_17:38:49:705[N]>> FONTCOLOR <Red> <Green> <Blue>
+04_20_2017_17:38:49:720[N]>> Sets the font color
+04_20_2017_17:38:49:720[N]>> SOLVE <N>
+04_20_2017_17:38:49:720[N]>> Starts solving the Dameproblem with given N
+04_20_2017_17:38:54:709[N]>> Starting DameAI with N = 8
+04_20_2017_17:38:55:138[I]>> Solved.
+04_20_2017_17:39:21:254[D]>> saved Settings File
+04_20_2017_17:39:21:269[D]>> saved language file data/lang_en.txt

@@ -1,0 +1,73 @@
+03_08_2017_14:23:35:767[D]>> IO.initLogs(): Logging started
+03_08_2017_14:23:35:777[D]>> saved config file
+03_08_2017_14:23:35:778[D]>> Language switched to English
+03_08_2017_14:23:35:781[D]>> saved Settings File
+03_08_2017_14:23:35:850[D]>> Settings.set(): showConsole = false
+03_08_2017_14:23:36:000[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=668,height=600]
+03_08_2017_14:23:36:019[D]>> ProgressPanel - Text changed to: Searching Soundfiles...
+03_08_2017_14:23:36:022[D]>> ProgressPanel - Text changed to: LOADING_IMAGES
+03_08_2017_14:23:36:022[D]>> ProgressPanel - Text changed to: READY
+03_08_2017_14:23:36:022[D]>> ProgressPanel - Text changed to: FINISH
+03_08_2017_14:23:36:192[I]>> HELLO
+03_08_2017_14:23:36:197[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=668,height=600]
+03_08_2017_14:23:36:210[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_08_2017_14:23:36:223[D]>> Chess.setFigure(): BAUER black at 0|1
+03_08_2017_14:23:36:229[D]>> Chess.setFigure(): BAUER black at 1|1
+03_08_2017_14:23:36:230[D]>> Chess.setFigure(): BAUER black at 2|1
+03_08_2017_14:23:36:232[D]>> Chess.setFigure(): BAUER black at 3|1
+03_08_2017_14:23:36:234[D]>> Chess.setFigure(): BAUER black at 4|1
+03_08_2017_14:23:36:235[D]>> Chess.setFigure(): BAUER black at 5|1
+03_08_2017_14:23:36:238[D]>> Chess.setFigure(): BAUER black at 6|1
+03_08_2017_14:23:36:240[D]>> Chess.setFigure(): BAUER black at 7|1
+03_08_2017_14:23:36:242[D]>> Chess.setFigure(): TURM black at 0|0
+03_08_2017_14:23:36:244[D]>> Chess.setFigure(): SPRINGER black at 1|0
+03_08_2017_14:23:36:247[D]>> Chess.setFigure(): LAEUFER black at 2|0
+03_08_2017_14:23:36:248[D]>> Chess.setFigure(): DAME black at 3|0
+03_08_2017_14:23:36:250[D]>> Chess.setFigure(): KOENIG black at 4|0
+03_08_2017_14:23:36:251[D]>> Chess.setFigure(): LAEUFER black at 5|0
+03_08_2017_14:23:36:252[D]>> Chess.setFigure(): SPRINGER black at 6|0
+03_08_2017_14:23:36:253[D]>> Chess.setFigure(): TURM black at 7|0
+03_08_2017_14:23:36:254[D]>> Chess.setFigure(): BAUER white at 0|1
+03_08_2017_14:23:36:255[D]>> Chess.setFigure(): BAUER white at 1|1
+03_08_2017_14:23:36:256[D]>> Chess.setFigure(): BAUER white at 2|1
+03_08_2017_14:23:36:257[D]>> Chess.setFigure(): BAUER white at 3|1
+03_08_2017_14:23:36:258[D]>> Chess.setFigure(): BAUER white at 4|1
+03_08_2017_14:23:36:259[D]>> Chess.setFigure(): BAUER white at 5|1
+03_08_2017_14:23:36:260[D]>> Chess.setFigure(): BAUER white at 6|1
+03_08_2017_14:23:36:261[D]>> Chess.setFigure(): BAUER white at 7|1
+03_08_2017_14:23:36:262[D]>> Chess.setFigure(): TURM white at 0|0
+03_08_2017_14:23:36:263[D]>> Chess.setFigure(): SPRINGER white at 1|0
+03_08_2017_14:23:36:264[D]>> Chess.setFigure(): LAEUFER white at 2|0
+03_08_2017_14:23:36:265[D]>> Chess.setFigure(): DAME white at 3|0
+03_08_2017_14:23:36:266[D]>> Chess.setFigure(): KOENIG white at 4|0
+03_08_2017_14:23:36:267[D]>> Chess.setFigure(): LAEUFER white at 5|0
+03_08_2017_14:23:36:268[D]>> Chess.setFigure(): SPRINGER white at 6|0
+03_08_2017_14:23:36:268[D]>> Chess.setFigure(): TURM white at 7|0
+03_08_2017_14:23:47:674[D]>> saved Settings File
+03_08_2017_14:23:47:676[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:23:47:686[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_08_2017_14:23:47:688[D]>> Settings.set(): font = java.awt.Font[family=Consolas,name=Consolas,style=plain,size=26]
+03_08_2017_14:23:47:691[D]>> Settings.set(): backgroundColor = java.awt.Color[r=255,g=255,b=255]
+03_08_2017_14:23:47:693[D]>> Settings.set(): fontColor = java.awt.Color[r=0,g=0,b=0]
+03_08_2017_14:23:47:694[D]>> Settings.set(): showCloseWarning = true
+03_08_2017_14:23:47:695[D]>> Settings.set(): loggingEnabled = true
+03_08_2017_14:23:47:695[D]>> Settings.set(): soundOn = true
+03_08_2017_14:23:47:696[D]>> Settings.set(): showConsole = true
+03_08_2017_14:23:47:697[D]>> Settings.set(): preferredLanguage = English
+03_08_2017_14:23:47:701[D]>> Settings.set(): autoKeyAdd = true
+03_08_2017_14:23:47:746[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:23:48:928[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:23:48:930[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_08_2017_14:23:48:931[D]>> Settings.set(): font = java.awt.Font[family=Consolas,name=Consolas,style=plain,size=26]
+03_08_2017_14:23:48:932[D]>> Settings.set(): backgroundColor = java.awt.Color[r=255,g=255,b=255]
+03_08_2017_14:23:48:932[D]>> Settings.set(): fontColor = java.awt.Color[r=0,g=0,b=0]
+03_08_2017_14:23:48:933[D]>> Settings.set(): showCloseWarning = true
+03_08_2017_14:23:48:933[D]>> Settings.set(): loggingEnabled = true
+03_08_2017_14:23:48:933[D]>> Settings.set(): soundOn = true
+03_08_2017_14:23:48:933[D]>> Settings.set(): showConsole = true
+03_08_2017_14:23:48:934[D]>> Settings.set(): preferredLanguage = English
+03_08_2017_14:23:48:934[D]>> Settings.set(): autoKeyAdd = true
+03_08_2017_14:23:48:936[D]>> saved Settings File
+03_08_2017_14:23:50:089[D]>> Settings.set(): showConsole = false
+03_08_2017_14:23:52:253[D]>> saved Settings File
+03_08_2017_14:23:52:255[D]>> saved language file data/lang_en.txt

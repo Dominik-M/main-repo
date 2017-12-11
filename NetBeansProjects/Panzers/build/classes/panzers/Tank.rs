@@ -1,0 +1,2 @@
+panzers.Tank
+panzers.Plane

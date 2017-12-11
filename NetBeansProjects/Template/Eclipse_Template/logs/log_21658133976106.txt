@@ -1,0 +1,6 @@
+Logging started
+saved config file
+succesfully saved Settings File
+ProgressPanel Text changed to: Searching Soundfiles...
+ProgressPanel Text changed to: Loading Sounds...
+Hello World

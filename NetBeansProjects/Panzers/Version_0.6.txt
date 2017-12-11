@@ -1,0 +1,28 @@
+New Features since 0.5:
+
+- 2 Player mode
+- Crosshair cursor
+- More accurate hit calculation
+- New images
+- Damage over time effect for flamethrower
+- Area effects
+- Bug fixes
+
+---------------------------------------------------------
+
+New Features since 0.4:
+
+- KIs can be in players team
+- KIs can fire prim and sec weapon
+- KIs can level up and spend bonus points
+- KIs calculate distance to target (dont shoot if range smaller)
+- KIs try to shoot at closest target
+- Random Tanks get "real" Guns
+- Selection Mode (hold strg)
+- Restart Button
+- Box spawn delay
+- Max gun stats
+- Walls
+- Explosions
+- Improved graphic (images)
+- Bug fixes

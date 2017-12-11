@@ -1,0 +1,141 @@
+03_08_2017_14:08:16:591[D]>> IO.initLogs(): Logging started
+03_08_2017_14:08:16:600[D]>> saved config file
+03_08_2017_14:08:16:601[D]>> Language switched to English
+03_08_2017_14:08:16:604[D]>> saved Settings File
+03_08_2017_14:08:16:667[D]>> Settings.set(): showConsole = true
+03_08_2017_14:08:16:676[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=163,y=212]
+03_08_2017_14:08:16:723[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=163,y=212]
+03_08_2017_14:08:16:852[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:08:16:854[D]>> ProgressPanel - Text changed to: Searching Soundfiles...
+03_08_2017_14:08:16:856[D]>> ProgressPanel - Text changed to: LOADING_IMAGES
+03_08_2017_14:08:16:857[D]>> ProgressPanel - Text changed to: READY
+03_08_2017_14:08:16:857[D]>> ProgressPanel - Text changed to: FINISH
+03_08_2017_14:08:16:858[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:08:16:862[I]>> HELLO
+03_08_2017_14:08:16:889[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=163,y=212]
+03_08_2017_14:08:25:528[N]>> HELP
+03_08_2017_14:08:25:529[N]>> Shows Help text
+03_08_2017_14:08:25:529[N]>> FONTSIZE <size>
+03_08_2017_14:08:25:532[N]>> Sets the Fontsize
+03_08_2017_14:08:25:533[N]>> SETFONT <Name> <style> <size>
+03_08_2017_14:08:25:534[N]>> Sets the Font
+03_08_2017_14:08:25:534[N]>> BGCOLOR <Red> <Green> <Blue>
+03_08_2017_14:08:25:537[N]>> Sets the background color
+03_08_2017_14:08:25:539[N]>> FONTCOLOR <Red> <Green> <Blue>
+03_08_2017_14:08:25:540[N]>> Sets the font color
+03_08_2017_14:08:31:066[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=177,y=212]
+03_08_2017_14:08:31:076[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=177,y=212]
+03_08_2017_14:08:31:078[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=177,y=212]
+03_08_2017_14:08:31:092[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=253,y=208]
+03_08_2017_14:08:31:105[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=269,y=208]
+03_08_2017_14:08:31:116[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=347,y=199]
+03_08_2017_14:08:31:120[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=347,y=199]
+03_08_2017_14:08:31:122[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=347,y=199]
+03_08_2017_14:08:31:132[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=410,y=189]
+03_08_2017_14:08:31:134[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=410,y=189]
+03_08_2017_14:08:31:136[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=410,y=189]
+03_08_2017_14:08:31:143[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=410,y=189]
+03_08_2017_14:08:31:151[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=431,y=183]
+03_08_2017_14:08:31:159[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=459,y=175]
+03_08_2017_14:08:31:166[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=473,y=170]
+03_08_2017_14:08:31:180[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=484,y=165]
+03_08_2017_14:08:31:188[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=484,y=165]
+03_08_2017_14:08:31:217[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=484,y=164]
+03_08_2017_14:08:31:228[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=484,y=163]
+03_08_2017_14:08:31:602[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=480,y=162]
+03_08_2017_14:08:31:610[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=480,y=162]
+03_08_2017_14:08:31:610[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=480,y=162]
+03_08_2017_14:08:31:624[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=450,y=149]
+03_08_2017_14:08:31:624[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=450,y=149]
+03_08_2017_14:08:31:636[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=436,y=140]
+03_08_2017_14:08:31:642[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=436,y=140]
+03_08_2017_14:08:31:653[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=430,y=137]
+03_08_2017_14:08:31:665[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=426,y=131]
+03_08_2017_14:08:31:676[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=421,y=127]
+03_08_2017_14:08:31:683[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=421,y=127]
+03_08_2017_14:08:36:291[N]>> HELP
+03_08_2017_14:08:36:291[N]>> Shows Help text
+03_08_2017_14:08:36:291[N]>> FONTSIZE <size>
+03_08_2017_14:08:36:291[N]>> Sets the Fontsize
+03_08_2017_14:08:36:291[N]>> SETFONT <Name> <style> <size>
+03_08_2017_14:08:36:291[N]>> Sets the Font
+03_08_2017_14:08:36:292[N]>> BGCOLOR <Red> <Green> <Blue>
+03_08_2017_14:08:36:292[N]>> Sets the background color
+03_08_2017_14:08:36:292[N]>> FONTCOLOR <Red> <Green> <Blue>
+03_08_2017_14:08:36:292[N]>> Sets the font color
+03_08_2017_14:08:50:085[D]>> Settings.set(): backgroundColor = java.awt.Color[r=200,g=255,b=255]
+03_08_2017_14:08:50:088[N]>> Background color set to java.awt.Color[r=200,g=255,b=255]
+03_08_2017_14:08:52:811[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=423,y=131]
+03_08_2017_14:08:52:820[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=427,y=137]
+03_08_2017_14:08:52:822[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=427,y=137]
+03_08_2017_14:08:52:830[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=429,y=140]
+03_08_2017_14:08:52:838[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=432,y=145]
+03_08_2017_14:08:52:846[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=434,y=149]
+03_08_2017_14:08:52:856[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=434,y=149]
+03_08_2017_14:08:52:870[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=438,y=155]
+03_08_2017_14:08:52:878[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=438,y=158]
+03_08_2017_14:08:52:887[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=440,y=159]
+03_08_2017_14:08:52:894[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=441,y=161]
+03_08_2017_14:08:52:901[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=441,y=161]
+03_08_2017_14:08:52:921[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=441,y=162]
+03_08_2017_14:08:54:166[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=599]
+03_08_2017_14:08:54:177[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=599]
+03_08_2017_14:08:54:185[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=597]
+03_08_2017_14:08:54:200[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=590]
+03_08_2017_14:08:54:210[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=590]
+03_08_2017_14:08:54:224[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=583]
+03_08_2017_14:08:54:237[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=576]
+03_08_2017_14:08:54:240[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=576]
+03_08_2017_14:08:54:259[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=569]
+03_08_2017_14:08:54:262[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=566]
+03_08_2017_14:08:54:270[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=566]
+03_08_2017_14:08:54:273[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=566]
+03_08_2017_14:08:54:287[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=562]
+03_08_2017_14:08:54:296[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=561]
+03_08_2017_14:08:54:305[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=559]
+03_08_2017_14:08:54:310[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=557]
+03_08_2017_14:08:54:323[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=557]
+03_08_2017_14:08:54:471[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=562]
+03_08_2017_14:08:54:486[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=570]
+03_08_2017_14:08:54:489[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=570]
+03_08_2017_14:08:54:497[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=575]
+03_08_2017_14:08:54:499[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=575]
+03_08_2017_14:08:54:511[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=589]
+03_08_2017_14:08:54:519[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=589]
+03_08_2017_14:08:54:527[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=596]
+03_08_2017_14:08:54:550[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=611]
+03_08_2017_14:08:54:552[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=611]
+03_08_2017_14:08:54:578[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=618]
+03_08_2017_14:08:54:580[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=618]
+03_08_2017_14:08:54:592[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=618]
+03_08_2017_14:08:54:593[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=618]
+03_08_2017_14:08:54:603[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=619]
+03_08_2017_14:08:54:627[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=620]
+03_08_2017_14:09:02:219[D]>> saved Settings File
+03_08_2017_14:09:02:220[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:09:02:225[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_08_2017_14:09:02:228[D]>> Settings.set(): font = java.awt.Font[family=Consolas,name=Consolas,style=plain,size=26]
+03_08_2017_14:09:02:230[D]>> Settings.set(): backgroundColor = java.awt.Color[r=255,g=255,b=255]
+03_08_2017_14:09:02:232[D]>> Settings.set(): fontColor = java.awt.Color[r=0,g=0,b=0]
+03_08_2017_14:09:02:233[D]>> Settings.set(): showCloseWarning = true
+03_08_2017_14:09:02:236[D]>> Settings.set(): loggingEnabled = true
+03_08_2017_14:09:02:237[D]>> Settings.set(): soundOn = true
+03_08_2017_14:09:02:237[D]>> Settings.set(): showConsole = true
+03_08_2017_14:09:02:243[D]>> Settings.set(): preferredLanguage = English
+03_08_2017_14:09:02:247[D]>> Settings.set(): autoKeyAdd = true
+03_08_2017_14:09:02:264[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:09:02:266[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_08_2017_14:09:03:071[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:09:03:073[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_08_2017_14:09:03:074[D]>> Settings.set(): font = java.awt.Font[family=Consolas,name=Consolas,style=plain,size=26]
+03_08_2017_14:09:03:075[D]>> Settings.set(): backgroundColor = java.awt.Color[r=255,g=255,b=255]
+03_08_2017_14:09:03:075[D]>> Settings.set(): fontColor = java.awt.Color[r=0,g=0,b=0]
+03_08_2017_14:09:03:075[D]>> Settings.set(): showCloseWarning = true
+03_08_2017_14:09:03:076[D]>> Settings.set(): loggingEnabled = true
+03_08_2017_14:09:03:076[D]>> Settings.set(): soundOn = true
+03_08_2017_14:09:03:076[D]>> Settings.set(): showConsole = true
+03_08_2017_14:09:03:076[D]>> Settings.set(): preferredLanguage = English
+03_08_2017_14:09:03:077[D]>> Settings.set(): autoKeyAdd = true
+03_08_2017_14:09:03:079[D]>> saved Settings File
+03_08_2017_14:09:08:945[D]>> saved Settings File
+03_08_2017_14:09:08:946[D]>> saved language file data/lang_en.txt

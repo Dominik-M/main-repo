@@ -1,0 +1,5 @@
+New in version 0.3:
+- Removed Text class. Dynamic translation in IO class.
+- Implemented PokemonMenuPanel, PokemonStatusPanel
+- Implemented some Abilities, Pokemons, Attacks, Effects.
+- Adapted Fight and FightPanel to enable Pokemon switching.

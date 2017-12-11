@@ -1,0 +1,47 @@
+03_08_2017_14:16:34:257[D]>> IO.initLogs(): Logging started
+03_08_2017_14:16:34:266[D]>> saved config file
+03_08_2017_14:16:34:267[D]>> Language switched to English
+03_08_2017_14:16:34:270[D]>> saved Settings File
+03_08_2017_14:16:34:337[D]>> Settings.set(): showConsole = true
+03_08_2017_14:16:34:490[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:16:34:505[D]>> ProgressPanel - Text changed to: Searching Soundfiles...
+03_08_2017_14:16:34:520[D]>> ProgressPanel - Text changed to: LOADING_IMAGES
+03_08_2017_14:16:34:520[D]>> ProgressPanel - Text changed to: READY
+03_08_2017_14:16:34:521[D]>> ProgressPanel - Text changed to: FINISH
+03_08_2017_14:16:34:697[I]>> HELLO
+03_08_2017_14:16:34:701[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:16:34:717[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_08_2017_14:16:34:728[D]>> Chess.setFigure()
+03_08_2017_14:16:34:731[D]>> Chess.setFigure()
+03_08_2017_14:16:34:732[D]>> Chess.setFigure()
+03_08_2017_14:16:34:733[D]>> Chess.setFigure()
+03_08_2017_14:16:34:734[D]>> Chess.setFigure()
+03_08_2017_14:16:34:735[D]>> Chess.setFigure()
+03_08_2017_14:16:34:736[D]>> Chess.setFigure()
+03_08_2017_14:16:34:737[D]>> Chess.setFigure()
+03_08_2017_14:16:34:738[D]>> Chess.setFigure()
+03_08_2017_14:16:34:739[D]>> Chess.setFigure()
+03_08_2017_14:16:34:740[D]>> Chess.setFigure()
+03_08_2017_14:16:34:741[D]>> Chess.setFigure()
+03_08_2017_14:16:34:742[D]>> Chess.setFigure()
+03_08_2017_14:16:34:744[D]>> Chess.setFigure()
+03_08_2017_14:16:34:745[D]>> Chess.setFigure()
+03_08_2017_14:16:34:746[D]>> Chess.setFigure()
+03_08_2017_14:16:34:747[D]>> Chess.setFigure()
+03_08_2017_14:16:34:748[D]>> Chess.setFigure()
+03_08_2017_14:16:34:749[D]>> Chess.setFigure()
+03_08_2017_14:16:34:750[D]>> Chess.setFigure()
+03_08_2017_14:16:34:750[D]>> Chess.setFigure()
+03_08_2017_14:16:34:751[D]>> Chess.setFigure()
+03_08_2017_14:16:34:752[D]>> Chess.setFigure()
+03_08_2017_14:16:34:753[D]>> Chess.setFigure()
+03_08_2017_14:16:34:753[D]>> Chess.setFigure()
+03_08_2017_14:16:34:754[D]>> Chess.setFigure()
+03_08_2017_14:16:34:755[D]>> Chess.setFigure()
+03_08_2017_14:16:34:755[D]>> Chess.setFigure()
+03_08_2017_14:16:34:756[D]>> Chess.setFigure()
+03_08_2017_14:16:34:756[D]>> Chess.setFigure()
+03_08_2017_14:16:34:757[D]>> Chess.setFigure()
+03_08_2017_14:16:34:758[D]>> Chess.setFigure()
+03_08_2017_14:16:40:415[D]>> saved Settings File
+03_08_2017_14:16:40:416[D]>> saved language file data/lang_en.txt

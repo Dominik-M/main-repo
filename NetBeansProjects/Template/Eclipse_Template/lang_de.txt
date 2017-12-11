@@ -1,0 +1,3 @@
+HELLO = "Hallo Welt"
+EXIT_QUESTION = "Template beenden?"
+CONFIRM_EXIT = "Verlassen bestätigen"

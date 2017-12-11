@@ -1,0 +1,9 @@
+W or UP		:	accelerate forward
+S or DOWN	:	brake/accelerate backward
+A or LEFT 	:	rotate left
+D or RIGHT 	:	rotate right
+SPACE 		:	handbrake
+ENTER		:	pause/resume
+MOUSE MOVE/DRAG	:	aim	
+MOUSE KEY LEFT	:	fire primary weapon (hold to auto fire)
+MOUSE KEY RIGHT	:	fire secundary weapon (hold to auto fire)

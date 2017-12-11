@@ -1,0 +1,51 @@
+03_08_2017_14:05:26:858[D]>> IO.initLogs(): Logging started
+03_08_2017_14:05:26:867[D]>> saved config file
+03_08_2017_14:05:26:868[D]>> Language switched to English
+03_08_2017_14:05:26:872[D]>> saved Settings File
+03_08_2017_14:05:26:938[D]>> Settings.set(): showConsole = true
+03_08_2017_14:05:27:091[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:05:27:102[D]>> ProgressPanel - Text changed to: Searching Soundfiles...
+03_08_2017_14:05:27:103[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+03_08_2017_14:05:27:104[D]>> ProgressPanel - Text changed to: LOADING_IMAGES
+03_08_2017_14:05:27:105[D]>> ProgressPanel - Text changed to: READY
+03_08_2017_14:05:27:105[D]>> ProgressPanel - Text changed to: FINISH
+03_08_2017_14:05:27:118[I]>> HELLO
+03_08_2017_14:05:27:120[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_08_2017_14:05:29:979[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=5,y=4]
+03_08_2017_14:05:29:984[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=9,y=7]
+03_08_2017_14:05:29:995[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=13,y=9]
+03_08_2017_14:05:30:002[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=19,y=14]
+03_08_2017_14:05:30:006[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=29,y=22]
+03_08_2017_14:05:30:025[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=35,y=30]
+03_08_2017_14:05:30:041[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=46,y=44]
+03_08_2017_14:05:30:048[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=61,y=64]
+03_08_2017_14:05:30:053[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=73,y=88]
+03_08_2017_14:05:30:059[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=73,y=88]
+03_08_2017_14:05:30:063[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=90,y=112]
+03_08_2017_14:05:30:073[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=103,y=130]
+03_08_2017_14:05:30:088[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=114,y=148]
+03_08_2017_14:05:30:099[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=128,y=169]
+03_08_2017_14:05:30:104[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=140,y=181]
+03_08_2017_14:05:30:114[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=145,y=191]
+03_08_2017_14:05:30:119[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=151,y=197]
+03_08_2017_14:05:30:128[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=154,y=200]
+03_08_2017_14:05:30:137[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=159,y=205]
+03_08_2017_14:05:30:151[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=161,y=206]
+03_08_2017_14:05:30:161[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=161,y=207]
+03_08_2017_14:05:30:179[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=161,y=208]
+03_08_2017_14:05:30:217[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=162,y=209]
+03_08_2017_14:05:30:234[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=162,y=211]
+03_08_2017_14:05:30:238[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=162,y=212]
+03_08_2017_14:05:30:258[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=163,y=212]
+03_08_2017_14:05:34:420[N]>> HELP
+03_08_2017_14:05:34:420[N]>> Shows Help text
+03_08_2017_14:05:34:420[N]>> FONTSIZE <size>
+03_08_2017_14:05:34:420[N]>> Sets the Fontsize
+03_08_2017_14:05:34:420[N]>> SETFONT <Name> <style> <size>
+03_08_2017_14:05:34:420[N]>> Sets the Font
+03_08_2017_14:05:34:421[N]>> BGCOLOR <Red> <Green> <Blue>
+03_08_2017_14:05:34:421[N]>> Sets the background color
+03_08_2017_14:05:34:421[N]>> FONTCOLOR <Red> <Green> <Blue>
+03_08_2017_14:05:34:421[N]>> Sets the font color
+03_08_2017_14:05:38:701[D]>> saved Settings File
+03_08_2017_14:05:38:702[D]>> saved language file data/lang_en.txt

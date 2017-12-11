@@ -1,0 +1,9 @@
+Logging started
+saved config file
+succesfully saved Settings File
+ProgressPanel - Text changed to: Searching Soundfiles...
+found soundfiles:
+ProgressPanel - Text changed to: Loading Soundfiles...
+ProgressPanel - Text changed to: Ready
+Hello World
+Language switched to Deutsch

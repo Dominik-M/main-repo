@@ -1,0 +1,17 @@
+02_09_2017_18:00:01:277[D]>> IO.initLogs(): Logging started
+02_09_2017_18:00:01:309[D]>> saved config file
+02_09_2017_18:00:01:310[D]>> Language switched to English
+02_09_2017_18:00:01:313[D]>> saved Settings File
+02_09_2017_18:00:01:430[D]>> Settings.set(): showConsole = false
+02_09_2017_18:00:01:430[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=198,y=230]
+02_09_2017_18:00:01:493[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=198,y=230]
+02_09_2017_18:00:01:546[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+02_09_2017_18:00:01:546[D]>> ProgressPanel - Text changed to: Searching Soundfiles...
+02_09_2017_18:00:01:546[D]>> ProgressPanel - Text changed to: LOADING_IMAGES
+02_09_2017_18:00:01:546[D]>> ProgressPanel - Text changed to: READY
+02_09_2017_18:00:01:546[D]>> ProgressPanel - Text changed to: FINISH
+02_09_2017_18:00:01:546[I]>> HELLO
+02_09_2017_18:00:01:577[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=900,height=600]
+02_09_2017_18:00:01:593[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=198,y=230]
+02_09_2017_18:00:14:309[D]>> saved Settings File
+02_09_2017_18:00:14:309[D]>> saved language file data/lang_en.txt

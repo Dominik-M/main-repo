@@ -1,0 +1,10 @@
+Logging started
+saved config file
+succesfully saved Settings File
+graphic.ProgressPanel[,0,0,669x533,layout=java.awt.FlowLayout,alignmentX=0.0,alignmentY=0.0,border=javax.swing.plaf.synth.SynthBorder@167c1fc,flags=9,maximumSize=,minimumSize=,preferredSize=java.awt.Dimension[width=600,height=400]] Text changed to: Searching Soundfiles...
+found soundfiles:
+sound\Theme05.mid
+graphic.ProgressPanel[,0,0,669x533,layout=java.awt.FlowLayout,alignmentX=0.0,alignmentY=0.0,border=javax.swing.plaf.synth.SynthBorder@167c1fc,flags=9,maximumSize=,minimumSize=,preferredSize=java.awt.Dimension[width=600,height=400]] Text changed to: Loading Sounds...
+Added soundfile: Theme05.mid
+Now playing sounfile: com.sun.media.sound.DirectAudioDevice$DirectClip@1941c2f
+Hello World

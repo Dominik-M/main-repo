@@ -1,0 +1,5 @@
+01_13_2017_19:03:11:756>> [D] Logging started
+01_13_2017_19:03:11:850>> [D] saved config file
+01_13_2017_19:03:11:865>> [D] saved language file data/lang_en.txt
+01_13_2017_19:03:11:865>> [D] saved language file data/lang_de.txt
+01_13_2017_19:03:11:912>> [D] saved Settings File

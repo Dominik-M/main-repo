@@ -1,0 +1,7 @@
+Logging started
+saved config file
+saved language file lang_en.txt
+saved language file lang_de.txt
+succesfully saved Settings File
+ProgressPanel - Text changed to: Searching Soundfiles...
+found soundfiles:

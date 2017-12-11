@@ -1,0 +1,51 @@
+03_09_2017_09:46:26:088[D]>> IO.initLogs(): Logging started
+03_09_2017_09:46:26:088[D]>> saved config file
+03_09_2017_09:46:26:088[D]>> Language switched to English
+03_09_2017_09:46:26:088[D]>> saved Settings File
+03_09_2017_09:46:26:166[D]>> Settings.set(): showConsole = false
+03_09_2017_09:46:26:322[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=546,height=600]
+03_09_2017_09:46:26:369[D]>> ProgressPanel - Text changed to: Searching Soundfiles...
+03_09_2017_09:46:26:369[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=546,height=600]
+03_09_2017_09:46:26:369[D]>> ProgressPanel - Text changed to: LOADING_IMAGES
+03_09_2017_09:46:26:369[D]>> ProgressPanel - Text changed to: READY
+03_09_2017_09:46:26:369[D]>> ProgressPanel - Text changed to: FINISH
+03_09_2017_09:46:26:541[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=0,y=0]
+03_09_2017_09:46:26:541[I]>> HELLO
+03_09_2017_09:46:26:556[D]>> Chess.setFigure(): BAUER SCHWARZ at 0|1
+03_09_2017_09:46:26:556[D]>> Chess.setFigure(): BAUER SCHWARZ at 1|1
+03_09_2017_09:46:26:556[D]>> Chess.setFigure(): BAUER SCHWARZ at 2|1
+03_09_2017_09:46:26:556[D]>> Chess.setFigure(): BAUER SCHWARZ at 3|1
+03_09_2017_09:46:26:572[D]>> Chess.setFigure(): BAUER SCHWARZ at 4|1
+03_09_2017_09:46:26:572[D]>> Chess.setFigure(): BAUER SCHWARZ at 5|1
+03_09_2017_09:46:26:572[D]>> Chess.setFigure(): BAUER SCHWARZ at 6|1
+03_09_2017_09:46:26:572[D]>> Chess.setFigure(): BAUER SCHWARZ at 7|1
+03_09_2017_09:46:26:572[D]>> Chess.setFigure(): TURM SCHWARZ at 0|0
+03_09_2017_09:46:26:572[D]>> Chess.setFigure(): SPRINGER SCHWARZ at 1|0
+03_09_2017_09:46:26:572[D]>> Chess.setFigure(): LAEUFER SCHWARZ at 2|0
+03_09_2017_09:46:26:572[D]>> Chess.setFigure(): DAME SCHWARZ at 3|0
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): KOENIG SCHWARZ at 4|0
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): LAEUFER SCHWARZ at 5|0
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): SPRINGER SCHWARZ at 6|0
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): TURM SCHWARZ at 7|0
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): BAUER WEIS at 0|1
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): BAUER WEIS at 1|1
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): BAUER WEIS at 2|1
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): BAUER WEIS at 3|1
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): BAUER WEIS at 4|1
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): BAUER WEIS at 5|1
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): BAUER WEIS at 6|1
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): BAUER WEIS at 7|1
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): TURM WEIS at 0|0
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): SPRINGER WEIS at 1|0
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): LAEUFER WEIS at 2|0
+03_09_2017_09:46:26:588[D]>> Chess.setFigure(): DAME WEIS at 3|0
+03_09_2017_09:46:26:603[D]>> Chess.setFigure(): KOENIG WEIS at 4|0
+03_09_2017_09:46:26:603[D]>> Chess.setFigure(): LAEUFER WEIS at 5|0
+03_09_2017_09:46:26:603[D]>> Chess.setFigure(): SPRINGER WEIS at 6|0
+03_09_2017_09:46:26:603[D]>> Chess.setFigure(): TURM WEIS at 7|0
+03_09_2017_09:46:31:346[D]>> Selected Figure: BAUER WEIS at 3|1
+03_09_2017_09:46:38:413[D]>> Selected Figure: BAUER WEIS at 4|1
+03_09_2017_09:46:39:803[D]>> Selected Figure: LAEUFER WEIS at 2|0
+03_09_2017_09:46:41:317[D]>> Selected Figure: TURM WEIS at 0|0
+03_09_2017_09:46:43:299[D]>> saved Settings File
+03_09_2017_09:46:43:299[D]>> saved language file data/lang_en.txt

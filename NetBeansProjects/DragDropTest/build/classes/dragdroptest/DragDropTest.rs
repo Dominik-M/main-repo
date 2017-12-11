@@ -1,0 +1,7 @@
+DragDropTest
+DragTest
+dragdroptest.DragDropTest
+CustomComponent
+DragAction
+dragdroptest.CustomComponent
+dragdroptest.DragAction

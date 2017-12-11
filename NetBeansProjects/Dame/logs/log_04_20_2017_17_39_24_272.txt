@@ -1,0 +1,36 @@
+04_20_2017_17:39:24:305[D]>> IO.initLogs(): Logging started
+04_20_2017_17:39:24:337[D]>> saved config file
+04_20_2017_17:39:24:339[D]>> Language switched to English
+04_20_2017_17:39:24:345[D]>> saved Settings File
+04_20_2017_17:39:24:530[D]>> Settings.set(): showConsole = true
+04_20_2017_17:39:24:567[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=366,y=194]
+04_20_2017_17:39:24:682[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=366,y=194]
+04_20_2017_17:39:24:774[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=668,height=360]
+04_20_2017_17:39:24:791[D]>> ProgressPanel - Text changed to: Searching Soundfiles...
+04_20_2017_17:39:24:794[D]>> Settings.set(): preferredSize = java.awt.Dimension[width=668,height=360]
+04_20_2017_17:39:24:797[D]>> ProgressPanel - Text changed to: LOADING_IMAGES
+04_20_2017_17:39:24:825[D]>> Settings.set(): preferredWindowPosition = java.awt.Point[x=366,y=194]
+04_20_2017_17:39:24:856[D]>> initialized image: bauer_schwarz.png
+04_20_2017_17:39:24:890[D]>> initialized image: bauer_weis.png
+04_20_2017_17:39:24:910[D]>> initialized image: dame_schwarz.png
+04_20_2017_17:39:24:950[D]>> initialized image: dame_weis.png
+04_20_2017_17:39:24:962[D]>> initialized image: fieldmarker.png
+04_20_2017_17:39:24:975[D]>> initialized image: koenig_schwarz.png
+04_20_2017_17:39:24:993[D]>> initialized image: koenig_weis.png
+04_20_2017_17:39:25:012[D]>> initialized image: laeufer_schwarz.png
+04_20_2017_17:39:25:037[D]>> initialized image: laeufer_weis.png
+04_20_2017_17:39:25:047[D]>> initialized image: springer_schwarz.png
+04_20_2017_17:39:25:057[D]>> initialized image: springer_weis.png
+04_20_2017_17:39:25:066[D]>> initialized image: turm_schwarz.png
+04_20_2017_17:39:25:082[D]>> initialized image: turm_weis.png
+04_20_2017_17:39:25:083[D]>> ProgressPanel - Text changed to: READY
+04_20_2017_17:39:25:083[D]>> ProgressPanel - Text changed to: FINISH
+04_20_2017_17:39:25:093[I]>> HELLO
+04_20_2017_17:39:28:884[N]>> Starting DameAI with N = 8
+04_20_2017_17:40:01:028[I]>> Solved.
+04_20_2017_17:40:06:805[D]>> Selected Figure: DAME WEIS at 0|0
+04_20_2017_17:40:09:551[D]>> Selected Figure: DAME WEIS at 1|4
+04_20_2017_17:40:12:009[D]>> Selected Figure: DAME WEIS at 3|5
+04_20_2017_17:40:14:612[D]>> Selected Figure: DAME WEIS at 7|3
+04_20_2017_17:40:24:498[D]>> saved Settings File
+04_20_2017_17:40:24:498[D]>> saved language file data/lang_en.txt
