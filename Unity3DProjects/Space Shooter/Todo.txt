@@ -1,0 +1,69 @@
+Title:
+Discover Universe
+Universe Explorer
+Universe Adventure
+	Space (Alone?)
+	Exploration
+	Sim
+	
+Staff:
+
+Dundun
+CEO and Chief Developer
+
+Phuong
+Head of Customer Service, Sales and Marketing
+
+Duc
+Design and Testing
+
+Special thanks to:
+Ninja the cat
+Miststück, Handicap and Scratchminister
+
+
+Todo:
+1. Starting point:
+	- Start Menu & basic UI
+	- Logic if on ship or on planet, start and land
+	- Credits and resources system (Currency, Ore, Scrap Metal, Bare Metal)
+	- Conolony building, resource and credits gathering on planet
+	- Market buy and sell resources
+	- Ship building
+2. Exploration
+	- Generate resources (Asteroid fields)
+	- Resource gathering
+	- Generate planets
+	- Planet colonization
+	- (Stray) Enemy Aliens
+	- Loot
+	- Minimap and Big Map with Labels
+3. Upgrades
+	- Level, Experience and Skill System
+	- Items (weapons, ships and ship parts, fuel, food, ammo)
+	- Item Storage, Use, Equipment
+	- Storage Weight and Volume
+	- Ship upgrades
+	- Industry (Research, Production and Resource Processing)
+4. War and Diplomacy
+	- Generate and simulate Enemy Factions / Alien bases
+	- Trading
+	- Enemy AI and attacks
+5. More Ships
+	- Ship classes (One person shuttles/fighters, frigates, cruisers, carriers, battleships, motherships, space stations)
+	- Ship designer
+	- Fleet building and ally AI
+	- Industry and automization
+6. Simulation
+	- Survival elements (food, health, death and respawn)
+	- Fuel consumption
+	- Hiring Crew Members / Workers
+	- Crew skills and impact on ship behaviour
+	- Statistics and achievements
+7. Story
+	- Dialogues
+	- Events
+	- Decisions and consequences
+	- Localization
+	- Tutorials
+	
