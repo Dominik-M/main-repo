@@ -31,6 +31,7 @@ import pokemon.Fight;
 import pokemon.GameData;
 import pokemon.GameDataListener;
 import pokemon.Pokemon;
+import pokemon.PokemonBasis;
 import pokemon.Spieler;
 import pokemon.world.Item;
 import pokemon.world.Objekt;
@@ -75,6 +76,11 @@ public class GameGrid extends MainPanel implements GameDataListener
                                 Pokemon playersPok = player.getPoks()[pokIndex];
                                 IO.println(player + " " + IO.translate("USES") + " " + item, IO.MessageType.IMPORTANT);
                                 playersPok.lvlUp();
+                                if (playersPok.getBasis().EVO_LVL > 0 && playersPok.getLvl() >= playersPok.getBasis().EVO_LVL)
+                                {
+                                    // TODO postpone this action after printing
+                                    utils.Utilities.evolve(GameGrid.getInstance(), playersPok, PokemonBasis.values()[playersPok.getBasis().ordinal() + 1]);
+                                }
                             }
                             else
                             {
@@ -148,7 +154,8 @@ public class GameGrid extends MainPanel implements GameDataListener
         try
         {
             init();
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             IO.printException(ex);
         }

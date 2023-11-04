@@ -32,24 +32,29 @@ import platform.utils.Settings;
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 09.03.2016
  */
-public abstract class MainPanel extends JPanel implements KeyListener {
+public abstract class MainPanel extends JPanel implements KeyListener
+{
 
     private static final long serialVersionUID = -8680633574099657487L;
     private boolean blockOnPrint = true, autoScale = true;
 
     protected final java.util.LinkedList<String> printQueue = new java.util.LinkedList<String>();
 
-    public static int getScreenWidth() {
+    public static int getScreenWidth()
+    {
         Object setting = Settings.get("screenWidth");
-        if (setting != null) {
+        if (setting != null)
+        {
             return (int) setting;
         }
         return 900;
     }
 
-    public static int getScreenHeight() {
+    public static int getScreenHeight()
+    {
         Object setting = Settings.get("screenHeight");
-        if (setting != null) {
+        if (setting != null)
+        {
             return (int) setting;
         }
         return 600;
@@ -58,14 +63,16 @@ public abstract class MainPanel extends JPanel implements KeyListener {
     /**
      * Default Constructor.
      */
-    public MainPanel() {
+    public MainPanel()
+    {
         init();
     }
 
     /**
      * Initializes Form design and event handling.
      */
-    private void init() {
+    private void init()
+    {
         this.setPreferredSize(new java.awt.Dimension(getScreenWidth(), getScreenHeight()));
         this.addKeyListener(this);
     }
@@ -80,7 +87,8 @@ public abstract class MainPanel extends JPanel implements KeyListener {
      * @return true if events are blocked while printing, false if all events
      * are passed unconditionally.
      */
-    public boolean isBlockedOnPrint() {
+    public boolean isBlockedOnPrint()
+    {
         return blockOnPrint;
     }
 
@@ -92,7 +100,8 @@ public abstract class MainPanel extends JPanel implements KeyListener {
      * calls) has to be controlled external.
      *
      */
-    public void setBlockOnPrint(boolean blockOnPrint) {
+    public void setBlockOnPrint(boolean blockOnPrint)
+    {
         this.blockOnPrint = blockOnPrint;
     }
 
@@ -102,7 +111,8 @@ public abstract class MainPanel extends JPanel implements KeyListener {
      *
      * @param text a String to print.
      */
-    public void addToPrintQueue(String text) {
+    public void addToPrintQueue(String text)
+    {
         printQueue.addLast(text);
     }
 
@@ -112,7 +122,8 @@ public abstract class MainPanel extends JPanel implements KeyListener {
      *
      * @return true if the printQueue is not empty, false otherwise.
      */
-    public boolean isPrinting() {
+    public boolean isPrinting()
+    {
         return !printQueueIsEmpty();
     }
 
@@ -121,7 +132,8 @@ public abstract class MainPanel extends JPanel implements KeyListener {
      *
      * @return true if the printQueue is empty, false otherwise.
      */
-    public boolean printQueueIsEmpty() {
+    public boolean printQueueIsEmpty()
+    {
         return printQueue.size() == 0;
     }
 
@@ -131,41 +143,52 @@ public abstract class MainPanel extends JPanel implements KeyListener {
      *
      * @return true if the queue is empty, false otherwise.
      */
-    public boolean printNext() {
+    public boolean printNext()
+    {
         printQueue.pollFirst();
         return this.printQueueIsEmpty();
     }
 
-    public boolean isAutoScaled() {
+    public boolean isAutoScaled()
+    {
         return autoScale;
     }
 
-    public void setAutoScaled(boolean autoScale) {
+    public void setAutoScaled(boolean autoScale)
+    {
         this.autoScale = autoScale;
     }
 
     // Superclass Methods
     @Override
-    public final void paintComponent(Graphics g) {
-        if (autoScale) {
+    public final void paintComponent(Graphics g)
+    {
+        if (autoScale)
+        {
             BufferedImage gui = new BufferedImage(getScreenWidth(), getScreenHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2D = gui.createGraphics();
             drawGUI(g2D);
             g
                     .drawImage(gui.getScaledInstance(g.getClipBounds().width, g.getClipBounds().height, 0),
                             0, 0, this);
-        } else {
+        }
+        else
+        {
             super.paintComponent(g);
         }
     }
 
     // Interface Methods
     @Override
-    public void keyPressed(KeyEvent evt) {
+    public void keyPressed(KeyEvent evt)
+    {
         InputConfig.Key key = InputConfig.translateKeyCode(evt.getKeyCode());
-        if (key != null) {
-            if (blockOnPrint && isPrinting()) {
-                switch (key) {
+        if (key != null)
+        {
+            if (blockOnPrint && isPrinting())
+            {
+                switch (key)
+                {
                     case KEY_A:
                     case KEY_B:
                     case KEY_ENTER:
@@ -173,28 +196,38 @@ public abstract class MainPanel extends JPanel implements KeyListener {
                     default:
                         break;
                 }
-            } else {
+            }
+            else
+            {
                 keyPressed(key);
             }
-        } else {
+        }
+        else
+        {
             IO.println("unsupported keypress", IO.MessageType.DEBUG);
         }
     }
 
     @Override
-    public void keyReleased(KeyEvent evt) {
+    public void keyReleased(KeyEvent evt)
+    {
         InputConfig.Key key = InputConfig.translateKeyCode(evt.getKeyCode());
-        if (key != null) {
-            if (blockOnPrint && isPrinting()) {
+        if (key != null)
+        {
+            if (blockOnPrint && isPrinting())
+            {
                 // nothing to do here
-            } else {
+            }
+            else
+            {
                 keyReleased(key);
             }
         }
     }
 
     @Override
-    public void keyTyped(KeyEvent evt) {
+    public void keyTyped(KeyEvent evt)
+    {
     }
 
     // abstract Methods

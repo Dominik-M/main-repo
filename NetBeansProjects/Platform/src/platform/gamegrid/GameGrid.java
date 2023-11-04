@@ -9,98 +9,125 @@ import platform.graphic.MainPanel;
 import platform.utils.Settings;
 import platform.utils.SettingsListener;
 
-public abstract class GameGrid extends MainPanel implements SettingsListener {
+public abstract class GameGrid extends MainPanel implements SettingsListener
+{
 
     private static final long serialVersionUID = 5765898768018725406L;
     private final GameData gameData;
     private int viewX, viewY;
     private Timer repaintClock, actClock; // separate HMI and Application for more performance with multicore processors
 
-    public GameGrid(GameData gameData) {
+    public GameGrid(GameData gameData)
+    {
         this.gameData = gameData;
         init();
     }
 
     // private methods
-    private void init() {
+    private void init()
+    {
         int fps = 50; // frames per second
-        if (Settings.isDefined("fps", Integer.class)) {
+        if (Settings.isDefined("fps", Integer.class))
+        {
             fps = (Integer) Settings.get("fps");
-        } else {
+        }
+        else
+        {
             Settings.set("fps", fps);
         }
 
         int sps = fps; // steps per second
-        if (Settings.isDefined("sps", Integer.class)) {
+        if (Settings.isDefined("sps", Integer.class))
+        {
             sps = (Integer) Settings.get("sps");
-        } else {
+        }
+        else
+        {
             Settings.set("sps", sps);
         }
 
-        repaintClock = new Timer(1000 / fps, new ActionListener() {
+        repaintClock = new Timer(1000 / fps, new ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 repaint();
             }
         });
 
-        actClock = new Timer(1000 / sps, new ActionListener() {
+        actClock = new Timer(1000 / sps, new ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 act();
             }
         });
     }
 
     // public methods
-    public boolean isInGrid(int x, int y) {
+    public boolean isInGrid(int x, int y)
+    {
         return getGameData().isInGrid(x, y);
     }
 
-    public boolean isInGrid(Rectangle rect) {
+    public boolean isInGrid(Rectangle rect)
+    {
         return getGameData().isInGrid(rect);
     }
 
-    public boolean isRunning() {
+    public boolean isRunning()
+    {
         return repaintClock.isRunning() || actClock.isRunning();
     }
 
-    public void setRunning(boolean run) {
-        if (isRunning() != run) {
-            if (run) {
+    public void setRunning(boolean run)
+    {
+        if (isRunning() != run)
+        {
+            if (run)
+            {
                 repaintClock.start();
                 actClock.start();
-            } else {
+            }
+            else
+            {
                 repaintClock.stop();
                 actClock.stop();
             }
         }
     }
 
-    public int getViewX() {
+    public int getViewX()
+    {
         return viewX;
     }
 
-    public void setViewX(int viewX) {
+    public void setViewX(int viewX)
+    {
         this.viewX = viewX;
     }
 
-    public int getViewY() {
+    public int getViewY()
+    {
         return viewY;
     }
 
-    public void setViewY(int viewY) {
+    public void setViewY(int viewY)
+    {
         this.viewY = viewY;
     }
 
-    public final void act() {
+    public final void act()
+    {
         preAct();
         getGameData().clock();
     }
 
-    public GameData getGameData() {
+    public GameData getGameData()
+    {
         return gameData;
     }
 
@@ -113,22 +140,27 @@ public abstract class GameGrid extends MainPanel implements SettingsListener {
 
     // superclass methods
     @Override
-    public void onSelect() {
+    public void onSelect()
+    {
         requestFocus();
     }
 
     @Override
-    public void onDisselect() {
+    public void onDisselect()
+    {
 
     }
 
     @Override
-    public void drawGUI(Graphics2D g) {
+    public void drawGUI(Graphics2D g)
+    {
         g.translate(-viewX, -viewY);
         drawBackground(g);
-        for (Actor a : getGameData().getActors()) {
+        for (Actor a : getGameData().getActors())
+        {
             a.paint(g);
-            if ((Boolean) Settings.get("drawbounds")) {
+            if ((Boolean) Settings.get("drawbounds"))
+            {
                 g.drawRect(a.getBounds().x, a.getBounds().y, a.getBounds().width, a.getBounds().height);
             }
         }
@@ -138,8 +170,10 @@ public abstract class GameGrid extends MainPanel implements SettingsListener {
     }
 
     @Override
-    public void preferenceChanged(String key, Object value) {
-        switch (key) {
+    public void preferenceChanged(String key, Object value)
+    {
+        switch (key)
+        {
             case "fps":
                 int fps = (int) value;
                 repaintClock.setDelay(1000 / fps);

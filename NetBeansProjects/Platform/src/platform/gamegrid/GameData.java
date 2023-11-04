@@ -4,38 +4,46 @@ import java.awt.Rectangle;
 import java.util.concurrent.CopyOnWriteArrayList;
 import platform.utils.SerializableReflectObject;
 
-public abstract class GameData extends SerializableReflectObject implements ClockTimed {
+public abstract class GameData extends SerializableReflectObject implements ClockTimed
+{
 
     private static final long serialVersionUID = 2863309594850038780L;
 
     private final CopyOnWriteArrayList<Actor> actors = new CopyOnWriteArrayList<>();
 
-    public void addActor(Actor a) {
+    public void addActor(Actor a)
+    {
         actors.add(a);
     }
 
-    public boolean removeActor(Actor a) {
+    public boolean removeActor(Actor a)
+    {
         return actors.remove(a);
     }
 
-    public void clear() {
+    public void clear()
+    {
         actors.clear();
     }
 
-    public synchronized Iterable<Actor> getActors() {
+    public synchronized Iterable<Actor> getActors()
+    {
         return actors;
     }
 
-    public boolean isInGrid(int x, int y) {
+    public boolean isInGrid(int x, int y)
+    {
         return x >= 0 && x < getWidth() && y >= 0 && y < getHeight();
     }
 
-    public boolean isInGrid(Rectangle rect) {
+    public boolean isInGrid(Rectangle rect)
+    {
         return new Rectangle(0, 0, getWidth(), getHeight()).contains(rect);
     }
 
     @Override
-    public final void clock() {
+    public final void clock()
+    {
         act();
     }
 

@@ -33,146 +33,196 @@ import java.util.LinkedList;
  * (dominik.messerschmidt@continental-corporation.com)
  *
  */
-public class Settings {
+public class Settings
+{
 
     public static final File SETTINGS_FILE = new File(Constants.DATA_DIRECTORY
             + Constants.SETTINGS_FILENAME);
     private static final Dictionary<String, Object> SETTINGS = new Dictionary<String, Object>();
     private static final LinkedList<SettingsListener> listener = new LinkedList<>();
 
-    private Settings() {
+    private Settings()
+    {
     }
 
-    public static boolean addListener(SettingsListener l) {
+    public static boolean addListener(SettingsListener l)
+    {
         return listener.add(l);
     }
 
-    public static boolean removeListener(SettingsListener l) {
+    public static boolean removeListener(SettingsListener l)
+    {
         return listener.remove(l);
     }
 
-    public static Dictionary<String, Object> get() {
+    public static Dictionary<String, Object> get()
+    {
         return SETTINGS.clone();
     }
 
-    public static Object get(String key) {
+    public static Object get(String key)
+    {
         return SETTINGS.get(key.toLowerCase());
     }
 
-    public static boolean set(String key, Object value) {
-        if (SETTINGS.containsKey(key.toLowerCase())) {
+    public static boolean set(String key, Object value)
+    {
+        if (SETTINGS.containsKey(key.toLowerCase()))
+        {
             if (SETTINGS.get(key.toLowerCase()) == null
-                    || SETTINGS.get(key.toLowerCase()).getClass().isInstance(value)) {
-                if (SETTINGS.set(key.toLowerCase(), value)) {
+                    || SETTINGS.get(key.toLowerCase()).getClass().isInstance(value))
+            {
+                if (SETTINGS.set(key.toLowerCase(), value))
+                {
                     IO.println("Settings.set(): " + key + " = " + value, IO.MessageType.DEBUG);
-                    for (SettingsListener l : listener) {
+                    for (SettingsListener l : listener)
+                    {
                         l.preferenceChanged(key, value);
                     }
                     return true;
-                } else {
+                }
+                else
+                {
                     IO.println("Settings.set(): Failed to set " + key + " = " + value,
                             IO.MessageType.ERROR);
                     return false;
                 }
-            } else {
+            }
+            else
+            {
                 IO.println("Settings.set(): Type mismatch ERROR: " + key + " " + value,
                         IO.MessageType.ERROR);
                 return false;
             }
-        } else {
-            if (SETTINGS.add(key.toLowerCase(), value)) {
+        }
+        else
+        {
+            if (SETTINGS.add(key.toLowerCase(), value))
+            {
                 IO.println("Settings.set(): Added dynamic preference key: " + key,
                         IO.MessageType.DEBUG);
-                if (addDefaultInterpreterCommand(key, value)) {
+                if (addDefaultInterpreterCommand(key, value))
+                {
                     IO.println(
                             "Settings.set(): Added default Interpreter Command: " + Interpreter.get(key),
                             IO.MessageType.DEBUG);
                 }
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }
     }
 
-    public static boolean addDefaultInterpreterCommand(String key, Object value) {
-        if (Integer.class.isInstance(value)) {
-            return Interpreter.add(new Command(key, "Sets " + key, "int") {
+    public static boolean addDefaultInterpreterCommand(String key, Object value)
+    {
+        if (Integer.class.isInstance(value))
+        {
+            return Interpreter.add(new Command(key, "Sets " + key, "int")
+            {
 
                 @Override
-                public boolean execute(String... params) {
+                public boolean execute(String... params)
+                {
                     int value = Integer.parseInt(params[0]);
                     Settings.set(this.name(), value);
                     return true;
                 }
             });
-        } else if (Boolean.class.isInstance(value)) {
-            return Interpreter.add(new Command(key, "Sets " + key, "Boolean") {
+        }
+        else if (Boolean.class.isInstance(value))
+        {
+            return Interpreter.add(new Command(key, "Sets " + key, "Boolean")
+            {
 
                 @Override
-                public boolean execute(String... params) {
+                public boolean execute(String... params)
+                {
                     boolean value = Boolean.parseBoolean(params[0]);
                     Settings.set(this.name(), value);
                     return true;
                 }
             });
-        } else if (Double.class.isInstance(value)) {
-            return Interpreter.add(new Command(key, "Sets " + key, "int") {
+        }
+        else if (Double.class.isInstance(value))
+        {
+            return Interpreter.add(new Command(key, "Sets " + key, "int")
+            {
 
                 @Override
-                public boolean execute(String... params) {
+                public boolean execute(String... params)
+                {
                     double value = Double.parseDouble(params[0]);
                     Settings.set(this.name(), value);
                     return true;
                 }
             });
-        } else if (String.class.isInstance(value)) {
-            return Interpreter.add(new Command(key, "Sets " + key, "int") {
+        }
+        else if (String.class.isInstance(value))
+        {
+            return Interpreter.add(new Command(key, "Sets " + key, "int")
+            {
 
                 @Override
-                public boolean execute(String... params) {
+                public boolean execute(String... params)
+                {
                     String value = params[0];
                     Settings.set(this.name(), value);
                     return true;
                 }
             });
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
 
-    public static int setAll(Dictionary<String, Object> settings) {
+    public static int setAll(Dictionary<String, Object> settings)
+    {
         int n = 0;
-        for (String key : settings.getKeys()) {
-            if (set(key, settings.get(key))) {
+        for (String key : settings.getKeys())
+        {
+            if (set(key, settings.get(key)))
+            {
                 n++;
             }
         }
         return n;
     }
 
-    public static boolean isDefined(String key) {
+    public static boolean isDefined(String key)
+    {
         return SETTINGS.containsKey(key.toLowerCase());
     }
 
     @SuppressWarnings("rawtypes")
-    public static boolean isDefined(String key, Class c) {
-        if (SETTINGS.containsKey(key.toLowerCase())) {
+    public static boolean isDefined(String key, Class c)
+    {
+        if (SETTINGS.containsKey(key.toLowerCase()))
+        {
             return c.isInstance(SETTINGS.get(key.toLowerCase()));
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
 
-    public static LinkedList<String> getKeys() {
+    public static LinkedList<String> getKeys()
+    {
         return SETTINGS.getKeys();
     }
 
-    public static void printPrefs(PrintStream out) {
+    public static void printPrefs(PrintStream out)
+    {
         SETTINGS.printRecursive(out);
     }
 
-    public static void resetSettings() {
+    public static void resetSettings()
+    {
         set("screenwidth", Constants.DEFAULT_WIDTH);
         set("screenheight", Constants.DEFAULT_HEIGHT);
         set("preferredSize", new java.awt.Dimension(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT));
@@ -188,8 +238,10 @@ public class Settings {
         set("autoKeyAdd", Boolean.TRUE);
     }
 
-    public static boolean loadSettings() {
-        try {
+    public static boolean loadSettings()
+    {
+        try
+        {
             FileInputStream fis = new FileInputStream(SETTINGS_FILE);
             ObjectInputStream ois = new ObjectInputStream(fis);
             @SuppressWarnings("unchecked")
@@ -200,22 +252,28 @@ public class Settings {
             IO.println("Settings.loadSettings(): Succesfully loaded " + n + " preferences",
                     IO.MessageType.DEBUG);
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             IO.println("failed to load Settings File", IO.MessageType.ERROR);
             IO.printException(ex);
             return false;
         }
     }
 
-    public static void saveSettings() {
-        try {
+    public static void saveSettings()
+    {
+        try
+        {
             FileOutputStream fos = new FileOutputStream(SETTINGS_FILE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(SETTINGS);
             fos.close();
             oos.close();
             IO.println("saved Settings File", IO.MessageType.DEBUG);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             IO.println("failed to save Settings File", IO.MessageType.ERROR);
             IO.printException(ex);
         }

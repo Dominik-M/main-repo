@@ -1,0 +1,16 @@
+07_27_2023_20:47:28:873>> [D] Logging started
+07_27_2023_20:47:28:920>> [D] saved config file
+07_27_2023_20:47:28:920>> [D] saved language file lang_en.txt
+07_27_2023_20:47:28:920>> [D] saved language file lang_de.txt
+07_27_2023_20:47:28:920>> [D] saved language file lang_ro.txt
+07_27_2023_20:47:28:951>> [D] saved Settings File
+07_27_2023_20:47:28:951>> [D] Created directory images
+07_27_2023_20:47:28:951>> [D] Created directory sound
+07_27_2023_20:47:28:951>> [D] Created directory saves
+07_27_2023_20:47:30:035>> [D] ProgressPanel - Text changed to: Searching Soundfiles...
+07_27_2023_20:47:30:035>> [D] found soundfiles:
+07_27_2023_20:47:30:035>> [D] ProgressPanel - Text changed to: Loading Sounds...
+07_27_2023_20:47:30:035>> [D] ProgressPanel - Text changed to: Ready
+07_27_2023_20:47:30:035>> [D] ProgressPanel - Text changed to: Loading Images...
+07_27_2023_20:47:30:035>> [D] ProgressPanel - Text changed to: Ready
+07_27_2023_20:47:30:035>> [D] Reset trigerred

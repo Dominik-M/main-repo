@@ -17,18 +17,18 @@
  */
 package ais;
 
-import actors.Actor;
 import actors.Ship;
-import graphic.GameGrid;
-import utils.Constants;
-import utils.Vector2D;
+import main.SpaceInvader;
+import platform.gamegrid.Actor;
+import platform.utils.Vector2D;
 
 /**
  *
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 29.03.2016
  */
-public class WingmanAI extends AI {
+public class WingmanAI extends BaseAI
+{
 
     public static final int ORDER_STAY = 1, ORDER_FOLLOW = 2;
     private int order;
@@ -36,75 +36,90 @@ public class WingmanAI extends AI {
     public int radiusOfObservation;
     public int leastDiff;
 
-    public WingmanAI() {
+    public WingmanAI()
+    {
         this(null, 200, 50);
     }
 
-    public WingmanAI(Ship leader) {
+    public WingmanAI(Ship leader)
+    {
         this(leader, 200, 50);
     }
 
-    public WingmanAI(Ship leader, int radiusOfObservation, int leastDiff) {
+    public WingmanAI(Ship leader, int radiusOfObservation, int leastDiff)
+    {
         this.radiusOfObservation = radiusOfObservation;
         this.leastDiff = leastDiff;
         this.leader = leader;
         order = ORDER_FOLLOW;
     }
 
-    public WingmanAI(int radiusOfObservation, int leastDiff) {
+    public WingmanAI(int radiusOfObservation, int leastDiff)
+    {
         this(null, radiusOfObservation, leastDiff);
     }
 
-    public int getOrder() {
+    public int getOrder()
+    {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(int order)
+    {
         this.order = order;
     }
 
     @Override
-    public void preAct(Actor a) {
-        GameGrid game = GameGrid.getInstance();
-        if (Ship.class.isInstance(a)) {
+    public void preAct(Actor a)
+    {
+        SpaceInvader game = SpaceInvader.getInstance();
+        if (Ship.class.isInstance(a))
+        {
             Ship me = (Ship) a;
-            if (this.leader != null && this.leader.isInvalid()) {
+            if (this.leader != null && this.leader.isInvalid())
+            {
                 this.leader = null;
             }
             Ship leader = this.leader;
-            if (order == ORDER_STAY) {
+            if (order == ORDER_STAY)
+            {
                 leader = null;
-            } else if (leader == null) {
+            }
+            else if (leader == null)
+            {
                 leader = getFlockLeaderInRange(me, radiusOfObservation);
-                if (leader != null) {
+                if (leader != null)
+                {
                     this.leader = leader;
-                    if (leader.equals(game.getMShip())) {
+                    if (leader.equals(game.getMShip()))
+                    {
                         order = ORDER_FOLLOW;
                         game.addToFleet(this);
                     }
                 }
             }
             // stick to flock
-            Vector2D accel = getFlockAlignAcceleration(a, leader, radiusOfObservation, leastDiff)
-                    .mult(me.getMaxAcceleration() * Constants.DELTA_T / 1000.0);
-            if (accel.magnitude() == 0) {
-                me.stop();
-            } else {
+            Vector2D accel = getFlockAlignAcceleration(a, leader, radiusOfObservation, leastDiff).mult(me.getMaxAcceleration() * SpaceInvader.DELTA_T / 1000.0);
+            if (accel.magnitude() == 0)
+            {
+                me.setSpeed(accel);
+            }
+            else
+            {
                 me.setSpeed(me.getSpeedVector().add(accel));
             }
             // shoot
             boolean shooting = shootEnemyInRange(me, 400);
-            if (game.isInLandingZone(a) && !shooting) {
+            if (game.isInLandingZone(a) && !shooting && me.getHP() < me.getMaxHp())
+            {
                 me.repair();
-            }
-            if (!shooting && this.leader != null) {
-                me.setDirection(this.leader.getDirection());
             }
         }
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "KI Wingman";
     }
 

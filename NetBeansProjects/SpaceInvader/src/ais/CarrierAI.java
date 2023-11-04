@@ -17,11 +17,14 @@
  */
 package ais;
 
-import actors.Actor;
+import java.awt.Rectangle;
+
+import main.SpaceInvader;
+import platform.gamegrid.Actor;
+import platform.utils.Utilities;
+import platform.utils.Vector2D;
 import actors.Carrier;
 import actors.Ship;
-import graphic.GameGrid;
-import utils.Vector2D;
 
 /**
  * An AI designed for controlling Carrier Ships. If fleets are garrisoned
@@ -30,30 +33,38 @@ import utils.Vector2D;
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 30.03.2016
  */
-public class CarrierAI extends AI {
+public class CarrierAI extends BaseAI
+{
 
     @Override
-    public void preAct(Actor a) {
-        if (!headToLandingZone(a) && a.getSpeed() == 0) {
-            Vector2D direction = new Vector2D(GameGrid.getInstance().getMap().WIDTH / 2, GameGrid.getInstance().getMap().HEIGHT / 2);
-            a.setDirection(utils.Utilities.toDeg(direction.getDirection()));
+    public void preAct(Actor a)
+    {
+        if (a.getSpeed() == 0 && SpaceInvader.getInstance().getMap() != null
+                && SpaceInvader.getInstance().getMap().LANDING_ZONE != null)
+        {
+            Rectangle lzone = SpaceInvader.getInstance().getMap().LANDING_ZONE;
+            Vector2D direction = new Vector2D(lzone.x - a.getX(), lzone.y - a.getY());
+            direction.normalize();
+            a.setSpeed(direction.mult(20));
+            a.setDirection(Utilities.toDeg(a.getSpeedVector().getDirection()));
         }
-        if (Ship.class.isInstance(a)) {
-            ((Ship) a).setAccelerating(true);
-        }
-        if (Carrier.class.isInstance(a)) {
+        if (Carrier.class.isInstance(a))
+        {
             Carrier me = ((Carrier) a);
-            if (me.getCapacity() * me.getHP() / me.getMaxHp() < me.getContentSize()) {
-                for (Ship deployed : me.deployFirst(5)) {
-                    GameGrid.getInstance().addActor(deployed);
+            if (me.getCapacity() * me.getHP() / me.getMaxHp() < me.getContentSize())
+            {
+                for (Ship deployed : me.deployFirst(5))
+                {
+                    SpaceInvader.getInstance().addActor(deployed);
                 }
             }
-            AI.shootEnemyInRange(me, 600);
+            shootEnemyInRange(me, 600);
         }
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Carrier AI";
     }
 }

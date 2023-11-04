@@ -19,8 +19,9 @@ package armory;
 
 import actors.Projectile;
 import java.util.List;
-import utils.Constants;
-import utils.Vector2D;
+import main.SpaceInvader;
+import platform.utils.IO;
+import platform.utils.Vector2D;
 
 /**
  *
@@ -32,17 +33,22 @@ public class Gun extends Weapon {
     private int firerate;
 
     Gun(String name, int damage, int projectileSpeed, int firerate, int range) {
-        super(name, damage, projectileSpeed, range);
+        this(name, damage, projectileSpeed, firerate, range, 0);
+    }
+
+    Gun(String name, int damage, int projectileSpeed, int firerate, int range, int spreadAngle) {
+        super(name, damage, projectileSpeed, range, spreadAngle, GunFactory.IMAGENAME_BOMB);
         this.firerate = firerate;
     }
 
     @Override
     public List<Projectile> shoot(int x, int y, double directionRad) {
         java.util.LinkedList<Projectile> shots = new java.util.LinkedList<Projectile>();
-        if (cooldown == 0) {
-            shots.add(new Projectile(this, x, y, new Vector2D(Math.cos(directionRad), Math
-                    .sin(directionRad)).mult(projectileSpeed)));
-            cooldown = Constants.DELTA_T * 1000 / firerate;
+        while (cooldown < SpaceInvader.DELTA_T) {
+            double spreadRad = (Math.random() * Math.PI - Math.PI / 2) * getSpreadAngle() / 180;
+            shots.add(new Projectile(this, x, y, new Vector2D(Math.cos(directionRad + spreadRad), Math
+                    .sin(directionRad + spreadRad)).mult(projectileSpeed)));
+            cooldown += SpaceInvader.DELTA_T * 1000 / firerate;
         }
         return shots;
     }
@@ -56,6 +62,11 @@ public class Gun extends Weapon {
     }
 
     public int getMaxCooldown() {
-        return Constants.DELTA_T * 1000 / firerate;
+        return SpaceInvader.DELTA_T * 1000 / firerate;
+    }
+
+    @Override
+    public String getDataString() {
+        return super.getDataString() + "\n" + IO.translate("FIRERATE") + ": " + firerate;
     }
 }

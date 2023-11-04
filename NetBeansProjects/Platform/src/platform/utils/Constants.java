@@ -28,7 +28,8 @@ import platform.utils.IO.Language;
  * (dominik.messerschmidt@continental-corporation.com)
  *
  */
-public final class Constants {
+public final class Constants
+{
 
     /**
      * Date Time Format
@@ -67,6 +68,7 @@ public final class Constants {
     /**
      * cannot create instance of this class.
      */
-    private Constants() {
+    private Constants()
+    {
     }
 }

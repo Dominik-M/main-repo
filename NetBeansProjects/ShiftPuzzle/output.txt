@@ -1,0 +1,47 @@
+SlidePuzzle(3).init()
+Loaded Image successfully
+MainFrame initialized
+Main.solvePuzzle(): Trying to solve puzzle with max Stackdepth of 16
+NativePuzzleSolver: Trying to solve puzzle with max Stackdepth of 16
+We failed!
+Java_main_NativePuzzleSolver_solvePuzzle(): Subroutine Failed to find solution
+NativePuzzleSolver: Took 9ms with max Stackdepth of 16
+NativePuzzleSolver: Trying to solve puzzle with max Stackdepth of 20
+We failed!
+Main.solvePuzzle(): Took 19ms with max Stackdepth of 16
+Main.solvePuzzle(): Trying to solve puzzle with max Stackdepth of 20
+We failed!
+Java_main_NativePuzzleSolver_solvePuzzle(): Subroutine Failed to find solution
+NativePuzzleSolver: Took 56ms with max Stackdepth of 20
+NativePuzzleSolver: Trying to solve puzzle with max Stackdepth of 24
+We failed!
+Main.solvePuzzle(): Took 57ms with max Stackdepth of 20
+Main.solvePuzzle(): Trying to solve puzzle with max Stackdepth of 24
+We failed!
+Main.solvePuzzle(): Took 333ms with max Stackdepth of 24
+Main.solvePuzzle(): Trying to solve puzzle with max Stackdepth of 28
+We failed!
+Java_main_NativePuzzleSolver_solvePuzzle(): Subroutine Failed to find solution
+NativePuzzleSolver: Took 463ms with max Stackdepth of 24
+NativePuzzleSolver: Trying to solve puzzle with max Stackdepth of 28
+Main.solvePuzzle(): Took 2064ms with max Stackdepth of 28
+We failed!
+Main.solvePuzzle(): Trying to solve puzzle with max Stackdepth of 32
+Java_main_NativePuzzleSolver_solvePuzzle(): Subroutine Failed to find solution
+We failed!
+NativePuzzleSolver: Took 3549ms with max Stackdepth of 28
+NativePuzzleSolver: Trying to solve puzzle with max Stackdepth of 32
+We failed!
+Main.solvePuzzle(): Took 16552ms with max Stackdepth of 32
+Main.solvePuzzle(): Trying to solve puzzle with max Stackdepth of 36
+Java_main_NativePuzzleSolver_solvePuzzle(): Subroutine Failed to find solution
+We failed!
+NativePuzzleSolver: Took 31475ms with max Stackdepth of 32
+NativePuzzleSolver: Trying to solve puzzle with max Stackdepth of 36
+Main.solvePuzzle(): Took 142147ms with max Stackdepth of 36
+We failed!
+Main.solvePuzzle(): Trying to solve puzzle with max Stackdepth of 40
+Java_main_NativePuzzleSolver_solvePuzzle(): Subroutine Failed to find solution
+We failed!
+NativePuzzleSolver: Took 284119ms with max Stackdepth of 36
+NativePuzzleSolver: Trying to solve puzzle with max Stackdepth of 40

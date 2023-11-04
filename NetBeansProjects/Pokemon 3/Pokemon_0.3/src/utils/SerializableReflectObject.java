@@ -22,7 +22,8 @@ package utils;
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 07.08.2016
  */
-public abstract class SerializableReflectObject implements java.io.Serializable, java.lang.Cloneable {
+public abstract class SerializableReflectObject implements java.io.Serializable, java.lang.Cloneable
+{
 
     private boolean printed = false;
 
@@ -47,7 +48,8 @@ public abstract class SerializableReflectObject implements java.io.Serializable,
     /**
      *
      */
-    public void printDataRecursive() {
+    public void printDataRecursive()
+    {
         printDataRecursive(0);
     }
 
@@ -55,23 +57,31 @@ public abstract class SerializableReflectObject implements java.io.Serializable,
      *
      * @param depth
      */
-    public final void printDataRecursive(int depth) {
-        if (!printed) {
+    public final void printDataRecursive(int depth)
+    {
+        if (!printed)
+        {
             Dictionary<String, Object> values = getAttributes();
-            for (String key : values.getKeys()) {
+            for (String key : values.getKeys())
+            {
                 Object value = values.get(key);
                 String line = key + " = ";
-                if (value != null) {
+                if (value != null)
+                {
                     line = line + value.toString();
-                } else {
+                }
+                else
+                {
                     line = line + "NULL";
                 }
-                for (int i = 0; i < depth; i++) {
+                for (int i = 0; i < depth; i++)
+                {
                     line = "  " + line;
                 }
                 IO.println(line, IO.MessageType.NORMAL);
                 printed = true;
-                if (SerializableReflectObject.class.isInstance(value)) {
+                if (SerializableReflectObject.class.isInstance(value))
+                {
                     ((SerializableReflectObject) value).printDataRecursive(depth + 1);
                 }
             }

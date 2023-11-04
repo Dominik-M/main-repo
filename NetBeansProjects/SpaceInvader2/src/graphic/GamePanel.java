@@ -12,7 +12,6 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.LinkedList;
 import main.Map;
 import main.SpaceInvader;
 import platform.gamegrid.GameData;
@@ -216,7 +215,10 @@ public class GamePanel extends GameGrid implements MouseListener, MouseMotionLis
         int x = SpaceInvader.SHIP_MONITOR_BOUNDS.x;
         int y = SpaceInvader.SHIP_MONITOR_BOUNDS.y;
         int width = SpaceInvader.SHIP_MONITOR_BOUNDS.width / 2;
-        int height = SpaceInvader.SHIP_MONITOR_BOUNDS.height / 10;
+        int height = SpaceInvader.SHIP_MONITOR_BOUNDS.height / 16;
+        int vgap = height + height / 2;
+
+        g.setFont(new Font("Consolas", 0, 16));
 
         g.setColor(Color.red);
         g.fillRect(x + width, y, width, height);
@@ -226,7 +228,7 @@ public class GamePanel extends GameGrid implements MouseListener, MouseMotionLis
         g.drawRect(x + width, y, width, height);
         g.setColor((Color) Settings.get("fontcolor"));
         g.drawString(IO.translate("HP"), x, y + height);
-        y += height * 2;
+        y += vgap;
 
         g.setColor(Color.lightGray);
         g.fillRect(x + width, y, width, height);
@@ -236,7 +238,7 @@ public class GamePanel extends GameGrid implements MouseListener, MouseMotionLis
         g.drawRect(x + width, y, width, height);
         g.setColor((Color) Settings.get("fontcolor"));
         g.drawString(IO.translate("SHIELD"), x, y + height);
-        y += height * 2;
+        y += vgap;
 
         g.setColor(Color.red);
         g.fillRect(x + width, y, width, height);
@@ -246,7 +248,7 @@ public class GamePanel extends GameGrid implements MouseListener, MouseMotionLis
         g.drawRect(x + width, y, width, height);
         g.setColor((Color) Settings.get("fontcolor"));
         g.drawString(IO.translate("FUEL"), x, y + height);
-        y += height * 2;
+        y += vgap;
 
         g.setColor(Color.gray);
         g.fillRect(x + width, y, width, height);
@@ -256,7 +258,7 @@ public class GamePanel extends GameGrid implements MouseListener, MouseMotionLis
         g.drawRect(x + width, y, width, height);
         g.setColor((Color) Settings.get("fontcolor"));
         g.drawString(IO.translate("SPEED"), x, y + height);
-        y += height * 2;
+        y += vgap;
 
         for (int i = 0; i < guns.length; i++)
         {
@@ -268,7 +270,7 @@ public class GamePanel extends GameGrid implements MouseListener, MouseMotionLis
             g.drawRect(x + width, y, width, height);
             g.setColor((Color) Settings.get("fontcolor"));
             g.drawString(gunnames[i], x, y + height);
-            y += height * 2;
+            y += vgap;
         }
 
         // g.setColor(Color.white);
@@ -279,6 +281,8 @@ public class GamePanel extends GameGrid implements MouseListener, MouseMotionLis
     private void drawMinimap(Graphics2D g)
     {
         Ship mShip = SpaceInvader.getInstance().getMShip();
+        g.setColor((Color) Settings.get("fontcolor"));
+        g.drawString(IO.translate("MAP") + ": " + SpaceInvader.getInstance().getMap().position, SpaceInvader.MINIMAP_BOUNDS.x, SpaceInvader.MINIMAP_BOUNDS.y - 16);
         g.drawImage(miniMapBG, SpaceInvader.MINIMAP_BOUNDS.x, SpaceInvader.MINIMAP_BOUNDS.y, null);
         int size = SpaceInvader.MINIMAP_POINT_SIZE;
         g.setColor(Color.red);

@@ -97,13 +97,18 @@ public class SpaceInvader extends GameData implements ClockTimed
     /**
      * Ship monitor panel bounds
      */
-    public static final Rectangle SHIP_MONITOR_BOUNDS = new Rectangle(MainPanel.getScreenWidth() - 210, 40, 200, 260);
+    public static final Rectangle SHIP_MONITOR_BOUNDS = new Rectangle(MainPanel.getScreenWidth() - 160, 40, 150, 260);
 
     /**
      * Event timer
      */
     public static final int TIMEOUT_MESSAGE = 180;
     public static final int TIMEOUT_LEVEL = 300;
+
+    /**
+     * Default time for loot to disappear in ms
+     */
+    public static final int DEFAULT_LOOT_LIFETIME = 20000;
 
     /**
      * Output settings
@@ -303,7 +308,7 @@ public class SpaceInvader extends GameData implements ClockTimed
                     {
                         IO.println(IO.translate("ENEMY_KILLED"), IO.MessageType.IMPORTANT);
                         addScore(((Ship) a).getMaxHp() * 2);
-                        ItemObject item = new ItemObject(getRandomItems(level));
+                        ItemObject item = new ItemObject(DEFAULT_LOOT_LIFETIME, getRandomItems(level));
                         item.setX(a.getX());
                         item.setY(a.getY());
                         addActor(item);
@@ -378,7 +383,8 @@ public class SpaceInvader extends GameData implements ClockTimed
                             leader = ShipFactory.createAlienHunter(
                                     (int) (Math.random() * currentMap.WIDTH),
                                     (int) (Math.random() * currentMap.HEIGHT), level);
-                        } while (this.isInLandingZone(leader));
+                        }
+                        while (this.isInLandingZone(leader));
                         addActor(leader);
                         for (Ship wingman : ShipFactory.createFleet(leader,
                                 ShipFactory.DEFAULT_FLEET_SIZE))
@@ -397,7 +403,8 @@ public class SpaceInvader extends GameData implements ClockTimed
                             neugegner = ShipFactory.createAlienFighter(
                                     (int) (Math.random() * currentMap.WIDTH),
                                     (int) (Math.random() * currentMap.HEIGHT), level);
-                        } while (this.isInLandingZone(neugegner));
+                        }
+                        while (this.isInLandingZone(neugegner));
                         addActor(neugegner);
                     }
                 }

@@ -30,17 +30,20 @@ import platform.utils.IO;
 public class ItemObject extends Actor
 {
 
+    private int time = 0;
     private Item[] items;
 
-    public ItemObject(Item... items)
+    public ItemObject(int lifetime, Item... items)
     {
         super("cargoBox.png");
         this.items = items;
+        this.time = lifetime;
     }
 
     @Override
     protected void act()
     {
+        time -= SpaceInvader.DELTA_T;
         if (!this.isInvalid() && SpaceInvader.getInstance().getMShip().getBounds().contains(this.getBounds()))
         {
             // collect
@@ -49,6 +52,10 @@ public class ItemObject extends Actor
                 SpaceInvader.getInstance().addLoadedItem(item);
                 IO.println(IO.translate("GOTITEM") + " " + item.getName() + " x " + item.getNumber(), IO.MessageType.IMPORTANT);
             }
+            invalidate();
+        }
+        if (time <= 0)
+        {
             invalidate();
         }
     }

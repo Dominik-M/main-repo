@@ -17,76 +17,76 @@
  */
 package actors;
 
-import armory.Weapon;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 
+import platform.gamegrid.Actor;
+import armory.Weapon;
+
 /**
- * A Turret is an Actor with a Weapon and the ability to shoot. Turret doesn't
- * do anything by itself. It's remote controlled mainly by its methods setX(),
- * setY(), setShooting() and setDirection(). Turrets cannot be hit or killed
- * directly, they have to be inherited by an instance that calls invalidate() if
- * the Turret should be removed.
- *
- * @author Dominik Messerschmidt
- * <dominik.messerschmidt@continental-corporation.com> Created 30.03.2016
+ * A Turret is an Actor with a Weapon and the ability to shoot. Turret doesn't do anything by itself. It's remote
+ * controlled mainly by its methods setX(), setY(), setShooting() and setDirection(). Turrets cannot be hit or killed
+ * directly, they have to be inherited by an instance that calls invalidate() if the Turret should be removed.
+ * 
+ * @author Dominik Messerschmidt <dominik.messerschmidt@continental-corporation.com> Created 30.03.2016
  */
 public class Turret extends Actor implements Shooting {
 
-    private Weapon mainWeapon;
-    private boolean shooting;
-    public Actor owner;
+	private Weapon mainWeapon;
+	private boolean shooting;
+	public Actor owner;
 
-    public Turret(Actor owner, Weapon mainWeapon, String... spritenames) {
-        super(owner.team, spritenames);
-        this.owner = owner;
-        setMainWeapon(mainWeapon);
-    }
+	Turret(Actor owner, Weapon mainWeapon, String mainSprite, String... spritenames) {
+		super(mainSprite, spritenames);
+		this.owner = owner;
+		setTeam(owner.getTeam());
+		setMainWeapon(mainWeapon);
+	}
 
-    public Weapon getMainWeapon() {
-        return mainWeapon;
-    }
+	public Weapon getMainWeapon() {
+		return mainWeapon;
+	}
 
-    public void setMainWeapon(Weapon mainWeapon) {
-        mainWeapon.owner = owner;
-        this.mainWeapon = mainWeapon;
-    }
+	public void setMainWeapon(Weapon mainWeapon) {
+		mainWeapon.owner = owner;
+		this.mainWeapon = mainWeapon;
+	}
 
-    @Override
-    public void act() {
-        // Turret doesn't do anything by itself but refreshing the gun. It's remote controlled mainly by its methods
-        // setX(), setY(), setShooting() and setDirection().
-        if (mainWeapon != null) {
-            mainWeapon.refresh();
-        }
-    }
+	@Override
+	public void act() {
+		// Turret doesn't do anything by itself but refreshing the gun. It's remote controlled mainly by its methods
+		// setX(), setY(), setShooting() and setDirection().
+		if (mainWeapon != null) {
+			mainWeapon.refresh();
+		}
+	}
 
-    @Override
-    public boolean isShooting() {
-        return shooting;
-    }
+	@Override
+	public boolean isShooting() {
+		return shooting;
+	}
 
-    public void setShooting(boolean isShooting) {
-        shooting = isShooting;
-    }
+	public void setShooting(boolean isShooting) {
+		shooting = isShooting;
+	}
 
-    @Override
-    public List<Projectile> shoot() {
-        if (mainWeapon != null) {
-            Rectangle bounds = this.getBounds();
-            return mainWeapon.shoot((int) (bounds.getCenterX()), (int) (bounds.getCenterY()),
-                    getDirectionRad());
-        }
-        return new java.util.LinkedList<Projectile>();
-    }
+	@Override
+	public List<Projectile> shoot() {
+		if (mainWeapon != null) {
+			Rectangle bounds = this.getBounds();
+			return mainWeapon.shoot((int) (bounds.getCenterX()), (int) (bounds.getCenterY()),
+			getDirectionRad());
+		}
+		return new java.util.LinkedList<Projectile>();
+	}
 
-    @Override
-    public List<Weapon> getWeapons() {
-        LinkedList<Weapon> weapons = new LinkedList<Weapon>();
-        if (mainWeapon != null) {
-            weapons.add(mainWeapon);
-        }
-        return weapons;
-    }
+	@Override
+	public List<Weapon> getWeapons() {
+		LinkedList<Weapon> weapons = new LinkedList<Weapon>();
+		if (mainWeapon != null) {
+			weapons.add(mainWeapon);
+		}
+		return weapons;
+	}
 }

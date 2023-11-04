@@ -21,8 +21,8 @@ import armory.Weapon;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
-import utils.Constants.Team;
-import utils.Text;
+import main.SpaceInvader.Team;
+import platform.utils.IO;
 
 /**
  *
@@ -33,9 +33,9 @@ public class Fighter extends Ship {
 
     private Weapon mainWeapon;
 
-    public Fighter(int x, int y, Team team, int maxHp, double maxSpeed, double maxAccel,
-            double maxRot, Weapon mainWeapon, String... spritenames) {
-        super(x, y, team, maxHp, maxSpeed, maxAccel, maxRot, spritenames);
+    Fighter(int x, int y, Team team, int maxHp, double maxSpeed, int hullmass, double maxAccel, double maxRot,
+            Weapon mainWeapon, int maxShield, double shieldRegen, String mainSprite, String... spritenames) {
+        super(x, y, team, maxHp, maxSpeed, hullmass, maxAccel, maxRot, maxShield, shieldRegen, mainSprite, spritenames);
         setMainWeapon(mainWeapon);
     }
 
@@ -61,7 +61,7 @@ public class Fighter extends Ship {
         return mainWeapon;
     }
 
-    public void setMainWeapon(Weapon mainWeapon) {
+    public final void setMainWeapon(Weapon mainWeapon) {
         this.mainWeapon = mainWeapon;
         mainWeapon.owner = this;
     }
@@ -77,7 +77,11 @@ public class Fighter extends Ship {
 
     @Override
     public String getDataString() {
-        return Text.CLASS + ": " + Text.FIGHTER + "\n" + super.getDataString() + "\n"
-                + Text.MAINWEAPON + ": " + mainWeapon;
+        String s = IO.translate("CLASS") + ": " + IO.translate("FIGHTER") + "\n"
+                + super.getDataString() + "\n" + IO.translate("MAINWEAPON") + ": " + mainWeapon + "\n";
+        for (String line : mainWeapon.getDataString().split("\n")) {
+            s += "        " + line + "\n";
+        }
+        return s;
     }
 }

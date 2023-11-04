@@ -6,19 +6,23 @@ package tonfolge;
 
 import javax.swing.JFileChooser;
 
-
 /**
  *
  * @author Dundun
  */
-public class TonGUI extends javax.swing.JFrame implements TonListener{
-    private Tonfolge tf=new Tonfolge();
+public class TonGUI extends javax.swing.JFrame implements TonListener
+{
+
+    private Tonfolge tf = new Tonfolge();
 
     /**
      * Creates new form TonGUI
      */
-    public TonGUI() {
+    public TonGUI()
+    {
         initComponents();
+        tasten2.addTastenListener(noten);
+        noten.addKeyListener(tasten2.KEY_HANDLER);
     }
 
     /**
@@ -208,50 +212,60 @@ public class TonGUI extends javax.swing.JFrame implements TonListener{
     }// </editor-fold>//GEN-END:initComponents
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-      if(tf.nochTöne())tf.stop();
-      else{
-          tf = new Tonfolge();
-          tf.addTonListener(this);
-          tf.setInstrument(instr.getSelectedIndex() + 1);
-          noten.füllTonfolge(tf);
-          tf.endnote();
-          tf.start((int)bpm.getValue());
-          start.setText("    Stop      ");
-          start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tonfolge/icons/stop.jpg")));
-      }
+        if (tf.nochTöne())
+        {
+            tf.stop();
+        }
+        else
+        {
+            tf = new Tonfolge();
+            tf.addTonListener(this);
+            tf.setInstrument(instr.getSelectedIndex() + 1);
+            noten.füllTonfolge(tf);
+            tf.endnote();
+            tf.start((int) bpm.getValue());
+            start.setText("    Stop      ");
+            start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tonfolge/icons/stop.jpg")));
+        }
     }//GEN-LAST:event_startActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
-        if(javax.swing.JOptionPane.showConfirmDialog(this,"Wirklich alle Noten löschen?","Löschen",
-                javax.swing.JOptionPane.YES_NO_OPTION)==javax.swing.JOptionPane.YES_OPTION){
-          noten.clear();
-          noten.repaint();
+        if (javax.swing.JOptionPane.showConfirmDialog(this, "Wirklich alle Noten löschen?", "Löschen",
+                javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION)
+        {
+            noten.clear();
+            noten.repaint();
         }
     }//GEN-LAST:event_clearActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-     JFileChooser jFC = new javax.swing.JFileChooser();
-     if(jFC.showSaveDialog(this)==javax.swing.JFileChooser.APPROVE_OPTION){
-         noten.save(jFC.getSelectedFile());
-     }
+        JFileChooser jFC = new javax.swing.JFileChooser();
+        if (jFC.showSaveDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION)
+        {
+            noten.save(jFC.getSelectedFile());
+        }
     }//GEN-LAST:event_saveActionPerformed
 
     private void loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadActionPerformed
-        if(noten.wurdeGeändert() && javax.swing.JOptionPane.showConfirmDialog(
-                this,"Es wurden Änderungen vorgenommen.\n Speichern?","Warnung",javax.swing.JOptionPane.YES_NO_OPTION)==
-                javax.swing.JOptionPane.YES_OPTION){
+        if (noten.wurdeGeändert() && javax.swing.JOptionPane.showConfirmDialog(
+                this, "Es wurden Änderungen vorgenommen.\n Speichern?", "Warnung", javax.swing.JOptionPane.YES_NO_OPTION)
+                == javax.swing.JOptionPane.YES_OPTION)
+        {
             saveActionPerformed(evt);
-        }else{
-          JFileChooser jFC = new javax.swing.JFileChooser();
-          if(jFC.showOpenDialog(this)==javax.swing.JFileChooser.APPROVE_OPTION){
-              noten.lade(jFC.getSelectedFile());
-              setTitle(jFC.getSelectedFile().getName());
-          }
+        }
+        else
+        {
+            JFileChooser jFC = new javax.swing.JFileChooser();
+            if (jFC.showOpenDialog(this) == javax.swing.JFileChooser.APPROVE_OPTION)
+            {
+                noten.lade(jFC.getSelectedFile());
+                setTitle(jFC.getSelectedFile().getName());
+            }
         }
     }//GEN-LAST:event_loadActionPerformed
 
     private void neuTaktActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neuTaktActionPerformed
-      noten.addTakt();
+        noten.addTakt();
     }//GEN-LAST:event_neuTaktActionPerformed
 
     private void repeatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repeatActionPerformed
@@ -259,39 +273,53 @@ public class TonGUI extends javax.swing.JFrame implements TonListener{
     }//GEN-LAST:event_repeatActionPerformed
 
     private void zufallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zufallActionPerformed
-      noten.zufallNoten(100);
+        noten.zufallNoten(100);
     }//GEN-LAST:event_zufallActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+        try
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        }
+        catch (ClassNotFoundException ex)
+        {
             java.util.logging.Logger.getLogger(TonGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        }
+        catch (InstantiationException ex)
+        {
             java.util.logging.Logger.getLogger(TonGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        }
+        catch (IllegalAccessException ex)
+        {
             java.util.logging.Logger.getLogger(TonGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        }
+        catch (javax.swing.UnsupportedLookAndFeelException ex)
+        {
             java.util.logging.Logger.getLogger(TonGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+            public void run()
+            {
                 new TonGUI().setVisible(true);
             }
         });
@@ -322,9 +350,11 @@ public class TonGUI extends javax.swing.JFrame implements TonListener{
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void ende() {
-        if(repeat.isSelected()){
-            tf.start((int)bpm.getValue());
+    public void ende()
+    {
+        if (repeat.isSelected())
+        {
+            tf.start((int) bpm.getValue());
             return;
         }
         start.setText("Abspielen");

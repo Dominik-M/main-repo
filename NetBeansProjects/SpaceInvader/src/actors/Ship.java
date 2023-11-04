@@ -17,16 +17,14 @@
  */
 package actors;
 
-import graphic.GameGrid;
 import java.awt.Color;
 import java.awt.Graphics;
-import main.GameData;
-import utils.Constants;
-import utils.Constants.Team;
-import utils.IO;
-import utils.Settings;
-import utils.Text;
-import utils.Vector2D;
+import main.SpaceInvader;
+import main.SpaceInvader.Team;
+import platform.gamegrid.Actor;
+import platform.utils.IO;
+import platform.utils.Settings;
+import platform.utils.Vector2D;
 
 /**
  *
@@ -38,28 +36,37 @@ public abstract class Ship extends Actor implements Shooting {
     private boolean accelerate = false;
     private boolean brake = false;
     private boolean shooting = false;
-    private double maxAcceleration;
     private double maxSpeed;
     private double rotation;
     private double maxRotation;
     private int maxHp;
     private int hp;
+    private int maxShield, shieldCD; // max shield energy in hitpoints and energy regeneration cooldown in ms
+    private double shield, shieldPower; // shield regeneration speed in hitpoints per second
+    private boolean shieldOn, superShield;
+    private final int hullmass;
+    private int totalMass;
+    private double maxPower;
 
-    public Ship(int x, int y, Team team, int maxHp, double maxSpeed, double maxAccel,
-            double maxRot, String... spritenames) {
-        super(team, spritenames);
+    Ship(int x, int y, Team team, int maxHp, double maxSpeed, int hullmass, double maxPower, double maxRot,
+            int maxShield, double shieldRegen, String mainSprite, String... spritenames) {
+        super(mainSprite, spritenames);
         this.maxHp = maxHp;
         hp = maxHp;
         setX(x);
         setY(y);
+        this.hullmass = hullmass;
+        this.totalMass = hullmass;
         this.maxSpeed = maxSpeed;
-        this.maxAcceleration = maxAccel;
+        this.maxPower = maxPower;
         this.maxRotation = maxRot;
-    }
-
-    public Ship() {
-        this(0, 0, Team.EARTH, 10, 200, 100, 180, Constants.IMAGENAME_SPACESHIP,
-                Constants.IMAGENAME_SPACESHIPACC);
+        this.maxShield = maxShield;
+        this.shield = this.maxShield;
+        this.shieldOn = true;
+        this.superShield = false;
+        this.shieldCD = 0;
+        this.shieldPower = shieldRegen;
+        setTeam(team.ordinal());
     }
 
     @Override
@@ -68,13 +75,19 @@ public abstract class Ship extends Actor implements Shooting {
             getAI().preAct(this);
         }
         if (accelerate) {
-            accelerate(getAcceleration());
+            Vector2D velocity = this.getSpeedVector().clone();
+            velocity = velocity.add(getAcceleration());
+            if (velocity.magnitude() > maxSpeed) {
+                velocity.normalize();
+                velocity = velocity.mult(maxSpeed);
+            }
+            this.setSpeed(velocity);
         }
         if (brake) {
             if (this.getSpeedVector().magnitude() > 0) {
                 Vector2D velocity = this.getSpeedVector().clone();
                 velocity.normalize();
-                velocity = velocity.mult(maxAcceleration * Constants.DELTA_T / 1000.0);
+                velocity = velocity.mult(maxPower * SpaceInvader.DELTA_T / 1000.0 / totalMass);
                 if (velocity.magnitude() >= this.getSpeedVector().magnitude()) {
                     this.setSpeed(Vector2D.NULLVECTOR);
                 } else {
@@ -83,31 +96,42 @@ public abstract class Ship extends Actor implements Shooting {
             }
         }
         if (rotation != 0) {
-            this.setDirection(getDirection() + (rotation * Constants.DELTA_T / 1000.0));
+            this.setDirection(getDirection() + (rotation * SpaceInvader.DELTA_T / 1000.0));
         }
         move();
-        if (!GameGrid.getInstance().isInGrid(getBounds())) {
+        if (!SpaceInvader.getInstance().isInGrid(getBounds())) { // TODO remove this wrong direction dependency
             this.setSpeed(this.getSpeedVector().invert());
-            if (this.equals(GameGrid.getInstance().getMShip())) {
-                if (GameGrid.getInstance().getGameMode() == GameData.Mode.ARCADE) {
-                    IO.println(Text.LOST_IN_SPACE_WARNING.toString(), IO.MessageType.IMPORTANT);
+            if (this.equals(SpaceInvader.getInstance().getMShip())) {
+                if (SpaceInvader.getInstance().getMode() == SpaceInvader.Mode.ARCADE) {
+                    IO.println(IO.translate("LOST_IN_SPACE_WARNING"), IO.MessageType.IMPORTANT);
                 } else {
-                    GameGrid.getInstance().switchMap();
+                    this.setSpeed(this.getSpeedVector().invert());
+                    SpaceInvader.getInstance().switchMap();
+                }
+            }
+        }
+        if (shieldOn) {
+            if (shieldCD > 0) {
+                shieldCD -= SpaceInvader.DELTA_T;
+            } else if (shield < maxShield) {
+                shield += SpaceInvader.DELTA_T * getShieldPower() / 1000.0;
+                if (shield > maxShield) {
+                    shield = maxShield;
                 }
             }
         }
     }
 
-    public Vector2D getAcceleration() {
+    private Vector2D getAcceleration() {
         return new Vector2D(Math.cos(this.getDirectionRad()), Math.sin(getDirectionRad()))
-                .mult(maxAcceleration * Constants.DELTA_T / 1000.0);
+                .mult(maxPower * SpaceInvader.DELTA_T / 1000.0 / totalMass);
     }
 
     public boolean isAccelerating() {
         return accelerate;
     }
 
-    private void accelerate(Vector2D acceleration) {
+    public void accelerate(Vector2D acceleration) {
         Vector2D velocity = getSpeedVector().add(acceleration);
         if (velocity.magnitude() > maxSpeed) {
             velocity.normalize();
@@ -129,7 +153,6 @@ public abstract class Ship extends Actor implements Shooting {
     public void setAccelerating(boolean accelerate) {
         this.accelerate = accelerate;
         if (accelerate) {
-            setBraking(false);
             this.spriteID = 1;
         } else {
             this.spriteID = 0;
@@ -138,9 +161,10 @@ public abstract class Ship extends Actor implements Shooting {
 
     public void setBraking(boolean braking) {
         this.brake = braking;
-        if (braking) {
-            accelerate = false;
-        }
+    }
+
+    public boolean isBraking() {
+        return brake;
     }
 
     public void rotateLeft() {
@@ -175,7 +199,20 @@ public abstract class Ship extends Actor implements Shooting {
      * @param p the projectile that hit the ship.
      */
     public void hit(Projectile p) {
-        hp -= p.source.getDamage();
+        int dmg = p.source.getDamage();
+        if (shield > 0) {
+            if (shield < dmg) {
+                shield = 0;
+                dmg -= (int) shield;
+            } else {
+                shield -= dmg;
+                dmg = 0;
+            }
+            if (!superShield) {
+                shieldCD = 1000;
+            }
+        }
+        hp -= dmg;
         if (hp <= 0) {
             invalidate();
         }
@@ -183,12 +220,21 @@ public abstract class Ship extends Actor implements Shooting {
 
     @Override
     public void paint(Graphics g) {
+        if (superShield) {
+            g.setColor(Color.cyan);
+            g.fillOval(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
+        }
         super.paint(g);
-        if (Settings.getSettings().drawLifes) {
+        if ((Boolean) Settings.get("drawLifes")) {
             g.setColor(Color.red);
             g.fillRect(getXOnScreen() - 5, getYOnScreen(), 30, 5);
             g.setColor(Color.green);
             g.fillRect(getXOnScreen() - 5, getYOnScreen(), hp * 30 / maxHp, 5);
+
+            g.setColor(Color.lightGray);
+            g.fillRect(getXOnScreen() - 5, getYOnScreen() + 10, 30, 5);
+            g.setColor(Color.cyan);
+            g.fillRect(getXOnScreen() - 5, getYOnScreen() + 10, (int) (shield * 30 / maxShield), 5);
         }
     }
 
@@ -213,6 +259,7 @@ public abstract class Ship extends Actor implements Shooting {
      */
     public void setMaxRotation(double maxRotation) {
         this.maxRotation = maxRotation;
+        IO.println(this + ".setMaxRotation(): maxRotation speed set to " + maxRotation, IO.MessageType.DEBUG);
     }
 
     /**
@@ -232,6 +279,7 @@ public abstract class Ship extends Actor implements Shooting {
     public void setMaxHp(int maxHp) {
         if (maxHp > 0) {
             this.maxHp = maxHp;
+            IO.println(this + ".setMaxHP(): maxHP set to " + maxHp, IO.MessageType.DEBUG);
         }
     }
 
@@ -241,19 +289,53 @@ public abstract class Ship extends Actor implements Shooting {
      * @return maximum acceleration of the ship in pixels per squaresecond.
      */
     public double getMaxAcceleration() {
-        return maxAcceleration;
+        return maxPower / totalMass;
     }
 
     /**
-     * Set the maximum acceleration of the ship.
+     * Retrieve the hull mass of the ship. The unit is artificial.
      *
-     * @param maxAcceleration maximum acceleration of the ship in pixels per
-     * squaresecond.
+     * @return total mass of the ship in pixels per squaresecond.
      */
-    public void setMaxAcceleration(double maxAcceleration) {
-        if (maxAcceleration >= 0) {
-            this.maxAcceleration = maxAcceleration;
-        }
+    public int getHullMass() {
+        return hullmass;
+    }
+
+    /**
+     * Retrieve the total mass of the ship. The unit is artificial.
+     *
+     * @return total mass of the ship in pixels per squaresecond.
+     */
+    public int getTotalMass() {
+        return totalMass;
+    }
+
+    /**
+     * Set the total mass of the ship.
+     *
+     */
+    public void setTotalMass(int totalMass) {
+        this.totalMass = totalMass;
+        IO.println(this + ".setTotalMass(): totalMass set to " + totalMass, IO.MessageType.DEBUG);
+    }
+
+    /**
+     * Retrieve the maximum power of the ship.
+     *
+     * @return maximum acceleration of the ship in pixels per squaresecond.
+     */
+    public double getMaxPower() {
+        return maxPower;
+    }
+
+    /**
+     * Sets the maximum Power of the ship.
+     *
+     * @param maxPower maximum power of the Ship.
+     */
+    public void setMaxPower(double maxPower) {
+        this.maxPower = maxPower;
+        IO.println(this + ".setMaxPower(): maxPower set to " + maxPower, IO.MessageType.DEBUG);
     }
 
     /**
@@ -273,11 +355,61 @@ public abstract class Ship extends Actor implements Shooting {
     public void setMaxSpeed(double maxSpeed) {
         if (maxSpeed >= 0) {
             this.maxSpeed = maxSpeed;
+            IO.println(this + ".setMaxSpeed(): maxSpeed set to " + maxSpeed, IO.MessageType.DEBUG);
         }
+    }
+
+    public int getMaxShield() {
+        return maxShield;
+    }
+
+    public void setMaxShield(int maxShield) {
+        this.maxShield = maxShield;
+    }
+
+    public int getShield() {
+        return (int) shield;
+    }
+
+    public void setShield(int shield) {
+        this.shield = shield;
+    }
+
+    public double getShieldPower() {
+        if (superShield) {
+            return shieldPower * 2;
+        } else {
+            return shieldPower;
+        }
+    }
+
+    public void setShieldPower(double shieldPower) {
+        this.shieldPower = shieldPower;
+    }
+
+    public boolean getShieldOn() {
+        return shieldOn;
+    }
+
+    public void setShieldOn(boolean shieldOn) {
+        this.shieldOn = shieldOn;
     }
 
     public void setShooting(boolean shooting) {
         this.shooting = shooting;
+    }
+
+    public void setSuperShieldOn(boolean superShieldOn) {
+        if (superShieldOn) {
+            this.shieldCD = 0;
+        } else {
+            this.shieldCD = 1000;
+        }
+        this.superShield = superShieldOn;
+    }
+
+    public boolean getSuperShieldOn() {
+        return this.superShield;
     }
 
     @Override
@@ -287,10 +419,30 @@ public abstract class Ship extends Actor implements Shooting {
 
     public void repair() {
         hp = maxHp;
+        IO.println(this + ".repair(): Ship repaired.", IO.MessageType.DEBUG);
+    }
+
+    @Override
+    public void move() {
+        Vector2D speedvector = this.getSpeedVector();
+        speedvector = speedvector.mult(SpaceInvader.DELTA_T / 1000.0);
+        x += speedvector.x;
+        y += speedvector.y;
     }
 
     public String getDataString() {
-        return Text.HP + ": " + getMaxHp() + "\n" + Text.SPEED + ": " + getMaxSpeed() + "\n" + Text.ACCEL + ": "
-                + getMaxAcceleration() + "\n" + Text.ROTSPEED + ": " + getMaxRotation();
+        return IO.translate("HP") + ": " + getMaxHp() + "\n"
+                + IO.translate("HULLMASS") + ": " + getHullMass() + "\n"
+                + IO.translate("TOTALMASS") + ": " + getTotalMass() + "\n"
+                + IO.translate("SHIELD") + ": " + getMaxShield() + "\n"
+                + IO.translate("SHIELDPOWER") + ": " + getShieldPower() + "\n"
+                + IO.translate("SPEED") + ": " + getMaxSpeed() + "\n"
+                + IO.translate("POWER") + ": " + getMaxAcceleration() + "\n"
+                + IO.translate("ROTSPEED") + ": " + getMaxRotation();
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getName();
     }
 }

@@ -47,12 +47,12 @@ public class ShipFactory
     public static final int DEFAULT_HP_HIGH = 500;
     public static final int DEFAULT_HP_VERYHIGH = 2500;
     public static final int DEFAULT_HP_EXTREME = 20000;
-    public static final int SHIELD_VERYLOW = 5;
-    public static final int SHIELD_LOW = 10;
-    public static final int SHIELD_MED = 50;
-    public static final int SHIELD_HIGH = 500;
-    public static final int SHIELD_VERYHIGH = 2500;
-    public static final int SHIELD_EXTREME = 20000;
+    public static final int SHIELD_VERYLOW = 2;
+    public static final int SHIELD_LOW = 5;
+    public static final int SHIELD_MED = 25;
+    public static final int SHIELD_HIGH = 250;
+    public static final int SHIELD_VERYHIGH = 1500;
+    public static final int SHIELD_EXTREME = 10000;
     public static final int SHIELD_REGEN_VERYLOW = 1;
     public static final int SHIELD_REGEN_LOW = 2;
     public static final int SHIELD_REGEN_MED = 5;
@@ -110,7 +110,7 @@ public class ShipFactory
             GunFactory.getSalvoGun(), GunFactory.getSalvoGun(), GunFactory.getRapidGun());
 
     public static final Carrier carrierPrototyp = createCarrier(0, 0, SpaceInvader.Team.PASSIV,
-            2000, 20, 10, GunFactory.getRapidGun(), GunFactory.get3BurstGun(), GunFactory.get5BurstGun(),
+            2000, 1000, 20, 10, GunFactory.getRapidGun(), GunFactory.get3BurstGun(), GunFactory.get5BurstGun(),
             GunFactory.get8BurstGun());
 
     /**
@@ -126,23 +126,23 @@ public class ShipFactory
 
     public static Ship createStartShip()
     {
-        /*
+
         Fighter f = new Fighter(1200, 700, Team.EARTH,
                 DEFAULT_HP_MED,
                 DEFAULT_SPEED_MED,
                 DEFAULT_MASS_MED,
                 DEFAULT_POWER_MED,
                 DEFAULT_ROT_SPEED,
-                GunFactory.getRapidGun(),
+                GunFactory.getGun(),
                 SHIELD_MED,
                 SHIELD_REGEN_MED,
                 IMAGENAME_HUNTER_M);
         return f;
-         */
-        Carrier c = createCarrier(1200, 700, Team.EARTH, DEFAULT_HP_EXTREME, 10, 100, GunFactory.getSalvoGun(), GunFactory.getSalvoGun(), GunFactory.getSalvoGun(), GunFactory.getSalvoGun());
-        c.setProduceFleets(true);
-        c.setAI(null);
-        return c;
+
+//        Carrier c = createCarrier(1200, 700, Team.EARTH, DEFAULT_HP_EXTREME, SHIELD_VERYHIGH, 10, 100, GunFactory.getSalvoGun(), GunFactory.getSalvoGun(), GunFactory.getSalvoGun(), GunFactory.getSalvoGun());
+//        c.setProduceFleets(true);
+//        c.setAI(null);
+//        return c;
     }
 
     public static Fighter createAlienFighter(int x, int y, int level)
@@ -175,7 +175,7 @@ public class ShipFactory
         {
             guns[i] = GunFactory.getGun();
         }
-        Carrier mothership = createCarrier(x, y, team, hp, 5 * fleetcount, 1, guns);
+        Carrier mothership = createCarrier(x, y, team, hp, hp / 2, 5 * fleetcount, 1, guns);
         LinkedList<Ship> fleet = new LinkedList<>();
         for (int i = 0; i < fleetcount; i++)
         {
@@ -265,7 +265,7 @@ public class ShipFactory
         return ship;
     }
 
-    public static Carrier createCarrier(int x, int y, Team team, int hp, int capacity, double rate,
+    public static Carrier createCarrier(int x, int y, Team team, int hp, int shield, int capacity, double rate,
             Weapon... weapons)
     {
         String img = IMAGENAME_CARRIER;
@@ -273,8 +273,8 @@ public class ShipFactory
         {
             img = IMAGENAME_ALIEN_MOTHERSHIP;
         }
-        Carrier ship = new Carrier(x, y, team, hp, DEFAULT_SPEED_VERYLOW, DEFAULT_MASS_VERYHIGH, DEFAULT_POWER_HIGH, DEFAULT_ROT_SPEED / 4, capacity, rate,
-                SHIELD_EXTREME, SHIELD_REGEN_HIGH, img);
+        Carrier ship = new Carrier(x, y, team, hp, DEFAULT_SPEED_VERYLOW, DEFAULT_MASS_VERYHIGH, DEFAULT_POWER_HIGH, DEFAULT_ROT_SPEED / 3, capacity, rate,
+                shield, SHIELD_REGEN_HIGH, img);
         for (int i = 0; i < weapons.length; i++)
         {
             ship.addWeapon(weapons[i], -10 + (i % 2) * 20, (i / 2) * 25 - 40, IMAGENAME_TURRET);

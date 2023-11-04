@@ -1,31 +1,38 @@
 package platform.utils;
 
-public abstract class Command {
-	private final String name, desc;
-	private final String[] paramNames;
+public abstract class Command
+{
 
-	public Command(String name, String description, String... paramNames) {
-		this.name = name.toUpperCase();
-		this.desc = description;
-		this.paramNames = paramNames;
-	}
+    private final String name, desc;
+    private final String[] paramNames;
 
-	@Override
-	public String toString() {
-		String s = this.name();
-		for (String p : paramNames) {
-			s += " <" + p + ">";
-		}
-		return s;
-	}
+    public Command(String name, String description, String... paramNames)
+    {
+        this.name = name.toUpperCase();
+        this.desc = description;
+        this.paramNames = paramNames;
+    }
 
-	public String name() {
-		return name;
-	}
+    @Override
+    public String toString()
+    {
+        String s = this.name();
+        for (String p : paramNames)
+        {
+            s += " <" + p + ">";
+        }
+        return s;
+    }
 
-	public String getDescription() {
-		return desc;
-	}
+    public String name()
+    {
+        return name;
+    }
 
-	public abstract boolean execute(String... params);
+    public String getDescription()
+    {
+        return desc;
+    }
+
+    public abstract boolean execute(String... params);
 }

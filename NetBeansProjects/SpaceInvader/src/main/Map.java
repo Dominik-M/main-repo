@@ -17,20 +17,21 @@
  */
 package main;
 
-import image.ImageIO;
-import image.Sprite;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import utils.IO;
-import utils.Vector2D;
+import platform.image.ImageIO;
+import platform.image.Sprite;
+import platform.utils.IO;
+import platform.utils.SerializableReflectObject;
+import platform.utils.Vector2D;
 
 /**
  *
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 27.03.2016
  */
-public class Map implements java.io.Serializable {
+public class Map extends SerializableReflectObject {
 
     public final Vector2D position;
     public final int WIDTH, HEIGHT;
@@ -45,18 +46,12 @@ public class Map implements java.io.Serializable {
         this.position = position;
     }
 
-    public Vector2D getRandomPosition() {
-        double x = Math.random() * WIDTH;
-        double y = Math.random() * HEIGHT;
-        return new Vector2D(x, y);
-    }
-
     public final Sprite getSprite() {
         if (!ImageIO.containsSprite(background)) {
-            ImageIO.initSprite("Map_Space." + position, ImageIO.getRandomBackground(WIDTH, HEIGHT), false);
+            ImageIO.initSprite("Map_Space." + position, ImageIO.getRandomBackground(WIDTH, HEIGHT),
+                    false);
         }
         return ImageIO.getSprite(background);
-
     }
 
     public void paint(Graphics g) {
@@ -67,13 +62,15 @@ public class Map implements java.io.Serializable {
         return getSprite().getImages()[0];
     }
 
+    @Override
     public String toString() {
-        return background.substring(4, background.indexOf(".")).toUpperCase() + " " + position;
+        //return background.substring(4, background.indexOf(".")).toUpperCase() + " " + position;
+        return background;
     }
 
     public static Map getRandomMap(int width, int height, Vector2D position) {
         String name = "Map_Space." + position;
-        if (ImageIO.initSprite(name, ImageIO.getRandomBackground(width, height), false)) {
+        if (ImageIO.containsSprite(name) || ImageIO.initSprite(name, ImageIO.getRandomBackground(width, height), false)) {
             Map map = new Map(name, null, position);
             IO.println("Created Map " + map, IO.MessageType.DEBUG);
             return map;

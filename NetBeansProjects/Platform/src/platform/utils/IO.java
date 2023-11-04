@@ -18,7 +18,6 @@
 package platform.utils;
 
 import java.time.LocalDateTime;
-
 import platform.graphic.MainFrame;
 
 /**
@@ -44,7 +43,6 @@ public class IO
          * English
          */
         EN("English"),
-
         /**
          * German
          */
@@ -76,18 +74,15 @@ public class IO
          * via System.out.println().
          */
         DEBUG,
-
         /**
          * Prints the text "normally" with System.out.println() and writes the
          * text to the logilfe.
          */
         NORMAL,
-
         /**
          * Prints the text in the GUI and additionaly as NORMAL.
          */
         IMPORTANT,
-
         /**
          * Writes the text to the error logilfe and if DEBUG_ENABLE is set it
          * will print the text additionaly via System.err.println()
@@ -130,7 +125,8 @@ public class IO
                 errorLogWriter = new java.io.PrintWriter(new java.io.File(
                         Constants.LOGGING_DIRECTORY + Constants.LOGGING_ERROR_FILENAME));
                 IO.println("IO.initLogs(): Logging started", MessageType.DEBUG);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 System.err.println("Failed to initialize logging: " + ex);
                 ex.printStackTrace();
@@ -155,7 +151,8 @@ public class IO
                 }
             }
             IO.println("Logs cleared", IO.MessageType.DEBUG);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             IO.println("failed to delete log files: " + ex, MessageType.ERROR);
             ex.printStackTrace();
@@ -324,7 +321,8 @@ public class IO
             currentLanguage = lang;
             IO.println("Language switched to " + currentLanguage.toString(), IO.MessageType.DEBUG);
             return true;
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             IO.println("failed to load Language: " + ex.toString(), IO.MessageType.ERROR);
             IO.printException(ex);
@@ -355,7 +353,8 @@ public class IO
             writer.close();
             IO.println("saved language file " + filename, IO.MessageType.DEBUG);
             return true;
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             IO.println("failed to save Language: " + ex.toString(), IO.MessageType.ERROR);
             IO.printException(ex);

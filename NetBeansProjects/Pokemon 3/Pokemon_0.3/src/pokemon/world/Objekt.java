@@ -27,50 +27,51 @@ import utils.Dictionary;
  *
  * @author Dominik Messerschmidt <dominik_messerschmidt@yahoo.de>
  */
-public class Objekt extends utils.SerializableReflectObject {
+public class Objekt extends utils.SerializableReflectObject
+{
 
     /**
-     *
+     * Default flowers deco object
      */
     public static final Objekt BLUMEN = new Objekt(ImageFile.BLUMEN, true);
 
     /**
-     *
+     * Default floor
      */
     public static final Objekt BODEN = new Objekt(ImageFile.BODEN, true);
 
     /**
-     *
+     * Default gras
      */
     public static final Gras GRAS = new Gras();
 
     /**
-     *
+     * Default stone (without item)
      */
     public static final Stone STEIN = new Stone(ImageFile.STEIN);
 
     /**
-     *
+     * Default stone (without item) in different color
      */
     public static final Stone STEIN2 = new Stone(ImageFile.STEIN2);
 
     /**
-     *
+     * Default street ground
      */
     public static final Objekt WEG = new Objekt(ImageFile.WEG, true);
 
     /**
-     *
+     * Default greenish ground
      */
     public static final Objekt WIESE = new Objekt(ImageFile.WIESE, true);
 
     /**
-     *
+     * Default fence
      */
     public static final Objekt ZAUN = new Objekt(ImageFile.ZAUN, false);
 
     /**
-     *
+     * Simply black ground
      */
     public static final Objekt SCHWARZ = new Objekt(null, false);
 
@@ -78,24 +79,29 @@ public class Objekt extends utils.SerializableReflectObject {
     private boolean passable;
 
     /**
+     * Constructor for Objekts.
      *
-     * @param image
-     * @param passable
+     * @param image ImageFile reference for drawing.
+     * @param passable determines whether player can walk on or not
      */
-    public Objekt(ImageFile image, boolean passable) {
+    public Objekt(ImageFile image, boolean passable)
+    {
         setImageFile(image);
         this.passable = passable;
     }
 
     /**
+     * Sets passable field
      *
-     * @param passable
+     * @param passable determines whether player shall be able to walk on or not
      */
-    public void setPassable(boolean passable) {
+    public void setPassable(boolean passable)
+    {
         this.passable = passable;
     }
 
-    public boolean isPassable() {
+    public boolean isPassable()
+    {
         return passable;
     }
 
@@ -103,7 +109,8 @@ public class Objekt extends utils.SerializableReflectObject {
      *
      * @return
      */
-    public ImageFile getImageFile() {
+    public ImageFile getImageFile()
+    {
         return imgFile;
     }
 
@@ -111,36 +118,44 @@ public class Objekt extends utils.SerializableReflectObject {
      *
      * @param image
      */
-    public final void setImageFile(ImageFile image) {
+    public final void setImageFile(ImageFile image)
+    {
         imgFile = image;
     }
 
     /**
      *
      */
-    public void init() {
+    public void init()
+    {
 
     }
 
     /**
      *
      */
-    public void betreten() {
+    public void betreten()
+    {
 
     }
 
     /**
      *
      */
-    public void benutzt() {
+    public void benutzt()
+    {
 
     }
 
     @Override
-    public String toString() {
-        if (imgFile != null) {
+    public String toString()
+    {
+        if (imgFile != null)
+        {
             return imgFile.name();
-        } else {
+        }
+        else
+        {
             return super.toString();
         }
     }
@@ -150,16 +165,24 @@ public class Objekt extends utils.SerializableReflectObject {
      * @return
      */
     @Override
-    public Dictionary<String, Object> getAttributes() {
+    public Dictionary<String, Object> getAttributes()
+    {
         Dictionary<String, Object> values = new Dictionary<>();
-        for (Field f : Objekt.class.getDeclaredFields()) {
-            try {
-                if (!Modifier.isStatic(f.getModifiers())) {
+        for (Field f : Objekt.class.getDeclaredFields())
+        {
+            try
+            {
+                if (!Modifier.isStatic(f.getModifiers()))
+                {
                     values.add(f.getName(), f.get(this));
                 }
-            } catch (IllegalArgumentException ex) {
+            }
+            catch (IllegalArgumentException ex)
+            {
                 Logger.getLogger(Objekt.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
+            }
+            catch (IllegalAccessException ex)
+            {
                 Logger.getLogger(Objekt.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

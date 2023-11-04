@@ -17,28 +17,33 @@
  */
 package actors;
 
-import utils.Constants;
-import utils.Constants.Team;
+import main.SpaceInvader;
+import platform.gamegrid.Actor;
 
 /**
  *
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 27.03.2016
  */
-public class Explosion extends Actor {
+public class Explosion extends Actor
+{
 
     private int lifetime = 10;
 
-    public Explosion(int x, int y) {
-        super(Team.PASSIV, Constants.IMAGENAME_EXPLOSION);
+    public Explosion(int x, int y)
+    {
+        super(ShipFactory.IMAGENAME_EXPLOSION);
         setX(x);
         setY(y);
+        setTeam(SpaceInvader.Team.PASSIV.ordinal());
     }
 
     @Override
-    public void act() {
+    public void act()
+    {
         lifetime--;
-        if (lifetime <= 0) {
+        if (lifetime <= 0)
+        {
             invalidate();
         }
     }

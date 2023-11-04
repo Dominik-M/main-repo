@@ -96,25 +96,18 @@ public class Utilities
      */
     public static int invertDirection(int direction)
     {
-        if (direction == Constants.DIRECTION_UP)
+        switch (direction)
         {
-            return Constants.DIRECTION_DOWN;
-        }
-        else if (direction == Constants.DIRECTION_RIGHT)
-        {
-            return Constants.DIRECTION_LEFT;
-        }
-        else if (direction == Constants.DIRECTION_LEFT)
-        {
-            return Constants.DIRECTION_RIGHT;
-        }
-        else if (direction == Constants.DIRECTION_DOWN)
-        {
-            return Constants.DIRECTION_UP;
-        }
-        else
-        {
-            return Constants.DIRECTION_INVALID;
+            case Constants.DIRECTION_UP:
+                return Constants.DIRECTION_DOWN;
+            case Constants.DIRECTION_RIGHT:
+                return Constants.DIRECTION_LEFT;
+            case Constants.DIRECTION_LEFT:
+                return Constants.DIRECTION_RIGHT;
+            case Constants.DIRECTION_DOWN:
+                return Constants.DIRECTION_UP;
+            default:
+                return Constants.DIRECTION_INVALID;
         }
     }
 

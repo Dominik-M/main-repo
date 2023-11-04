@@ -19,7 +19,7 @@ package armory;
 
 import actors.Projectile;
 import java.util.List;
-import utils.Constants;
+import main.SpaceInvader;
 
 /**
  *
@@ -34,9 +34,14 @@ public class SalvoGun extends Gun {
     private int salvos;
 
     SalvoGun(String name, int damage, int projectileSpeed, int firerate, int salvos, double heatrate) {
-        super(name, damage, projectileSpeed, firerate, Constants.DEFAULT_RANGE_MEDIUM);
+        this(name, damage, projectileSpeed, firerate, salvos, heatrate, 0);
+    }
+
+    SalvoGun(String name, int damage, int projectileSpeed, int firerate, int salvos,
+            double heatrate, int spreadAngle) {
+        super(name, damage, projectileSpeed, firerate, GunFactory.DEFAULT_RANGE_MEDIUM, spreadAngle);
         heat = 0;
-        maxHeat = Constants.DELTA_T * salvos * 1000 / firerate;
+        maxHeat = SpaceInvader.DELTA_T * 1000 * salvos / firerate;
         this.heatrate = heatrate;
         this.salvos = salvos;
     }
@@ -74,7 +79,7 @@ public class SalvoGun extends Gun {
     @Override
     public void setFirerate(int firerate) {
         super.setFirerate(firerate);
-        maxHeat = Constants.DELTA_T * salvos * 1000 / firerate;
+        maxHeat = SpaceInvader.DELTA_T * 1000 * salvos / firerate;
     }
 
     public int getSalvos() {
@@ -86,7 +91,7 @@ public class SalvoGun extends Gun {
             throw new java.lang.IllegalArgumentException("Salvo count must be greater than 0");
         }
         this.salvos = salvos;
-        maxHeat = Constants.DELTA_T * salvos * 1000 / getFirerate();
+        maxHeat = SpaceInvader.DELTA_T * salvos * 1000 / getFirerate();
     }
 
     @Override

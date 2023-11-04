@@ -46,7 +46,8 @@ import platform.utils.Settings;
  *
  */
 public class MainFrame extends JFrame implements java.awt.event.WindowListener,
-        java.awt.event.ComponentListener, platform.utils.SettingsListener {
+        java.awt.event.ComponentListener, platform.utils.SettingsListener
+{
 
     public static final MainFrame FRAME = new MainFrame();
     private static final long serialVersionUID = -3096857025952504353L;
@@ -67,12 +68,16 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
     private JMenu menuLanguage;
     private JRadioButtonMenuItem[] languageMenuItems;
     private ButtonGroup langBtnGrp;
-    private final java.awt.event.ActionListener langBtnListener = new java.awt.event.ActionListener() {
+    private final java.awt.event.ActionListener langBtnListener = new java.awt.event.ActionListener()
+    {
 
         @Override
-        public void actionPerformed(ActionEvent arg0) {
-            for (int i = 0; i < languageMenuItems.length; i++) {
-                if (languageMenuItems[i].equals(arg0.getSource())) {
+        public void actionPerformed(ActionEvent arg0)
+        {
+            for (int i = 0; i < languageMenuItems.length; i++)
+            {
+                if (languageMenuItems[i].equals(arg0.getSource()))
+                {
                     IO.loadLanguageFile(IO.Language.values()[i]);
                     setSettingIgnoreCallback("preferredLanguage", IO.getCurrentLanguage());
                     break;
@@ -81,16 +86,21 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
         }
     };
 
-    private MainFrame() {
+    private MainFrame()
+    {
         super(IO.translate("APP_NAME"));
-        try {
+        try
+        {
             init();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             IO.printException(ex);
         }
     }
 
-    private void init() {
+    private void init()
+    {
         console = new ConsolePanel();
         this.setLayout(new java.awt.BorderLayout());
         this.getContentPane().add(console, BorderLayout.WEST);
@@ -102,28 +112,34 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
         this.menuBar = new JMenuBar();
         this.menuSystem = new JMenu("System");
         this.resetMenuItem = new JMenuItem("Reset");
-        this.resetMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        this.resetMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 Interface.reset();
             }
         });
         this.menuSystem.add(this.resetMenuItem);
         this.clearLogsMenuItem = new JMenuItem("Clear Logs");
-        this.clearLogsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        this.clearLogsMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 IO.clearLogs();
             }
         });
         this.menuSystem.add(this.clearLogsMenuItem);
         showConsoleMenuItem = new JMenuItem("Show Console");
-        this.showConsoleMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        this.showConsoleMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 setConsoleEnabled(true);
             }
         });
@@ -135,9 +151,11 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
         IO.Language[] langs = IO.Language.values();
         this.languageMenuItems = new JRadioButtonMenuItem[langs.length];
         this.langBtnGrp = new ButtonGroup();
-        for (int i = 0; i < langs.length; i++) {
+        for (int i = 0; i < langs.length; i++)
+        {
             this.languageMenuItems[i] = new JRadioButtonMenuItem(langs[i].toString());
-            if (langs[i] == IO.getCurrentLanguage()) {
+            if (langs[i] == IO.getCurrentLanguage())
+            {
                 this.languageMenuItems[i].setSelected(true);
             }
             this.languageMenuItems[i].addActionListener(langBtnListener);
@@ -148,14 +166,19 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
 
         this.loggingEnCheckBox = new JCheckBoxMenuItem("Logging",
                 (Boolean) Settings.get("loggingEnabled"));
-        this.loggingEnCheckBox.addActionListener(new java.awt.event.ActionListener() {
+        this.loggingEnCheckBox.addActionListener(new java.awt.event.ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 setSettingIgnoreCallback("loggingEnabled", loggingEnCheckBox.getState());
-                if (!(Boolean) Settings.get("loggingEnabled")) {
+                if (!(Boolean) Settings.get("loggingEnabled"))
+                {
                     IO.closeLogs();
-                } else {
+                }
+                else
+                {
                     IO.initLogs();
                 }
             }
@@ -163,38 +186,46 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
         this.menuOptions.add(this.loggingEnCheckBox);
         this.soundOnCheckBox = new JCheckBoxMenuItem("Sound",
                 (Boolean) Settings.get("soundOn"));
-        this.soundOnCheckBox.addActionListener(new java.awt.event.ActionListener() {
+        this.soundOnCheckBox.addActionListener(new java.awt.event.ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 Sound.setSoundOn(soundOnCheckBox.getState());
             }
         });
         this.menuOptions.add(this.soundOnCheckBox);
         this.confirmExitCheckBox = new JCheckBoxMenuItem("Confirm Exit",
                 (Boolean) Settings.get("showCloseWarning"));
-        this.confirmExitCheckBox.addActionListener(new java.awt.event.ActionListener() {
+        this.confirmExitCheckBox.addActionListener(new java.awt.event.ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 setSettingIgnoreCallback("showCloseWarning", confirmExitCheckBox.getState());
             }
         });
         this.menuOptions.add(this.confirmExitCheckBox);
         inputconfigMenuItem = new JMenuItem("Input Config");
-        inputconfigMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        inputconfigMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 InputConfig.showInputConfigDialog(FRAME);
             }
         });
         menuOptions.add(inputconfigMenuItem);
         this.settingsBtn = new JMenuItem("Settings...");
-        this.settingsBtn.addActionListener(new java.awt.event.ActionListener() {
+        this.settingsBtn.addActionListener(new java.awt.event.ActionListener()
+        {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent arg0)
+            {
                 new SettingsDialog().setVisible(true);
             }
         });
@@ -207,14 +238,17 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
         paintLabels();
     }
 
-    public MainPanel setMainPanel(MainPanel p) {
+    public MainPanel setMainPanel(MainPanel p)
+    {
         MainPanel old = mainPanel;
-        if (mainPanel != null) {
+        if (mainPanel != null)
+        {
             mainPanel.onDisselect();
             this.getContentPane().remove(mainPanel);
         }
         mainPanel = p;
-        if (mainPanel != null) {
+        if (mainPanel != null)
+        {
             this.getContentPane().add(mainPanel, BorderLayout.CENTER);
             mainPanel.onSelect();
         }
@@ -223,59 +257,77 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
         return old;
     }
 
-    public MainPanel getMainPanel() {
+    public MainPanel getMainPanel()
+    {
         return mainPanel;
     }
 
-    public void println(String text) {
+    public void println(String text)
+    {
         mainPanel.addToPrintQueue(text);
     }
 
-    public static void setNimbusLookAndFeel() {
+    public static void setNimbusLookAndFeel()
+    {
         /* Set the Nimbus look and feel */
-        /*
+ /*
          * If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel. For details see
          * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
-        try {
+        try
+        {
             for (UIManager.LookAndFeelInfo info : UIManager
-                    .getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                    .getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        }
+        catch (ClassNotFoundException ex)
+        {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(
                     java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        }
+        catch (InstantiationException ex)
+        {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(
                     java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        }
+        catch (IllegalAccessException ex)
+        {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(
                     java.util.logging.Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
+        }
+        catch (UnsupportedLookAndFeelException ex)
+        {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(
                     java.util.logging.Level.SEVERE, null, ex);
         }
     }
 
-    public void writeToConsole(String text) {
+    public void writeToConsole(String text)
+    {
         console.append(text);
     }
 
-    public void setConsoleEnabled(boolean enabled) {
+    public void setConsoleEnabled(boolean enabled)
+    {
         console.setVisible(enabled);
         setSettingIgnoreCallback("showConsole", enabled);
     }
 
-    public void setSettingIgnoreCallback(String key, Object value) {
+    public void setSettingIgnoreCallback(String key, Object value)
+    {
         Settings.removeListener(this);
         Settings.set(key, value);
         Settings.addListener(this);
     }
 
-    public void paintLabels() {
+    public void paintLabels()
+    {
         menuSystem.setText(IO.translate("SYSTEM"));
         resetMenuItem.setText(IO.translate("RESET"));
         clearLogsMenuItem.setText(IO.translate("CLEAR_LOGS"));
@@ -289,80 +341,98 @@ public class MainFrame extends JFrame implements java.awt.event.WindowListener,
         menuLanguage.setText(IO.translate("LANGUAGE"));
     }
 
-    public JMenu getSystemMenu() {
+    public JMenu getSystemMenu()
+    {
         return menuSystem;
     }
 
-    public JMenu getOptionsMenu() {
+    public JMenu getOptionsMenu()
+    {
         return menuOptions;
     }
 
     @Override
-    public Dimension getPreferredSize() {
+    public Dimension getPreferredSize()
+    {
         return (Dimension) Settings.get("preferredSize");
     }
 
     @Override
-    public void windowActivated(WindowEvent arg0) {
+    public void windowActivated(WindowEvent arg0)
+    {
     }
 
     @Override
-    public void windowClosed(WindowEvent arg0) {
+    public void windowClosed(WindowEvent arg0)
+    {
         Interface.shutdown();
     }
 
     @Override
-    public void windowClosing(WindowEvent arg0) {
+    public void windowClosing(WindowEvent arg0)
+    {
         int result = JOptionPane.YES_OPTION;
-        if ((Boolean) Settings.get("showCloseWarning")) {
+        if ((Boolean) Settings.get("showCloseWarning"))
+        {
             result = JOptionPane.showConfirmDialog(this, IO.translate("EXIT_QUESTION"),
                     IO.translate("CONFIRM_EXIT"), JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
         }
-        if (result == JOptionPane.YES_OPTION) {
+        if (result == JOptionPane.YES_OPTION)
+        {
             dispose();
         }
     }
 
     @Override
-    public void windowDeactivated(WindowEvent arg0) {
+    public void windowDeactivated(WindowEvent arg0)
+    {
     }
 
     @Override
-    public void windowDeiconified(WindowEvent arg0) {
+    public void windowDeiconified(WindowEvent arg0)
+    {
     }
 
     @Override
-    public void windowIconified(WindowEvent arg0) {
+    public void windowIconified(WindowEvent arg0)
+    {
     }
 
     @Override
-    public void windowOpened(WindowEvent arg0) {
+    public void windowOpened(WindowEvent arg0)
+    {
     }
 
     @Override
-    public void componentHidden(ComponentEvent arg0) {
+    public void componentHidden(ComponentEvent arg0)
+    {
     }
 
     @Override
-    public void componentMoved(ComponentEvent arg0) {
+    public void componentMoved(ComponentEvent arg0)
+    {
         setSettingIgnoreCallback("preferredWindowPosition", this.getLocation());
         // IO.println("Frame moved to Position: " + this.getLocation(), IO.MessageType.DEBUG);
     }
 
     @Override
-    public void componentResized(ComponentEvent arg0) {
+    public void componentResized(ComponentEvent arg0)
+    {
         setSettingIgnoreCallback("preferredSize", this.getSize());
         // IO.println("Frame resized: " + this.getSize(), IO.MessageType.DEBUG);
     }
 
     @Override
-    public void componentShown(ComponentEvent arg0) {
+    public void componentShown(ComponentEvent arg0)
+    {
     }
 
     @Override
-    public void preferenceChanged(String key, Object value) {
-        switch (key) {
+    public void preferenceChanged(String key, Object value)
+    {
+        switch (key)
+        {
             case "preferredLanguage":
                 paintLabels();
                 break;

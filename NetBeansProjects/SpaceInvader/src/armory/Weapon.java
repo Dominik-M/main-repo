@@ -17,43 +17,59 @@
  */
 package armory;
 
-import actors.Actor;
 import actors.Projectile;
 import java.util.List;
-import utils.Constants;
+import main.SpaceInvader;
+import platform.gamegrid.Actor;
+import platform.image.ImageIO;
+import platform.utils.IO;
+import platform.utils.SerializableReflectObject;
 
 /**
  *
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 28.03.2016
  */
-public abstract class Weapon implements java.io.Serializable {
+public abstract class Weapon extends SerializableReflectObject {
 
     public Actor owner;
     public final int projectileSpeed;
-    protected int cooldown = 0;
+    protected double cooldown = 0;
     private int damage;
     private int range;
+    private int spreadAngle;
     private final String name;
+    private String projectileImage;
 
-    public Weapon(String name, int damage, int projectileSpeed, int range) {
+    Weapon(String name, int damage, int projectileSpeed, int range) {
+        this(name, damage, projectileSpeed, range, 0, GunFactory.IMAGENAME_BOMB);
+    }
+
+    Weapon(String name, int damage, int projectileSpeed, int range, int spread) {
+        this(name, damage, projectileSpeed, range, spread, GunFactory.IMAGENAME_BOMB);
+    }
+
+    Weapon(String name, int damage, int projectileSpeed, int range, int spread,
+            String projectileImage) {
         this.projectileSpeed = projectileSpeed;
         this.damage = damage;
         this.range = range;
         this.name = name;
+        this.spreadAngle = spread;
+        this.projectileImage = projectileImage;
     }
 
     public abstract List<Projectile> shoot(int x, int y, double direction);
 
     public void refresh() {
-        cooldown -= Constants.DELTA_T;
+        cooldown -= SpaceInvader.DELTA_T;
         if (cooldown < 0) {
             cooldown = 0;
         }
     }
 
     public int getCooldown() {
-        return cooldown;
+        return (int) cooldown;
     }
 
     public int getDamage() {
@@ -62,6 +78,7 @@ public abstract class Weapon implements java.io.Serializable {
 
     public void setDamage(int damage) {
         this.damage = damage;
+        IO.println(this.toString() + ".setDamage(): Damage set to " + damage, IO.MessageType.DEBUG);
     }
 
     public int getRange() {
@@ -70,6 +87,38 @@ public abstract class Weapon implements java.io.Serializable {
 
     public void setRange(int range) {
         this.range = range;
+        IO.println(this.toString() + ".setRange(): Range set to " + range, IO.MessageType.DEBUG);
+    }
+
+    public int getSpreadAngle() {
+        return spreadAngle;
+    }
+
+    public void setSpreadAngle(int angle) {
+        while (angle > 360) {
+            angle -= 360;
+        }
+        while (angle < 0) {
+            angle += 360;
+        }
+        spreadAngle = angle;
+        IO.println(this.toString() + ".setSpreadAngle(): Angle set to " + angle,
+                IO.MessageType.DEBUG);
+    }
+
+    public String getProjectileImage() {
+        return projectileImage;
+    }
+
+    public void setProjectileImage(String projectileImage) {
+        if (ImageIO.containsSprite(projectileImage)) {
+            this.projectileImage = projectileImage;
+            IO.println(this.toString() + ".setProjectileImage(): Image set to " + projectileImage,
+                    IO.MessageType.DEBUG);
+        } else {
+            IO.println(this.toString() + ".setProjectileImage(): Image cannot set to " + projectileImage + " due to it is not initialized",
+                    IO.MessageType.ERROR);
+        }
     }
 
     @Override
@@ -78,7 +127,7 @@ public abstract class Weapon implements java.io.Serializable {
     }
 
     public String getDataString() {
-        return "Damage: " + this.damage + "\nRange: " + this.range + "\nProjectile Speed: "
-                + this.projectileSpeed;
+        return IO.translate("DAMAGE") + ": " + this.damage + "\n" + IO.translate("RANGE") + ": "
+                + this.range + "\n" + IO.translate("PROJECTILESPEED") + ": " + this.projectileSpeed;
     }
 }

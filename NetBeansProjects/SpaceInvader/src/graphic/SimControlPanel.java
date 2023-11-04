@@ -20,9 +20,10 @@ package graphic;
 import actors.Carrier;
 import actors.Fighter;
 import actors.Ship;
-import ais.AI;
+import actors.ShipFactory;
+import ais.BaseAI;
 import ais.WingmanAI;
-import armory.Factory;
+import armory.GunFactory;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,9 +33,9 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import utils.Constants;
-import utils.Constants.Team;
-import utils.Settings;
+import main.SpaceInvader;
+import main.SpaceInvader.Team;
+import platform.utils.Settings;
 
 /**
  *
@@ -83,13 +84,13 @@ public class SimControlPanel extends JPanel implements ActionListener, ChangeLis
         fpsSlider.setMinimum(10);
         fpsSlider.setMaximum(100);
         fpsSlider.setMajorTickSpacing(20);
-        fpsSlider.setValue(Settings.getSettings().fps);
+        fpsSlider.setValue((int) Settings.get("fps"));
         fpsSlider.setMinorTickSpacing(10);
         fpsSlider.addChangeListener(this);
         fpsSlider.setFocusable(false);
         kiCBox = new JComboBox<String>();
         kiCBox.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[]{"Player",
-            AI.AI_DUMMYFIGHTER.toString(), AI.AI_HUNTER.toString()}));
+            BaseAI.AI_DUMMYFIGHTER.toString(), BaseAI.AI_HUNTER.toString()}));
         kiCBox.addActionListener(this);
         kiCBox.setFocusable(false);
         addWingmanBtn = new JButton("Add Wingman");
@@ -102,28 +103,27 @@ public class SimControlPanel extends JPanel implements ActionListener, ChangeLis
         this.add(stepBtn);
         this.add(startstopBtn);
         this.add(fpsSlider);
-        if (Constants.DEBUG_ENABLE) {
-            this.add(addWingmanBtn);
-            this.add(addFighterFleetBtn);
-            this.add(addFleetBtn);
-        }
+        this.add(addWingmanBtn);
+        this.add(addFighterFleetBtn);
+        this.add(addFleetBtn);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(startstopBtn)) {
-            GameGrid.getInstance().setPaused(!GameGrid.getInstance().isPaused());
-            if (GameGrid.getInstance().isPaused()) {
+            GamePanel.INSTANCE.setRunning(!GamePanel.INSTANCE.isRunning());
+            if (!GamePanel.INSTANCE.isRunning()) {
                 startstopBtn.setText("Start");
             } else {
                 startstopBtn.setText("Stop");
             }
         } else if (e.getSource().equals(stepBtn)) {
-            GameGrid.getInstance().doStep();
+            GamePanel.INSTANCE.act();
+            GamePanel.INSTANCE.repaint();
         } else if (e.getSource().equals(fleetCommandBtn)) {
-            GameGrid.getInstance().toggleFleetCommand();
+            SpaceInvader.getInstance().toggleFleetCommand();
         } else if (e.getSource().equals(switchMShipBtn)) {
-            GameGrid.getInstance().switchMShip();
+            SpaceInvader.getInstance().switchMShip();
         } else if (e.getSource().equals(addFleetBtn)) {
             addHunterFleet();
         } else if (e.getSource().equals(addFighterFleetBtn)) {
@@ -133,13 +133,13 @@ public class SimControlPanel extends JPanel implements ActionListener, ChangeLis
         } else if (e.getSource().equals(kiCBox)) {
             switch (kiCBox.getSelectedIndex()) {
                 case 1:
-                    GameGrid.getInstance().getMShip().setAI(AI.AI_DUMMYFIGHTER);
+                    SpaceInvader.getInstance().getMShip().setAI(BaseAI.AI_DUMMYFIGHTER);
                     break;
                 case 2:
-                    GameGrid.getInstance().getMShip().setAI(AI.AI_HUNTER);
+                    SpaceInvader.getInstance().getMShip().setAI(BaseAI.AI_HUNTER);
                     break;
                 default:
-                    GameGrid.getInstance().getMShip().setAI(null);
+                    SpaceInvader.getInstance().getMShip().setAI(null);
                     break;
             }
         }
@@ -147,77 +147,77 @@ public class SimControlPanel extends JPanel implements ActionListener, ChangeLis
 
     @Override
     public void stateChanged(ChangeEvent arg0) {
-        GameGrid.getInstance().setFps(fpsSlider.getValue());
+        Settings.set("fps", (fpsSlider.getValue()));
     }
 
     public static void addFighter() {
         int x = randomX();
         int y = randomY();
-        Fighter fighter = Factory.createSmallWingman(x, y, GameGrid.getInstance().getMShip(),
-                Factory.getGun());
-        GameGrid.getInstance().addActor(fighter);
-        GameGrid.getInstance().addToFleet((WingmanAI) fighter.getAI());
+        Fighter fighter = ShipFactory.createWingman(x, y, ShipFactory.DEFAULT_HP_VERYLOW, SpaceInvader.getInstance()
+                .getMShip(), GunFactory.getGun(), ShipFactory.IMAGENAME_FIGHTER);
+        SpaceInvader.getInstance().addActor(fighter);
+        SpaceInvader.getInstance().addToFleet((WingmanAI) fighter.getAI());
     }
 
     public static void addFighterFleet() {
         int x = randomX();
         int y = randomY();
-        Ship leader = new Fighter(x, y, Team.EARTH, 10, 250, 400, 180, Factory.getSalvoGun(),
-                Constants.IMAGENAME_FIGHTER);
+        Ship leader = ShipFactory.createFighter(x, y, Team.EARTH, ShipFactory.DEFAULT_HP_LOW, GunFactory.getSalvoGun());
         leader.setAI(new ais.HunterAI());
-        Ship[] wingmen = Factory.createFighterFleet(leader, Constants.DEFAULT_FLEET_SIZE);
-        GameGrid.getInstance().addActor(leader);
+        Ship[] wingmen = ShipFactory.createFleet(leader, ShipFactory.DEFAULT_FLEET_SIZE);
+        SpaceInvader.getInstance().addActor(leader);
         for (Ship wingman : wingmen) {
-            GameGrid.getInstance().addActor(wingman);
+            SpaceInvader.getInstance().addActor(wingman);
         }
     }
 
     public static void addWingman() {
         int x = randomX();
         int y = randomY();
-        Ship wingman = Factory.createWingman(x, y, GameGrid.getInstance().getMShip(),
-                Factory.getSalvoGun());
-        GameGrid.getInstance().addActor(wingman);
-        GameGrid.getInstance().addToFleet((WingmanAI) wingman.getAI());
+        Ship wingman = ShipFactory.createWingman(x, y, ShipFactory.DEFAULT_HP_LOW, SpaceInvader.getInstance().getMShip(),
+                GunFactory.getSalvoGun(), ShipFactory.IMAGENAME_SPACESHIP);
+        SpaceInvader.getInstance().addActor(wingman);
+        SpaceInvader.getInstance().addToFleet((WingmanAI) wingman.getAI());
     }
 
     public static void addHunterFleet() {
         int x = randomX();
         int y = randomY();
-        Ship leader = Factory.createHunter(x, y, GameGrid.getInstance().getMShip().team,
-                Factory.getRapidGun());
-        Ship[] wingmen = Factory.createFleet(leader, Constants.DEFAULT_FLEET_SIZE);
-        GameGrid.getInstance().addActor(leader);
+        Ship leader = ShipFactory.createFighter(x, y, Team.EARTH, ShipFactory.DEFAULT_HP_MED, ShipFactory.DEFAULT_MASS_LOW, ShipFactory.DEFAULT_SPEED_MED, ShipFactory.DEFAULT_POWER_MED, ShipFactory.DEFAULT_ROT_SPEED, GunFactory.getRapidGun(), ShipFactory.IMAGENAME_HUNTER_M);
+        Ship[] wingmen = ShipFactory.createFleet(leader, ShipFactory.DEFAULT_FLEET_SIZE);
+        SpaceInvader.getInstance().addActor(leader);
         for (Ship wingman : wingmen) {
-            GameGrid.getInstance().addActor(wingman);
+            SpaceInvader.getInstance().addActor(wingman);
         }
     }
 
     public static void addCruiser() {
         int x = randomX();
         int y = randomY();
-        GameGrid.getInstance().addActor(
-                Factory.createCruiser(x, y, GameGrid.getInstance().getMShip().team, Factory.getSalvoGun(),
-                        Factory.getSalvoGun(), Factory.getRapidGun()));
+        SpaceInvader.getInstance().addActor(
+                ShipFactory.createCruiser(x, y, SpaceInvader.Team.values()[SpaceInvader.getInstance()
+                        .getMShip().getTeam()], GunFactory.getSalvoGun(), GunFactory.getSalvoGun(),
+                        GunFactory.getRapidGun()));
     }
 
     public static void addCarrier() {
         int x = randomX();
         int y = randomY();
-        Carrier carrier = Factory.createCarrier(x, y, GameGrid.getInstance().getMShip().team, 2000,
-                20, 10, Factory.getRapidGun(), Factory.get3BurstGun(), Factory.get5BurstGun(),
-                Factory.get8BurstGun());
+        Carrier carrier = ShipFactory.createCarrier(x, y,
+                SpaceInvader.Team.get(SpaceInvader.getInstance().getMShip().getTeam()), 2000, 20, 10,
+                GunFactory.getRapidGun(), GunFactory.get3BurstGun(), GunFactory.get5BurstGun(),
+                GunFactory.get8BurstGun());
         carrier.setProduceFleets(true);
-        GameGrid.getInstance().addActor(carrier);
+        SpaceInvader.getInstance().addActor(carrier);
     }
 
     public static int randomX() {
-        if (GameGrid.getInstance().getMap() != null) {
-            if (GameGrid.getInstance().getMap().LANDING_ZONE != null) {
-                return (int) (GameGrid.getInstance().getMap().LANDING_ZONE.getCenterX() + (Math.random() - 0.5)
-                        * GameGrid.getInstance().getMap().LANDING_ZONE.width / 2);
+        if (SpaceInvader.getInstance().getMap() != null) {
+            if (SpaceInvader.getInstance().getMap().LANDING_ZONE != null) {
+                return (int) (SpaceInvader.getInstance().getMap().LANDING_ZONE.getCenterX() + (Math
+                        .random() - 0.5) * SpaceInvader.getInstance().getMap().LANDING_ZONE.width / 2);
             } else {
-                return (int) (Math.random() * GameGrid.getInstance().getMap().WIDTH);
+                return (int) (Math.random() * SpaceInvader.getInstance().getMap().WIDTH);
             }
         } else {
             return 0;
@@ -225,12 +225,12 @@ public class SimControlPanel extends JPanel implements ActionListener, ChangeLis
     }
 
     public static int randomY() {
-        if (GameGrid.getInstance().getMap() != null) {
-            if (GameGrid.getInstance().getMap().LANDING_ZONE != null) {
-                return (int) (GameGrid.getInstance().getMap().LANDING_ZONE.getCenterY() + (Math.random() - 0.5)
-                        * GameGrid.getInstance().getMap().LANDING_ZONE.height / 2);
+        if (SpaceInvader.getInstance().getMap() != null) {
+            if (SpaceInvader.getInstance().getMap().LANDING_ZONE != null) {
+                return (int) (SpaceInvader.getInstance().getMap().LANDING_ZONE.getCenterY() + (Math
+                        .random() - 0.5) * SpaceInvader.getInstance().getMap().LANDING_ZONE.height / 2);
             } else {
-                return (int) (Math.random() * GameGrid.getInstance().getMap().HEIGHT);
+                return (int) (Math.random() * SpaceInvader.getInstance().getMap().HEIGHT);
             }
         } else {
             return 0;

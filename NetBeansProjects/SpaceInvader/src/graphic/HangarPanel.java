@@ -17,530 +17,663 @@
  */
 package graphic;
 
-import actors.Carrier;
-import actors.Cruiser;
-import actors.Fighter;
 import actors.Ship;
-import armory.Factory;
-import static armory.Factory.get3BurstGun;
-import static armory.Factory.get5BurstGun;
-import static armory.Factory.get8BurstGun;
-import static armory.Factory.getGun;
-import static armory.Factory.getRapidGun;
-import static armory.Factory.getSalvoGun;
-import armory.Weapon;
+import graphic.InventoryPanel.ItemBox;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridLayout;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.LinkedList;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import utils.Constants;
-import utils.IO;
-import utils.Settings;
-import utils.Text;
+import main.Item;
+import main.SpaceInvader;
+import platform.graphic.InputConfig;
+import platform.graphic.MainFrame;
+import platform.graphic.MainPanel;
+import platform.utils.IO;
+import platform.utils.Settings;
 
 /**
  *
  * @author Dominik Messerschmidt
- * <dominik.messerschmidt@continental-corporation.com> Created 26.03.2016
+ * <dominik.messerschmidt@continental-corporation.com> Created 08.02.2017
  */
-public class HangarPanel extends MainPanel implements ActionListener, ItemListener {
+public class HangarPanel extends MainPanel
+{
 
-    public static final Fighter fighterPrototyp = new Fighter(0, 0, Constants.Team.PASSIV, 6, 400, 2000, 180, getGun(), Constants.IMAGENAME_FIGHTER);
-    public static final Fighter wingmanPrototyp = new Fighter(0, 0, Constants.Team.PASSIV, 10, 400, 2000, 180, getSalvoGun(), Constants.IMAGENAME_SPACESHIP);
-    public static final Fighter fleetleaderPrototyp = new Fighter(0, 0, Constants.Team.PASSIV, 10, 250, 400, 180, Factory.getSalvoGun(), Constants.IMAGENAME_FIGHTER);
-    public static final Fighter hunterPrototyp = new Fighter(0, 0, Constants.Team.PASSIV, 10, 250, 400, 180, getRapidGun(), Constants.IMAGENAME_SPACESHIP);
-    public static final Cruiser cruiserPrototyp = Factory.createCruiser(0, 0, Constants.Team.PASSIV, getSalvoGun(), getSalvoGun(), getRapidGun());
-    public static final Carrier carrierPrototyp = Factory.createCarrier(0, 0, Constants.Team.PASSIV, 2000, 20, 10, getRapidGun(), get3BurstGun(), get5BurstGun(), get8BurstGun());
+    private final Ship mShip;
+    private int repairCost;
+    private final InventoryPanel loadedItems;
+    private final InventoryPanel storedItems;
+    private final InventoryPanel marketInventoryItems;
+    private final InventoryPanel marketItems;
+    private final JButton sellBtn;
+    private final ItemBox marketItem;
+    private final MouseListener updateOnClick = new MouseListener()
+    {
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+            updateLabels();
+        }
 
-    private static final long serialVersionUID = -3607005615642233606L;
-    private static final boolean[] bought = new boolean[]{true, false, false, false, false,
-        false, false, false};
-    private static int assignedWeapon = 0;
-    private JTabbedPane contentPane;
-    private JLabel scoreLabel;
-    private JButton liftoffBtn;
-    private JPanel shipdataGrid;
-    private JPanel fleetdataGrid;
-    private JLabel hpLabel;
-    private JButton hpBtn;
-    private JLabel classLabel;
-    private JButton shipBtn;
-    private JLabel speedLabel;
-    private JButton speedBtn;
-    private JLabel rotLabel;
-    private JButton rotBtn;
-    private JLabel accelLabel;
-    private JButton accelBtn;
-    private JComboBox<String> weaponCBox;
-    private JButton weaponBtn;
-    private JLabel[] weaponLabels;
-    private JButton[] weaponBtns;
-    private JLabel capacityLabel;
-    private JButton capacityBtn;
-    private JLabel prodRateLabel;
-    private JButton prodRateBtn;
-    private JLabel prodFleetsLabel;
-    private JButton prodFleetsBtn;
-    private JButton addTurretBtn;
-    private JButton addSmallWingmanBtn;
-    private JSpinner smallWingmanCount;
-    private JButton addWingmanBtn;
-    private JSpinner wingmanCount;
-    private JButton addFighterFleetBtn;
-    private JSpinner fighterFleetCount;
-    private JButton addHunterFleetBtn;
-    private JSpinner hunterCount;
-    private JButton addCruiserBtn;
-    private JSpinner cruiserCount;
-    private JButton addCarrierBtn;
-    private JSpinner carrierCount;
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+        }
 
-    private final Ship ship;
-    private int propertyCount;
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+        }
 
-    public HangarPanel(Ship mShip) {
-        ship = mShip;
-        init();
-    }
+        @Override
+        public void mouseEntered(MouseEvent e)
+        {
+        }
 
-    private void init() {
-        if (Fighter.class.isInstance(ship)) {
-            propertyCount = 6;
-        } else if (Cruiser.class.isInstance(ship)) {
-            if (Carrier.class.isInstance(ship)) {
-                propertyCount = 9 + ((Carrier) ship).getWeapons().size();
-            } else {
-                propertyCount = 6 + ((Cruiser) ship).getWeapons().size();
+        @Override
+        public void mouseExited(MouseEvent e)
+        {
+        }
+    };
+
+    /**
+     * Creates new form HangarPanel
+     *
+     * @param mShip selected ship to show in the hangar.
+     */
+    public HangarPanel(Ship mShip)
+    {
+        this.mShip = mShip;
+        setAutoScaled(false);
+        initComponents();
+
+        loadedItems = new InventoryPanel(10, 20, SpaceInvader.getInstance().getLoadedItems());
+        loadedItems.addMouseListener(updateOnClick);
+        JScrollPane scrollPane = new JScrollPane(loadedItems);
+        inventoryPanelLeft.setLayout(new BorderLayout());
+        inventoryPanelLeft.add(scrollPane, BorderLayout.CENTER);
+        JButton storeBtn = new JButton(IO.translate("StoreAll"));
+        storeBtn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                for (Item item : SpaceInvader.getInstance().getLoadedItems())
+                {
+                    SpaceInvader.getInstance().addStoredItem(item);
+                    SpaceInvader.getInstance().removeLoadedItem(item);
+                    updateLabels();
+                }
             }
-        } else {
-            propertyCount = 5;
-        }
-        liftoffBtn = new JButton(Text.LIFTOFF.toString());
-        shipdataGrid = new JPanel();
-        scoreLabel = new JLabel(Text.SCORE + ": " + GameGrid.getInstance().getScore() + " "
-                + Text.CURRENCY_PLURAL);
-        scoreLabel.setFont(Settings.getSettings().font);
-        hpLabel = new JLabel();
-        hpBtn = new JButton("+10 " + Text.HP);
-        hpBtn.addActionListener(this);
-        classLabel = new JLabel();
-        shipBtn = new JButton(Text.BUYSHIP.toString());
-        shipBtn.setEnabled(false);
-        shipBtn.addActionListener(this);
-        speedLabel = new JLabel();
-        speedBtn = new JButton("+" + Text.SPEED);
-        speedBtn.setEnabled(false);
-        speedBtn.addActionListener(this);
-        rotLabel = new JLabel();
-        rotBtn = new JButton("+" + Text.ROTSPEED);
-        rotBtn.setEnabled(false);
-        rotBtn.addActionListener(this);
-        accelLabel = new JLabel();
-        accelBtn = new JButton("+" + Text.ACCEL);
-        accelBtn.setEnabled(false);
-        accelBtn.addActionListener(this);
-        weaponBtn = new JButton();
-        weaponBtn.addActionListener(this);
-        addSmallWingmanBtn = new JButton(Text.BUY.toString());
-        addSmallWingmanBtn.setToolTipText(" " + Constants.PRIZE_FIGHTER + " "
-                + Text.CURRENCY_PLURAL);
-        // addSmallWingmanBtn.setEnabled(false);
-        addSmallWingmanBtn.addActionListener(this);
-        smallWingmanCount = new javax.swing.JSpinner(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
-        addWingmanBtn = new JButton(Text.BUY.toString());
-        addWingmanBtn.setToolTipText(" " + Constants.PRIZE_WINGMAN + " " + Text.CURRENCY_PLURAL);
-        // addWingmanBtn.setEnabled(false);
-        addWingmanBtn.addActionListener(this);
-        wingmanCount = new javax.swing.JSpinner(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
-        addFighterFleetBtn = new JButton(Text.BUY.toString());
-        addFighterFleetBtn.setToolTipText(" " + Constants.PRIZE_FIGHTER_SQUAD + " "
-                + Text.CURRENCY_PLURAL);
-        // addFighterFleetBtn.setEnabled(false);
-        addFighterFleetBtn.addActionListener(this);
-        fighterFleetCount = new javax.swing.JSpinner(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
-        addHunterFleetBtn = new JButton(Text.BUY.toString());
-        addHunterFleetBtn.setToolTipText(" " + Constants.PRIZE_HUNTER_SQUAD + " "
-                + Text.CURRENCY_PLURAL);
-        // addHunterFleetBtn.setEnabled(false);
-        addHunterFleetBtn.addActionListener(this);
-        hunterCount = new javax.swing.JSpinner(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
-        addCruiserBtn = new JButton(Text.BUY.toString());
-        addCruiserBtn.setToolTipText(" " + Constants.PRIZE_CRUISER + " " + Text.CURRENCY_PLURAL);
-        // addCruiserBtn.setEnabled(false);
-        addCruiserBtn.addActionListener(this);
-        cruiserCount = new javax.swing.JSpinner(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
-        addCarrierBtn = new JButton(Text.BUY.toString());
-        addCarrierBtn.setToolTipText(" " + Constants.PRIZE_CARRIER + " " + Text.CURRENCY_PLURAL);
-        // addCarrierBtn.setEnabled(false);
-        addCarrierBtn.addActionListener(this);
-        carrierCount = new javax.swing.JSpinner(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
-        liftoffBtn.setFont(new java.awt.Font("Consolas", 1, 24));
-        liftoffBtn.setBackground(Color.GREEN);
-        liftoffBtn.addActionListener(this);
-        contentPane = new JTabbedPane(2);
-        contentPane.add(createShipTab());
-        contentPane.setTitleAt(0, Text.SHIP.toString());
-        contentPane.add(getFleetTab());
-        contentPane.setTitleAt(1, Text.FLEET.toString());
-        this.setLayout(new BorderLayout());
-        this.add(contentPane, BorderLayout.CENTER);
-        this.add(liftoffBtn, BorderLayout.SOUTH);
-        this.add(scoreLabel, BorderLayout.NORTH);
-        paintLabels();
-    }
+        });
+        inventoryPanelLeft.add(storeBtn, BorderLayout.SOUTH);
+        inventoryPanelLeft.add(new JLabel("Loaded Items"), BorderLayout.NORTH);
 
-    private JPanel createShipTab() {
-        JPanel shipTab = new JPanel();
-        shipdataGrid.setLayout(new GridLayout(propertyCount, 3));
-        shipdataGrid.add(new JLabel(Text.CLASS + ":"));
-        shipdataGrid.add(classLabel);
-        shipdataGrid.add(shipBtn);
-        shipdataGrid.add(new JLabel(Text.HITPOINTS + ":"));
-        shipdataGrid.add(hpLabel);
-        shipdataGrid.add(hpBtn);
-        shipdataGrid.add(new JLabel(Text.SPEED + ":"));
-        shipdataGrid.add(speedLabel);
-        shipdataGrid.add(speedBtn);
-        shipdataGrid.add(new JLabel(Text.ACCEL + ":"));
-        shipdataGrid.add(accelLabel);
-        shipdataGrid.add(accelBtn);
-        shipdataGrid.add(new JLabel(Text.ROTSPEED + ":"));
-        shipdataGrid.add(rotLabel);
-        shipdataGrid.add(rotBtn);
-        if (Fighter.class.isInstance(ship)) {
-            weaponCBox = new JComboBox<String>(new DefaultComboBoxModel<>(
-                    Constants.WEAPONNAMES));
-            weaponCBox.setSelectedIndex(assignedWeapon);
-            weaponCBox.addItemListener(this);
-            shipdataGrid.add(new JLabel(Text.MAINWEAPON + ":"));
-            shipdataGrid.add(weaponCBox);
-            shipdataGrid.add(weaponBtn);
-            checkWeaponBtnStatus();
-        } else if (Cruiser.class.isInstance(ship)) {
-            List<Weapon> weapons = ((Cruiser) ship).getWeapons();
-            weaponLabels = new JLabel[weapons.size()];
-            weaponBtns = new JButton[weapons.size()];
-            for (int i = 0; i < weapons.size(); i++) {
-                weaponLabels[i] = new JLabel(weapons.get(i).toString());
-                weaponBtns[i] = new JButton(Text.SELL.toString());
-                weaponBtns[i].setEnabled(false);
-                shipdataGrid.add(new JLabel(Text.TURRET + " " + i));
-                shipdataGrid.add(weaponLabels[i]);
-                shipdataGrid.add(weaponBtns[i]);
+        storedItems = new InventoryPanel(10, 20, SpaceInvader.getInstance().getStoredItems());
+        storedItems.addMouseListener(updateOnClick);
+        JScrollPane scrollPane2 = new JScrollPane(storedItems);
+        inventoryPanelRight.setLayout(new BorderLayout());
+        inventoryPanelRight.add(scrollPane2, BorderLayout.CENTER);
+        inventoryPanelRight.add(new JLabel("Stored Items"), BorderLayout.NORTH);
+
+        marketInventoryItems = new InventoryPanel(10, 20, SpaceInvader.getInstance().getStoredItems());
+        marketInventoryItems.addMouseListener(updateOnClick);
+        scrollPane2 = new JScrollPane(marketInventoryItems);
+        marketInventoryPanel.setLayout(new BorderLayout());
+        marketInventoryPanel.add(scrollPane2, BorderLayout.CENTER);
+        marketInventoryPanel.add(new JLabel("Stored Items"), BorderLayout.NORTH);
+        sellBtn = new JButton(IO.translate("SELL"));
+        sellBtn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                LinkedList<Item> selectedItems = marketInventoryItems.getSelectedItems();
+                int value = 0;
+                for (Item item : selectedItems)
+                {
+                    SpaceInvader.getInstance().removeStoredItem(item);
+                    value += item.getValue();
+                }
+                SpaceInvader.getInstance().addScore(value);
+                marketInventoryItems.clearSelection();
+                updateLabels();
             }
-            if (Carrier.class.isInstance(ship)) {
-                Carrier c = (Carrier) ship;
-                capacityLabel = new JLabel(c.getCapacity() + "");
-                capacityBtn = new JButton("+" + 1);
-                capacityBtn.setEnabled(false);
-                prodRateLabel = new JLabel(c.getProductionRate() + "");
-                prodRateBtn = new JButton("+" + 1);
-                prodRateBtn.setEnabled(false);
-                prodFleetsLabel = new JLabel();
-                prodFleetsBtn = new JButton("Toggle");
-                prodFleetsBtn.setEnabled(false);
-                shipdataGrid.add(new JLabel(Text.CAPACITY.toString()));
-                shipdataGrid.add(capacityLabel);
-                shipdataGrid.add(capacityBtn);
-                shipdataGrid.add(new JLabel(Text.PRODRATE.toString()));
-                shipdataGrid.add(prodRateLabel);
-                shipdataGrid.add(prodRateBtn);
-                shipdataGrid.add(new JLabel(Text.PRODFLEETS.toString()));
-                shipdataGrid.add(prodFleetsLabel);
-                shipdataGrid.add(prodFleetsBtn);
-            }
-            weaponCBox = new JComboBox<String>(new DefaultComboBoxModel<>(
-                    Constants.WEAPONNAMES));
-            weaponCBox.setSelectedIndex(assignedWeapon);
-            weaponCBox.addItemListener(this);
-            shipdataGrid.add(weaponCBox);
-            addTurretBtn = new JButton(Text.BUY + " " + Text.TURRET);
-            shipdataGrid.add(addTurretBtn);
+        });
+        marketInventoryPanel.add(sellBtn, BorderLayout.SOUTH);
+
+        marketItems = new InventoryPanel(10, 20, SpaceInvader.getInstance().getMarketItems());
+        marketItems.addMouseListener(updateOnClick);
+        scrollPane2 = new JScrollPane(marketItems);
+        marketPanel.setLayout(new BorderLayout());
+        marketPanel.add(scrollPane2, BorderLayout.CENTER);
+        marketItems.setMultiSelectable(false);
+        marketItem = marketItems.new ItemBox(null);
+        marketItem.setActive(false);
+        marketItemPanel.setLayout(new BorderLayout());
+        marketItemPanel.add(marketItem, BorderLayout.CENTER);
+
+        Font font = (Font) Settings.get("font");
+        if (font != null)
+        {
+            sellBtn.setFont(font);
+            storeBtn.setFont(font);
+            dataText.setFont(font);
+            buttonLiftOff.setFont(font);
+            jTabbedPane1.setFont(font);
+            jLabel1.setFont(font);
+            jLabel2.setFont(font);
+            jLabel3.setFont(font);
+            jLabel4.setFont(font);
+            jLabel5.setFont(font);
+            marketItemNumberLabel.setFont(font);
+            marketPriceLabel.setFont(font);
+            marketItemLabel.setFont(font);
+            creditLabel.setFont(font);
         }
-        for (Component c : shipdataGrid.getComponents()) {
-            c.setFont(Settings.getSettings().font);
-            c.setFocusable(false);
-        }
-        shipTab.setLayout(new BorderLayout());
-        shipTab.add(new JScrollPane(shipdataGrid), BorderLayout.CENTER);
-        return shipTab;
+        updateLabels();
     }
 
-    private JPanel getFleetTab() {
-        JPanel fleetTab = new JPanel();
-        JPanel buyPanel;
-        fleetTab.setLayout(new BorderLayout());
-        fleetdataGrid = new JPanel();
-        fleetdataGrid.setLayout(new GridLayout(6, 4));
-        fleetdataGrid.add(new JLabel(new ImageIcon(Constants.ICON_DIRECTORY + "fighter.gif")));
-        fleetdataGrid.add(new JLabel(Text.FIGHTER.toString()));
-        fleetdataGrid.add(createShipDataPanel(fighterPrototyp));
-        buyPanel = new JPanel();
-        buyPanel.setLayout(new GridLayout(1, 2));
-        buyPanel.add(smallWingmanCount);
-        buyPanel.add(addSmallWingmanBtn);
-        for (Component c : buyPanel.getComponents()) {
-            c.setFont(Settings.getSettings().font);
-            c.setFocusable(false);
+    public final void updateLabels()
+    {
+        creditLabel.setText(IO.translate("SCORE") + ": " + SpaceInvader.getInstance().getScore() + IO.translate("CREDITS"));
+        jLabel1.setIcon(new javax.swing.ImageIcon(mShip.getSprite().getImages()[0]));
+        dataText.setText(mShip.getDataString());
+        repairCost = mShip.getMaxHp() - mShip.getHP();
+        repairCost += (int) ((SpaceInvader.getInstance().getMaxFuel() - SpaceInvader.getInstance().getFuel()) * SpaceInvader.getInstance().getFuelPrice());
+        buttonRepair.setText("Repair&Refuel" + " " + repairCost + " " + IO.translate("CREDITS"));
+        buttonRepair.setEnabled(repairCost > 0);
+        loadedItems.setItems(SpaceInvader.getInstance().getLoadedItems());
+        storedItems.setItems(SpaceInvader.getInstance().getStoredItems());
+        marketInventoryItems.setItems(SpaceInvader.getInstance().getStoredItems());
+        marketItems.setItems(SpaceInvader.getInstance().getMarketItems());
+        if (marketItems.getSelectedItems().size() > 0)
+        {
+            marketItem.setItem(marketItems.getSelectedItems().getFirst());
+            marketItemLabel.setText(marketItem.getItem().toString());
+            int n = (int) marketItemSpinner.getValue();
+            marketPriceLabel.setText(IO.translate("PRICE") + ": " + marketItem.getItem().getValue() * n + IO.translate("CREDITS"));
+            buyButton.setEnabled(true);
         }
-        fleetdataGrid.add(buyPanel);
-        fleetdataGrid.add(new JLabel(new ImageIcon(Constants.ICON_DIRECTORY + "spaceship.gif")));
-        fleetdataGrid.add(new JLabel(Text.WINGMAN.toString()));
-        fleetdataGrid.add(createShipDataPanel(wingmanPrototyp));
-        buyPanel = new JPanel();
-        buyPanel.setLayout(new GridLayout(1, 2));
-        buyPanel.add(wingmanCount);
-        buyPanel.add(addWingmanBtn);
-        for (Component c : buyPanel.getComponents()) {
-            c.setFont(Settings.getSettings().font);
-            c.setFocusable(false);
+        else
+        {
+            marketItemLabel.setText("");
+            marketItem.setItem(null);
+            marketPriceLabel.setText("");
+            buyButton.setEnabled(false);
         }
-        fleetdataGrid.add(buyPanel);
-        fleetdataGrid.add(new JLabel(new ImageIcon(Constants.ICON_DIRECTORY + "fighterfleet.gif")));
-        fleetdataGrid.add(new JLabel(Text.FIGHTER + " " + Text.SQUADRON));
-        fleetdataGrid.add(createShipDataPanel(fleetleaderPrototyp));
-        buyPanel = new JPanel();
-        buyPanel.setLayout(new GridLayout(1, 2));
-        buyPanel.add(fighterFleetCount);
-        buyPanel.add(addFighterFleetBtn);
-        for (Component c : buyPanel.getComponents()) {
-            c.setFont(Settings.getSettings().font);
-            c.setFocusable(false);
+        LinkedList<Item> selectedItems = marketInventoryItems.getSelectedItems();
+        sellBtn.setEnabled(selectedItems.size() > 0);
+        int value = 0;
+        for (Item item : selectedItems)
+        {
+            value += item.getValue();
         }
-        fleetdataGrid.add(buyPanel);
-        fleetdataGrid.add(new JLabel(new ImageIcon(Constants.ICON_DIRECTORY + "fighterfleet.gif")));
-        fleetdataGrid.add(new JLabel(Text.HUNTER + " " + Text.SQUADRON));
-        fleetdataGrid.add(createShipDataPanel(hunterPrototyp));
-        buyPanel = new JPanel();
-        buyPanel.setLayout(new GridLayout(1, 2));
-        buyPanel.add(hunterCount);
-        buyPanel.add(addHunterFleetBtn);
-        for (Component c : buyPanel.getComponents()) {
-            c.setFont(Settings.getSettings().font);
-            c.setFocusable(false);
-        }
-        fleetdataGrid.add(buyPanel);
-        fleetdataGrid.add(new JLabel(new ImageIcon(Constants.ICON_DIRECTORY + "cruiser.gif")));
-        fleetdataGrid.add(new JLabel(Text.CRUISER.toString()));
-        fleetdataGrid.add(createShipDataPanel(cruiserPrototyp));
-        buyPanel = new JPanel();
-        buyPanel.setLayout(new GridLayout(1, 2));
-        buyPanel.add(cruiserCount);
-        buyPanel.add(addCruiserBtn);
-        for (Component c : buyPanel.getComponents()) {
-            c.setFont(Settings.getSettings().font);
-            c.setFocusable(false);
-        }
-        fleetdataGrid.add(buyPanel);
-        fleetdataGrid.add(new JLabel(new ImageIcon(Constants.ICON_DIRECTORY + "carrier.gif")));
-        fleetdataGrid.add(new JLabel(Text.CARRIER.toString()));
-        fleetdataGrid.add(createShipDataPanel(carrierPrototyp));
-        buyPanel = new JPanel();
-        buyPanel.setLayout(new GridLayout(1, 2));
-        buyPanel.add(carrierCount);
-        buyPanel.add(addCarrierBtn);
-        for (Component c : buyPanel.getComponents()) {
-            c.setFont(Settings.getSettings().font);
-            c.setFocusable(false);
-        }
-        fleetdataGrid.add(buyPanel);
-        for (Component c : fleetdataGrid.getComponents()) {
-            c.setFont(Settings.getSettings().font);
-            c.setFocusable(false);
-        }
-        fleetTab.add(new JScrollPane(fleetdataGrid), BorderLayout.CENTER);
-        return fleetTab;
+        sellBtn.setText(IO.translate("SELL") + " " + value + IO.translate("CREDITS"));
+        repaint();
     }
 
-    public static JPanel createShipDataPanel(Ship s) {
-        String data = s.getDataString();
-        JPanel dataPanel = new JPanel();
-        dataPanel.setLayout(new BorderLayout());
-        JTextArea dataText = new JTextArea();
+    private void liftoff()
+    {
+        SpaceInvader.getInstance().getMShip().repair();
+        MainFrame.FRAME.setMainPanel(GamePanel.INSTANCE);
+        GamePanel.INSTANCE.setRunning(true);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents()
+    {
+
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        hangarPanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        dataText = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jSplitPane3 = new javax.swing.JSplitPane();
+        inventoryPanelLeft = new javax.swing.JPanel();
+        inventoryPanelRight = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jSplitPane4 = new javax.swing.JSplitPane();
+        marketInventoryPanel = new javax.swing.JPanel();
+        jSplitPane5 = new javax.swing.JSplitPane();
+        marketPanel = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        marketItemPanel = new javax.swing.JPanel();
+        marketItemLabel = new javax.swing.JLabel();
+        marketItemSpinner = new javax.swing.JSpinner();
+        marketItemNumberLabel = new javax.swing.JLabel();
+        marketPriceLabel = new javax.swing.JLabel();
+        buyButton = new javax.swing.JButton();
+        buttonLiftOff = new javax.swing.JButton();
+        buttonRepair = new javax.swing.JButton();
+        creditLabel = new javax.swing.JLabel();
+
+        jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+
+        jLabel2.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Spaceship");
+
+        jSplitPane1.setDividerLocation(250);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        jSplitPane2.setDividerLocation(250);
+
         dataText.setEditable(false);
-        dataText.setText(data);
-        dataText.setRows(6);
-        dataPanel.add(new JScrollPane(dataText), BorderLayout.CENTER);
-        return dataPanel;
-    }
+        dataText.setColumns(20);
+        dataText.setRows(5);
+        dataText.setText("Statistics\nHP: 93123 / 120000\nFuel: 923 / 10000\nShield: 89123 / 115000\n");
+        jScrollPane1.setViewportView(dataText);
 
-    public void paintLabels() {
-        hpLabel.setText(ship.getMaxHp() + "");
-        classLabel.setText(ship.getClass().getSimpleName());
-        speedLabel.setText(ship.getMaxSpeed() + "");
-        rotLabel.setText(ship.getMaxRotation() + "");
-        accelLabel.setText(ship.getMaxAcceleration() + "");
-        if (Cruiser.class.isInstance(ship)) {
-            if (Carrier.class.isInstance(ship)) {
-                Carrier c = (Carrier) ship;
-                capacityLabel.setText(c.getCapacity() + "");
-                prodRateLabel.setText(c.getProductionRate() + "");
-                if (c.isProducingFleets()) {
-                    prodFleetsLabel.setText(Text.TRUE.toString());
-                } else {
-                    prodFleetsLabel.setText(Text.FALSE.toString());
-                }
+        jSplitPane2.setRightComponent(jScrollPane1);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/graphic/icons/spaceship.gif"))); // NOI18N
+        jSplitPane2.setLeftComponent(jLabel1);
+
+        jSplitPane1.setLeftComponent(jSplitPane2);
+
+        javax.swing.GroupLayout inventoryPanelLeftLayout = new javax.swing.GroupLayout(inventoryPanelLeft);
+        inventoryPanelLeft.setLayout(inventoryPanelLeftLayout);
+        inventoryPanelLeftLayout.setHorizontalGroup(
+            inventoryPanelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        inventoryPanelLeftLayout.setVerticalGroup(
+            inventoryPanelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 156, Short.MAX_VALUE)
+        );
+
+        jSplitPane3.setLeftComponent(inventoryPanelLeft);
+
+        javax.swing.GroupLayout inventoryPanelRightLayout = new javax.swing.GroupLayout(inventoryPanelRight);
+        inventoryPanelRight.setLayout(inventoryPanelRightLayout);
+        inventoryPanelRightLayout.setHorizontalGroup(
+            inventoryPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 633, Short.MAX_VALUE)
+        );
+        inventoryPanelRightLayout.setVerticalGroup(
+            inventoryPanelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 156, Short.MAX_VALUE)
+        );
+
+        jSplitPane3.setRightComponent(inventoryPanelRight);
+
+        jSplitPane1.setRightComponent(jSplitPane3);
+
+        javax.swing.GroupLayout hangarPanelLayout = new javax.swing.GroupLayout(hangarPanel);
+        hangarPanel.setLayout(hangarPanelLayout);
+        hangarPanelLayout.setHorizontalGroup(
+            hangarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(hangarPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(hangarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSplitPane1)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        hangarPanelLayout.setVerticalGroup(
+            hangarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(hangarPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSplitPane1)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Hangar", hangarPanel);
+
+        jLabel3.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Fleet");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addContainerGap(436, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Fleet", jPanel3);
+
+        jLabel4.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Factory");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 742, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(436, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Factory", jPanel1);
+
+        jLabel5.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Market");
+
+        jSplitPane4.setDividerLocation(300);
+        jSplitPane4.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        javax.swing.GroupLayout marketInventoryPanelLayout = new javax.swing.GroupLayout(marketInventoryPanel);
+        marketInventoryPanel.setLayout(marketInventoryPanelLayout);
+        marketInventoryPanelLayout.setHorizontalGroup(
+            marketInventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 760, Short.MAX_VALUE)
+        );
+        marketInventoryPanelLayout.setVerticalGroup(
+            marketInventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 124, Short.MAX_VALUE)
+        );
+
+        jSplitPane4.setRightComponent(marketInventoryPanel);
+
+        jSplitPane5.setDividerLocation(500);
+
+        javax.swing.GroupLayout marketPanelLayout = new javax.swing.GroupLayout(marketPanel);
+        marketPanel.setLayout(marketPanelLayout);
+        marketPanelLayout.setHorizontalGroup(
+            marketPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        marketPanelLayout.setVerticalGroup(
+            marketPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 297, Short.MAX_VALUE)
+        );
+
+        jSplitPane5.setLeftComponent(marketPanel);
+
+        javax.swing.GroupLayout marketItemPanelLayout = new javax.swing.GroupLayout(marketItemPanel);
+        marketItemPanel.setLayout(marketItemPanelLayout);
+        marketItemPanelLayout.setHorizontalGroup(
+            marketItemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        marketItemPanelLayout.setVerticalGroup(
+            marketItemPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        marketItemLabel.setText("Item");
+
+        marketItemSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        marketItemSpinner.addChangeListener(new javax.swing.event.ChangeListener()
+        {
+            public void stateChanged(javax.swing.event.ChangeEvent evt)
+            {
+                marketItemSpinnerStateChanged(evt);
             }
-        }
-    }
+        });
 
-    @Override
-    public void onSelect() {
-        requestFocus();
-    }
+        marketItemNumberLabel.setText("Number:");
 
-    @Override
-    public void onDisselect() {
-    }
+        marketPriceLabel.setText("Price: 124231231231232 CREDITS");
 
-    @Override
-    public void keyPressed(KeyEvent evt) {
-        InputConfig.Key key = InputConfig.translateKeyCode(evt.getKeyCode());
-        if (key != null) {
-            switch (key) {
-                case LAND:
-                    liftoff();
-                    break;
-                default:
-                    break;
+        buyButton.setText("Buy");
+        buyButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buyButtonActionPerformed(evt);
             }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(buyButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(marketItemLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(marketItemNumberLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(marketItemSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(136, Short.MAX_VALUE))
+                    .addComponent(marketItemPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(marketPriceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(marketItemLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(marketItemPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(marketItemSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(marketItemNumberLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(marketPriceLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buyButton)
+                .addContainerGap(91, Short.MAX_VALUE))
+        );
+
+        jSplitPane5.setRightComponent(jPanel2);
+
+        jSplitPane4.setLeftComponent(jSplitPane5);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jSplitPane4)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSplitPane4))
+        );
+
+        jTabbedPane1.addTab("Market", jPanel4);
+
+        buttonLiftOff.setBackground(new java.awt.Color(51, 255, 51));
+        buttonLiftOff.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        buttonLiftOff.setText("Lift Off");
+        buttonLiftOff.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonLiftOffActionPerformed(evt);
+            }
+        });
+
+        buttonRepair.setBackground(new java.awt.Color(204, 255, 0));
+        buttonRepair.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        buttonRepair.setText("Repair &  Refuel 123 CREDITS");
+        buttonRepair.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonRepairActionPerformed(evt);
+            }
+        });
+
+        creditLabel.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        creditLabel.setText("CREDITS: 123124");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(buttonRepair)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonLiftOff, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(creditLabel)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonLiftOff)
+                    .addComponent(buttonRepair)
+                    .addComponent(creditLabel))
+                .addContainerGap())
+        );
+
+        buttonRepair.getAccessibleContext().setAccessibleName("Repair &  Refuel 123CREDITS");
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonLiftOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLiftOffActionPerformed
+        liftoff();
+    }//GEN-LAST:event_buttonLiftOffActionPerformed
+
+    private void buttonRepairActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonRepairActionPerformed
+    {//GEN-HEADEREND:event_buttonRepairActionPerformed
+        mShip.repair();
+        SpaceInvader.getInstance().refuel();
+        SpaceInvader.getInstance().addScore(repairCost * -1);
+        updateLabels();
+    }//GEN-LAST:event_buttonRepairActionPerformed
+
+    private void buyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buyButtonActionPerformed
+    {//GEN-HEADEREND:event_buyButtonActionPerformed
+        if (marketItem.getItem() != null)
+        {
+            int price = marketItem.getItem().getValue();
+            int n = (int) marketItemSpinner.getValue();
+            price = price * n;
+            SpaceInvader.getInstance().addScore(price * -1);
+            SpaceInvader.getInstance().addStoredItem(new Item(marketItem.getItem().type, n));
+            updateLabels();
         }
+    }//GEN-LAST:event_buyButtonActionPerformed
+
+    private void marketItemSpinnerStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_marketItemSpinnerStateChanged
+    {//GEN-HEADEREND:event_marketItemSpinnerStateChanged
+        updateLabels();
+    }//GEN-LAST:event_marketItemSpinnerStateChanged
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonLiftOff;
+    private javax.swing.JButton buttonRepair;
+    private javax.swing.JButton buyButton;
+    private javax.swing.JLabel creditLabel;
+    private javax.swing.JTextArea dataText;
+    private javax.swing.JPanel hangarPanel;
+    private javax.swing.JPanel inventoryPanelLeft;
+    private javax.swing.JPanel inventoryPanelRight;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JSplitPane jSplitPane3;
+    private javax.swing.JSplitPane jSplitPane4;
+    private javax.swing.JSplitPane jSplitPane5;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel marketInventoryPanel;
+    private javax.swing.JLabel marketItemLabel;
+    private javax.swing.JLabel marketItemNumberLabel;
+    private javax.swing.JPanel marketItemPanel;
+    private javax.swing.JSpinner marketItemSpinner;
+    private javax.swing.JPanel marketPanel;
+    private javax.swing.JLabel marketPriceLabel;
+    // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onSelect()
+    {
+
     }
 
     @Override
-    public void keyReleased(KeyEvent evt) {
+    public void onDisselect()
+    {
+
     }
 
     @Override
-    public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource().equals(liftoffBtn)) {
+    public void drawGUI(Graphics2D gd)
+    {
+
+    }
+
+    @Override
+    public void keyPressed(InputConfig.Key key)
+    {
+        if (key == InputConfig.Key.KEY_SELECT)
+        {
             liftoff();
-        } else if (evt.getSource().equals(weaponBtn)) {
-            int index = weaponCBox.getSelectedIndex();
-            if (bought[index]) {
-                if (index != assignedWeapon && Fighter.class.isInstance(ship)) {
-                    ((Fighter) ship).setMainWeapon(Constants.WEAPONS[index]);
-                    assignedWeapon = index;
-                    checkWeaponBtnStatus();
-                }
-            } else if (doTransaction(-1 * Constants.WEAPONPRICE[index])) {
-                bought[index] = true;
-                ((Fighter) ship).setMainWeapon(Constants.WEAPONS[index]);
-                assignedWeapon = index;
-                checkWeaponBtnStatus();
-            }
-        } else if (evt.getSource().equals(addSmallWingmanBtn)) {
-            int n = (int) (smallWingmanCount.getValue());
-            if (doTransaction(-1 * Constants.PRIZE_FIGHTER * n)) {
-                for (int i = 0; i < n; i++) {
-                    SimControlPanel.addFighter();
-                }
-                IO.println(Text.FIGHTER + " " + Text.ADDTOFLEET, IO.MessageType.IMPORTANT);
-            }
-        } else if (evt.getSource().equals(addWingmanBtn)) {
-            int n = (int) (wingmanCount.getValue());
-            if (doTransaction(-1 * Constants.PRIZE_WINGMAN * n)) {
-                for (int i = 0; i < n; i++) {
-                    SimControlPanel.addWingman();
-                }
-                IO.println(Text.WINGMAN + " " + Text.ADDTOFLEET, IO.MessageType.IMPORTANT);
-            }
-        } else if (evt.getSource().equals(addFighterFleetBtn)) {
-            int n = (int) (fighterFleetCount.getValue());
-            if (doTransaction(-1 * Constants.PRIZE_FIGHTER_SQUAD * n)) {
-                for (int i = 0; i < n; i++) {
-                    SimControlPanel.addFighterFleet();
-                }
-                IO.println(Text.FIGHTER + " " + Text.SQUADRON + " " + Text.ADDTOFLEET,
-                        IO.MessageType.IMPORTANT);
-            }
-        } else if (evt.getSource().equals(addHunterFleetBtn)) {
-            int n = (int) (hunterCount.getValue());
-            if (doTransaction(-1 * Constants.PRIZE_HUNTER_SQUAD * n)) {
-                for (int i = 0; i < n; i++) {
-                    SimControlPanel.addHunterFleet();
-                }
-                IO.println(Text.HUNTER + " " + Text.SQUADRON + " " + Text.ADDTOFLEET,
-                        IO.MessageType.IMPORTANT);
-            }
-        } else if (evt.getSource().equals(addCruiserBtn)) {
-            int n = (int) (cruiserCount.getValue());
-            if (doTransaction(-1 * Constants.PRIZE_CRUISER * n)) {
-                for (int i = 0; i < n; i++) {
-                    SimControlPanel.addCruiser();
-                }
-                IO.println(Text.CRUISER + " " + Text.ADDTOFLEET, IO.MessageType.IMPORTANT);
-            }
-        } else if (evt.getSource().equals(addCarrierBtn)) {
-            int n = (int) (carrierCount.getValue());
-            if (doTransaction(-1 * Constants.PRIZE_CARRIER * n)) {
-                for (int i = 0; i < n; i++) {
-                    SimControlPanel.addCarrier();
-                }
-                IO.println(Text.CARRIER + " " + Text.ADDTOFLEET, IO.MessageType.IMPORTANT);
-            }
-        } else if (evt.getSource().equals(hpBtn)) {
-            if (doTransaction(-1 * Constants.HP_UPGRADE_PRICE)) {
-                GameGrid.getInstance().getMShip()
-                        .setMaxHp(GameGrid.getInstance().getMShip().getMaxHp() + 10);
-            }
         }
-        paintLabels();
-    }
-
-    private void liftoff() {
-        GameGrid.getInstance().getMShip().repair();
-        MainFrame.FRAME.setMainPanel(GameGrid.getInstance());
-        GameGrid.getInstance().setPaused(false);
     }
 
     @Override
-    public void itemStateChanged(ItemEvent arg0) {
-        checkWeaponBtnStatus();
-    }
+    public void keyReleased(InputConfig.Key key)
+    {
 
-    private void checkWeaponBtnStatus() {
-        int index = weaponCBox.getSelectedIndex();
-        if (bought[weaponCBox.getSelectedIndex()]) {
-            if (index != assignedWeapon) {
-                weaponBtn.setText(Text.ASSIGN.toString());
-                weaponBtn.setEnabled(true);
-            } else {
-                weaponBtn.setText(Text.ASSIGNED.toString());
-                weaponBtn.setEnabled(false);
-            }
-        } else {
-            weaponBtn.setText(Text.BUY.toString());
-            weaponBtn.setToolTipText(Text.BUY + " " + Constants.WEAPONNAMES[index] + " \n"
-                    + Constants.WEAPONPRICE[index] + Text.CURRENCY_PLURAL);
-            weaponBtn.setEnabled(true);
-        }
-    }
-
-    public boolean doTransaction(int n) {
-        if (GameGrid.getInstance().addScore(n)) {
-            scoreLabel.setText(GameGrid.getInstance().getScore() + " " + Text.CURRENCY_PLURAL);
-            return true;
-        } else {
-            IO.makeToast(Text.NOTENOUGH + " " + Text.CURRENCY_PLURAL + "\n",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
     }
 }

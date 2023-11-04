@@ -324,7 +324,8 @@ public class Fight extends utils.SerializableReflectObject
                 default:
                     throw new java.lang.IllegalStateException("State = " + state);
             }
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             IO.printException(ex);
             IO.println("Fight aborted", IO.MessageType.DEBUG);
@@ -488,7 +489,8 @@ public class Fight extends utils.SerializableReflectObject
                             }
                         }
                     }
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     IO.printException(ex);
                     actionValid = false;
@@ -523,7 +525,7 @@ public class Fight extends utils.SerializableReflectObject
         Item item = player.getItem(index);
         if (item != null)
         {
-            IO.println("Player uses " + item, IO.MessageType.IMPORTANT);
+            IO.println("Player uses " + item, IO.MessageType.NORMAL);
             switch (item.TYP)
             {
                 case POTION:
@@ -782,10 +784,12 @@ public class Fight extends utils.SerializableReflectObject
                 {
                     values.add(f.getName(), f.get(this));
                 }
-            } catch (IllegalArgumentException ex)
+            }
+            catch (IllegalArgumentException ex)
             {
                 Logger.getLogger(Fight.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex)
+            }
+            catch (IllegalAccessException ex)
             {
                 Logger.getLogger(Fight.class.getName()).log(Level.SEVERE, null, ex);
             }

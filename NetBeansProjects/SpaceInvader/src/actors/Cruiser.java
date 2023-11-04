@@ -21,16 +21,18 @@ import armory.Weapon;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
-import utils.Constants.Team;
-import utils.Text;
-import utils.Vector2D;
+import main.SpaceInvader.Team;
+import platform.utils.IO;
+import platform.utils.Utilities;
+import platform.utils.Vector2D;
 
 /**
  *
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 29.03.2016
  */
-public class Cruiser extends Ship {
+public class Cruiser extends Ship
+{
 
     private final LinkedList<Turret> turrets = new LinkedList<>();
     /**
@@ -39,12 +41,14 @@ public class Cruiser extends Ship {
     private final LinkedList<Vector2D> turretPositions = new LinkedList<>();
     private Vector2D target;
 
-    public Cruiser(int x, int y, Team team, int maxHp, double maxSpeed, double maxAccel,
-            double maxRot, String... spritenames) {
-        super(x, y, team, maxHp, maxSpeed, maxAccel, maxRot, spritenames);
+    Cruiser(int x, int y, Team team, int maxHp, double maxSpeed, int hullmass, double maxAccel, double maxRot,
+            int maxShield, double shieldRegen, String mainSprite, String... spritenames)
+    {
+        super(x, y, team, maxHp, maxSpeed, hullmass, maxAccel, maxRot, maxShield, shieldRegen, mainSprite, spritenames);
     }
 
-    public Vector2D getTarget() {
+    public Vector2D getTarget()
+    {
         return target;
     }
 
@@ -54,11 +58,13 @@ public class Cruiser extends Ship {
      * @param target Vector defining target's position relative to the cruisers
      * position or null if not aiming.
      */
-    public void setTarget(Vector2D target) {
+    public void setTarget(Vector2D target)
+    {
         this.target = target;
     }
 
-    public void addWeapon(Weapon w, int relX, int relY, String spritename) {
+    public void addWeapon(Weapon w, int relX, int relY, String spritename)
+    {
         Turret t = new Turret(this, w, spritename);
         turrets.add(t);
         turretPositions.add(new Vector2D(relX, relY));
@@ -66,24 +72,27 @@ public class Cruiser extends Ship {
         // GameGrid.getInstance().addActor(t);
     }
 
-    private void calcTurretPosition(Turret t, Vector2D relPos) {
+    private void calcTurretPosition(Turret t, Vector2D relPos)
+    {
         Vector2D position = new Vector2D(relPos.x, relPos.y);
-        position.rotate(utils.Utilities.toRad(getDirection()));
+        position.rotate(Utilities.toRad(getDirection()));
         t.setX(position.x + getPosition().x - t.getBounds().width / 2);
         t.setY(position.y + getPosition().y - t.getBounds().height / 2);
     }
 
     @Override
-    public void act() {
+    public void act()
+    {
         super.act();
-        for (int i = 0; i < turrets.size(); i++) {
+        for (int i = 0; i < turrets.size(); i++)
+        {
             calcTurretPosition(turrets.get(i), turretPositions.get(i));
-            if (target != null && getAI() == null) {
-                turrets
-                        .get(i)
-                        .setDirection(
-                                utils.Utilities.toDeg(target.sub(turrets.get(i).getPosition()).getDirection()) + 90);
-            } else {
+            if (target != null && getAI() == null)
+            {
+                turrets.get(i).setDirection(Utilities.toDeg(target.sub(turrets.get(i).getPosition()).getDirection()) + 90);
+            }
+            else
+            {
                 turrets.get(i).setDirection(getDirection());
             }
             turrets.get(i).act();
@@ -91,36 +100,45 @@ public class Cruiser extends Ship {
     }
 
     @Override
-    public List<Projectile> shoot() {
+    public List<Projectile> shoot()
+    {
         LinkedList<Projectile> shots = new LinkedList<>();
-        for (Turret t : turrets) {
+        for (Turret t : turrets)
+        {
             shots.addAll(t.shoot());
         }
         return shots;
     }
 
     @Override
-    public List<Weapon> getWeapons() {
+    public List<Weapon> getWeapons()
+    {
         LinkedList<Weapon> weapons = new LinkedList<>();
-        for (Turret t : turrets) {
+        for (Turret t : turrets)
+        {
             weapons.add(t.getMainWeapon());
         }
         return weapons;
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
         super.paint(g);
-        for (Turret t : turrets) {
+        for (Turret t : turrets)
+        {
             t.paint(g);
         }
     }
 
     @Override
-    public String getDataString() {
-        String s = Text.CLASS + ": " + Text.CRUISER + "\n" + super.getDataString() + "\n";
-        for (int i = 0; i < turrets.size(); i++) {
-            s += Text.TURRET + " " + i + ": " + turrets.get(i).getMainWeapon() + "\n";
+    public String getDataString()
+    {
+        String s = IO.translate("CLASS") + ": " + IO.translate("CRUISER") + "\n"
+                + super.getDataString() + "\n";
+        for (int i = 0; i < turrets.size(); i++)
+        {
+            s += IO.translate("TURRET") + " " + i + ": " + turrets.get(i).getMainWeapon() + "\n";
         }
         return s;
     }

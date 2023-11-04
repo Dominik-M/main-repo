@@ -231,7 +231,13 @@ public final class Constants
      * Maximum number of Attacks a Pokemon may know at once.
      */
     public static final int MAX_ATTACK_COUNT = 4;
+    /**
+     * Base values to calculate needed XP
+     */
     public static final int XP_VERYLOW = 10, XP_LOW = 15, XP_NORMAL = 20, XP_HIGH = 25, XP_VERYHGH = 30;
+    /**
+     * Heading directions
+     */
     public static final int DIRECTION_INVALID = 0, DIRECTION_UP = 1, DIRECTION_RIGHT = 2, DIRECTION_DOWN = 3, DIRECTION_LEFT = 4;
 
     /**

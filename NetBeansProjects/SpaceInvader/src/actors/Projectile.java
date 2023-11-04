@@ -18,22 +18,26 @@
 package actors;
 
 import armory.Weapon;
-import graphic.GameGrid;
-import utils.Constants;
-import utils.Vector2D;
+import main.SpaceInvader;
+import platform.gamegrid.Actor;
+import platform.utils.Utilities;
+import platform.utils.Vector2D;
 
 /**
  *
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com> Created 26.03.2016
  */
-public class Projectile extends Actor {
+public class Projectile extends Actor
+{
 
     public final Weapon source;
     private int lifetime;
 
-    public Projectile(Weapon source, int x, int y, Vector2D velocity) {
-        super(source.owner.team, Constants.IMAGENAME_BOMB);
+    public Projectile(Weapon source, int x, int y, Vector2D velocity)
+    {
+        super(source.getProjectileImage());
+        setTeam(source.owner.getTeam());
         this.source = source;
         setX(x);
         setY(y);
@@ -41,20 +45,31 @@ public class Projectile extends Actor {
         this.setSpeed(velocity.add(source.owner.getSpeedVector()));
         // Easier to control...
         // this.setSpeed(velocity);
-        this.setDirection(utils.Utilities.toDeg(velocity.getDirection()) + 90);
-        lifetime = Constants.DELTA_T * source.getRange() / source.projectileSpeed;
+        this.setDirection(Utilities.toDeg(velocity.getDirection()) + 90);
+        lifetime = source.getRange() / source.projectileSpeed;
     }
 
     @Override
-    public void act() {
+    public void act()
+    {
         move();
         // lifetime limited by distance
-        // lifetime -= getSpeed() * Constants.DELTA_T / 1000.0;
+        // lifetime -= getSpeed() * SpaceInvader.DELTA_T / 1000.0;
         // lifetime limited by active time
-        lifetime -= Constants.DELTA_T;
-        if (!GameGrid.getInstance().isInGrid(getXOnScreen(), getYOnScreen()) || lifetime <= 0) {
+        lifetime -= SpaceInvader.DELTA_T;
+        if (!SpaceInvader.getInstance().isInGrid(getXOnScreen(), getYOnScreen()) || lifetime <= 0)
+        {
             invalidate();
         }
+    }
+
+    @Override
+    public void move()
+    {
+        Vector2D speedvector = this.getSpeedVector();
+        speedvector = speedvector.mult(SpaceInvader.DELTA_T / 1000.0);
+        x += speedvector.x;
+        y += speedvector.y;
     }
 
 }

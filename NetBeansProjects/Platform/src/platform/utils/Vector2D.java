@@ -40,7 +40,8 @@ package platform.utils;
  * @author Dominik Messerschmidt
  * <dominik.messerschmidt@continental-corporation.com>
  */
-public class Vector2D extends SerializableReflectObject {
+public class Vector2D extends SerializableReflectObject
+{
 
     private static final long serialVersionUID = -846968794155992767L;
     public static final Vector2D NULLVECTOR = new Vector2D(0, 0);
@@ -56,7 +57,8 @@ public class Vector2D extends SerializableReflectObject {
     /**
      * Constructs a zero vector (with coordinates (0, 0)).
      */
-    public Vector2D() {
+    public Vector2D()
+    {
         this(0, 0);
     }
 
@@ -66,7 +68,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param x the x-coordinate of the vector
      * @param y the y-coordinate of the vector
      */
-    public Vector2D(int x, int y) {
+    public Vector2D(int x, int y)
+    {
         this((double) x, (double) y);
     }
 
@@ -76,7 +79,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param x the x-coordinate of the vector
      * @param y the y-coordinate of the vector
      */
-    public Vector2D(float x, float y) {
+    public Vector2D(float x, float y)
+    {
         this((double) x, (double) y);
     }
 
@@ -86,7 +90,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param x the x-coordinate of the vector
      * @param y the y-coordinate of the vector
      */
-    public Vector2D(double x, double y) {
+    public Vector2D(double x, double y)
+    {
         this.x = x;
         this.y = y;
     }
@@ -96,7 +101,8 @@ public class Vector2D extends SerializableReflectObject {
      *
      * @return the magnitude
      */
-    public double magnitude() {
+    public double magnitude()
+    {
         return Math.sqrt(x * x + y * y);
     }
 
@@ -106,14 +112,16 @@ public class Vector2D extends SerializableReflectObject {
      *
      * @return the square of the magnitude
      */
-    public double magnitude2() {
+    public double magnitude2()
+    {
         return x * x + y * y;
     }
 
     /**
      * Modifies the vector to unit magnitude.
      */
-    public void normalize() {
+    public void normalize()
+    {
         double magnitude = magnitude();
         x = x / magnitude;
         y = y / magnitude;
@@ -125,7 +133,8 @@ public class Vector2D extends SerializableReflectObject {
      *
      * @return a unit vector with same direction
      */
-    public Vector2D getNormalized() {
+    public Vector2D getNormalized()
+    {
         double magnitude = magnitude();
         return new Vector2D(x / magnitude, y / magnitude);
     }
@@ -135,11 +144,15 @@ public class Vector2D extends SerializableReflectObject {
      *
      * @return the direction of the vector (in radian, zero to east, clockwise)
      */
-    public double getDirection() {
+    public double getDirection()
+    {
         double theta = Math.atan2(y, x);
-        if (theta >= 0) {
+        if (theta >= 0)
+        {
             return theta;
-        } else {
+        }
+        else
+        {
             return 2 * Math.PI + theta;
         }
     }
@@ -149,7 +162,8 @@ public class Vector2D extends SerializableReflectObject {
      *
      * @param angle the rotation angle (in radian, clockwise)
      */
-    public void rotate(double angle) {
+    public void rotate(double angle)
+    {
         double xnew, ynew;
         xnew = Math.cos(angle) * x - Math.sin(angle) * y;
         ynew = Math.sin(angle) * x + Math.cos(angle) * y;
@@ -164,7 +178,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param angle the rotation angle (in radian, clockwise)
      * @param v a Vector2D defining the point to rotate around.
      */
-    public void rotateAt(Vector2D v, double angle) {
+    public void rotateAt(Vector2D v, double angle)
+    {
         double xnew, ynew;
         xnew = v.x + (this.x - v.x) * Math.cos(angle) - (this.y - v.y) * Math.sin(angle);
         ynew = v.y + (this.x - v.x) * Math.sin(angle) + (this.y - v.y) * Math.cos(angle);
@@ -172,7 +187,8 @@ public class Vector2D extends SerializableReflectObject {
         y = ynew;
     }
 
-    public Vector2D getOrthogonal() {
+    public Vector2D getOrthogonal()
+    {
         return new Vector2D(y, -x);
     }
 
@@ -183,7 +199,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param v the vector to take for the dot product
      * @return the dot product
      */
-    public double dot(Vector2D v) {
+    public double dot(Vector2D v)
+    {
         return x * v.x + y * v.y;
     }
 
@@ -193,7 +210,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param v the vector to take for the distance measurement
      * @return the distance (magnitude of the vector difference)
      */
-    public double distanceTo(Vector2D v) {
+    public double distanceTo(Vector2D v)
+    {
         return Math.sqrt(Math.pow(v.x - x, 2) + Math.pow(v.y - y, 2));
     }
 
@@ -204,7 +222,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param v the vector to be added to the current vector
      * @return the sum of the two vectors
      */
-    public Vector2D add(Vector2D v) {
+    public Vector2D add(Vector2D v)
+    {
         return new Vector2D(x + v.x, y + v.y);
     }
 
@@ -214,7 +233,8 @@ public class Vector2D extends SerializableReflectObject {
      *
      * @return the inverted vector
      */
-    public Vector2D invert() {
+    public Vector2D invert()
+    {
         return new Vector2D(-x, -y);
     }
 
@@ -225,7 +245,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param v the vector to be substracted from the current vector
      * @return the difference of the two vectors
      */
-    public Vector2D sub(Vector2D v) {
+    public Vector2D sub(Vector2D v)
+    {
         return new Vector2D(x - v.x, y - v.y);
     }
 
@@ -237,7 +258,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param b the integer scale factor
      * @return the vector that is scaled with the given integer
      */
-    public Vector2D mult(int b) {
+    public Vector2D mult(int b)
+    {
         return new Vector2D(x * b, y * b);
     }
 
@@ -249,7 +271,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param b the float scale factor
      * @return the vector that is scaled with the given float
      */
-    public Vector2D mult(float b) {
+    public Vector2D mult(float b)
+    {
         return new Vector2D(x * b, y * b);
     }
 
@@ -261,7 +284,8 @@ public class Vector2D extends SerializableReflectObject {
      * @param b the double scale factor
      * @return the vector that is scaled with the given double
      */
-    public Vector2D mult(double b) {
+    public Vector2D mult(double b)
+    {
         return new Vector2D(x * b, y * b);
     }
 
@@ -271,7 +295,8 @@ public class Vector2D extends SerializableReflectObject {
      * @return a clone of the current vector
      */
     @Override
-    public Vector2D clone() {
+    public Vector2D clone()
+    {
         return new Vector2D(x, y);
     }
 
@@ -281,11 +306,13 @@ public class Vector2D extends SerializableReflectObject {
      * @return a string representation of the vector
      */
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "(" + x + ", " + y + ")";
     }
 
-    public boolean equals(Vector2D other) {
+    public boolean equals(Vector2D other)
+    {
         return other.x == this.x && other.y == this.y;
     }
 
