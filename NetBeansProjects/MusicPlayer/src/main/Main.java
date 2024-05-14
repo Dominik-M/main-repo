@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2015 Dominik Messerschmidt <dominik_messerschmidt@yahoo.de>
+/**
+ * Copyright (C) 2016 Dominik Messerschmidt <dominik.messerschmidt@continental-corporation.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +16,48 @@
  */
 package main;
 
+import graphic.InputConfig;
 import graphic.MainFrame;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import utils.IO;
+import utils.Text;
 
 /**
- *
- * @author Dominik Messerschmidt <dominik_messerschmidt@yahoo.de>
+ * Created 09.03.2016
+ * 
+ * @author Dominik Messerschmidt <dominik.messerschmidt@continental-corporation.com>
+ * 
  */
-public class Main {
+public class Main extends Application {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        graphic.MainFrame.setLookAndFeel();
-        MainFrame frame = new graphic.MainFrame();
-        frame.setMainPanel(new graphic.ProgressPanel());
-        frame.setVisible(true);
-        sound.Sound.initClips();
-        frame.setMainPanel(new graphic.SoundPlayerPanel());
-    }
-    
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		writeAllFiles();
+		MainFrame.setNimbusLookAndFeel();
+		MainFrame.FRAME.setMainPanel(new graphic.MusicPlayerPanel());
+		MainFrame.FRAME.setVisible(true);
+	}
+
+	public static void reset() {
+		IO.println("Reset trigerred", IO.MessageType.DEBUG);
+		// TODO reset application
+	}
+
+	public static void writeAllFiles() {
+		utils.IO.initLogs();
+		InputConfig.saveConfig();
+		Text.createAllLanguageFiles();
+		utils.Settings.saveSettings();
+		java.io.File imageDir = new java.io.File(utils.Constants.IMAGE_DIRECTORY);
+		if (!imageDir.exists())
+			imageDir.mkdir();
+	}
+
+	@Override
+	public void start(Stage arg0) throws Exception {
+		Application.launch();
+	}
 }

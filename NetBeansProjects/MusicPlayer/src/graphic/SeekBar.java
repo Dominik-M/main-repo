@@ -1,131 +1,155 @@
-/*
- * Copyright (C) 2015 Dominik Messerschmidt <dominik_messerschmidt@yahoo.de>
+/**
+ * Copyright (C) 2016 Dominik Messerschmidt
+ * <dominik.messerschmidt@continental-corporation.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package graphic;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import javax.swing.JProgressBar;
+import sound.Sound;
+import utils.Settings;
 
 /**
  *
- * @author Dominik Messerschmidt <dominik_messerschmidt@yahoo.de>
+ * @author Dominik Messerschmidt
+ * <dominik.messerschmidt@continental-corporation.com> Created 15.03.2016
  */
-public class SeekBar extends javax.swing.JComponent implements LineListener{
-    private int min, max, value;
-    private Color barColor;
-    private final javax.swing.Timer clock = new javax.swing.Timer(100, new java.awt.event.ActionListener() {
+public class SeekBar extends JProgressBar implements MouseListener, MouseMotionListener,
+        ActionListener
+{
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            setValue((int)(sound.Sound.getMicrosecondPosition() * max / sound.Sound.getMicrosecondLength()));
-        }
-    });
-    
+    private static final long serialVersionUID = 3834307926191037165L;
+
+    private final javax.swing.Timer refreshTimer = new javax.swing.Timer(
+            utils.Constants.REFRESH_DELAY, this);
+
     public SeekBar()
     {
-        min = 0;
-        max = 100;
-        value = 0;
-        barColor = Color.cyan;
-        setPreferredSize(new java.awt.Dimension(200,30));
-        sound.Sound.addLineListener(this);
+        this.setBackground(utils.Settings.settings.componentColor);
+        this.setForeground(Settings.settings.fontColor);
+        this.setStringPainted(true);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
     }
-    
-    public void setColor(Color c)
-    {
-        barColor = c;
-        repaint();
-    }
-    
-    public void setValue(int val)
-    {
-        if(val <= max && val >= min)
-            value = val;
-        repaint();
-    }
-    
-    public int getValue()
-    {
-        return value;
-    }
-    
-    public boolean setMinimum(int minValue)
-    {
-        if(min >= 0 && min <= max)
-        {
-            min = minValue;
-            if(value < min)
-                setValue(min);
-            return true;
-        }
-        else return false;
-    }
-    
-    public int getMinimum()
-    {
-        return min;
-    }
-    
-    public boolean setMaximum(int maxValue)
-    {
-        if(max >= 0 && max >= min)
-        {
-            max = maxValue;
-            if(value > max)
-                setValue(max);
-            return true;
-        }
-        else return false;
-    }
-    
-    public int getMaximum()
-    {
-        return max;
-    }
-    
+
     @Override
     public void paintComponent(Graphics g)
     {
-        int barHeight = this.getHeight()/2;
-        int barWidth = this.getWidth() * value / (max-min);
-        g.setColor(Color.white);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(barColor);
-        g.fillRect(0, 0, barWidth, barHeight);
-        g.setColor(barColor.darker());
-        g.fillOval(barWidth-barHeight/2, 0, barHeight, barHeight);
-        g.setColor(Color.black);
-        g.drawRect(0, 1, getWidth()-1, barHeight);
-        //g.drawString(value+" / "+max, 0, this.getHeight());
-        g.drawString(value/60+":"+value%60+" / "+max/60+":"+max%60, 0, this.getHeight());
-        g.drawOval(barWidth-barHeight/2, 0, barHeight, barHeight);
+        this.setString(millisToTimeString(this.getValue()) + " / "
+                + millisToTimeString(this.getMaximum()));
+        super.paintComponent(g);
+        // int size = this.getHeight();
+        // g.setColor(utils.Settings.settings.componentColor.brighter());
+        // g.fillOval(millisToCoordinate(getValue()) - size / 2, 0, size, size);
+    }
+
+    public String millisToTimeString(int millis)
+    {
+        millis /= 1000;
+        if (millis % 60 < 10)
+        {
+            return millis / 60 + ":0" + millis % 60;
+        }
+        return millis / 60 + ":" + millis % 60;
+    }
+
+    public int millisToCoordinate(int millis)
+    {
+        return getWidth() * millis / getMaximum();
+    }
+
+    public int coordinateToMillis(int x)
+    {
+        return getMaximum() * x / getWidth();
+    }
+
+    public void setRefreshTimerPaused(boolean paused)
+    {
+        if (refreshTimer.isRunning() && paused)
+        {
+            refreshTimer.stop();
+        }
+        else if (!refreshTimer.isRunning() && !paused)
+        {
+            refreshTimer.start();
+        }
     }
 
     @Override
-    public void update(LineEvent event) {
-        if(event.getType() == LineEvent.Type.STOP)
+    public void setValue(int value)
+    {
+        if (value >= 0)
         {
-            //clock.stop();
+            super.setValue(value);
+            Sound.setMicrosecondPosition(value * 1000L);
         }
-        else if(event.getType() == LineEvent.Type.START)
-        {
-            clock.start();
-        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent arg0)
+    {
+        setValue(this.coordinateToMillis(arg0.getX()));
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent arg0)
+    {
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent arg0)
+    {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent arg0)
+    {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0)
+    {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent arg0)
+    {
+        setValue(this.coordinateToMillis(arg0.getX()));
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0)
+    {
+        Sound.setMicrosecondPosition(getValue() * 1000);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent arg0)
+    {
+        super.setValue((int) (Sound.getMillisecondPosition()));
+    }
+
+    public void setColor(Color blue)
+    {
+        super.setForeground(blue);
     }
 }

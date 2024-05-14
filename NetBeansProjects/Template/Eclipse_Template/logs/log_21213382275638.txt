@@ -1,4 +1,0 @@
-Logging started
-saved config file
-succesfully saved Settings File
-Hello World

@@ -1,2 +1,0 @@
-panzers.Tank
-panzers.Plane

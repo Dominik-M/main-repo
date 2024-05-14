@@ -1,2 +1,0 @@
-tools.ObjektPanel
-tools.ObjektProperties

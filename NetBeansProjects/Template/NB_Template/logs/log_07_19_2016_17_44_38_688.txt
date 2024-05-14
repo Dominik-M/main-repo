@@ -1,8 +1,0 @@
-07_19_2016_17:44:38:710>> [D] Logging started
-07_19_2016_17:44:38:810>> [D] saved config file
-07_19_2016_17:44:38:826>> [D] saved Settings File
-07_19_2016_17:44:39:589>> [D] ProgressPanel - Text changed to: Searching Soundfiles...
-07_19_2016_17:44:39:589>> [D] found soundfiles:
-07_19_2016_17:44:39:589>> [D] ProgressPanel - Text changed to: Loading Sounds...
-07_19_2016_17:44:39:589>> [D] ProgressPanel - Text changed to: Ready
-07_19_2016_17:44:39:627>> [I] Hello World

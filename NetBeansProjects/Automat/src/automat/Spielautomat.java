@@ -13,60 +13,62 @@ import javax.swing.Timer;
  *
  * @author Dundun
  */
-public class Spielautomat extends javax.swing.JFrame implements ActionListener{
+public class Spielautomat extends javax.swing.JFrame implements ActionListener {
+
     private Timer t;
     // Anzahl drehender Räder
     private int spinning;
-    public final ImageIcon[] ICONS={
-      new javax.swing.ImageIcon(getClass().getResource("/automat/img/schiggyIcon.png")),
-      new javax.swing.ImageIcon(getClass().getResource("/automat/img/glumandaIcon.png")),
-      new javax.swing.ImageIcon(getClass().getResource("/automat/img/bisasamIcon.png")),
-      new javax.swing.ImageIcon(getClass().getResource("/automat/img/taubsiIcon.png")),
-      new javax.swing.ImageIcon(getClass().getResource("/automat/img/rattfratzIcon.png")),
-      new javax.swing.ImageIcon(getClass().getResource("/automat/img/kirsche.png")),
-      new javax.swing.ImageIcon(getClass().getResource("/automat/img/sonne.png")),
-      new javax.swing.ImageIcon(getClass().getResource("/automat/img/7.png"))
+    public static final int TIMER_DELAY = 1;
+    public final ImageIcon[] ICONS = {
+        new javax.swing.ImageIcon(getClass().getResource("/automat/img/schiggyIcon.png")),
+        new javax.swing.ImageIcon(getClass().getResource("/automat/img/glumandaIcon.png")),
+        new javax.swing.ImageIcon(getClass().getResource("/automat/img/bisasamIcon.png")),
+        new javax.swing.ImageIcon(getClass().getResource("/automat/img/taubsiIcon.png")),
+        new javax.swing.ImageIcon(getClass().getResource("/automat/img/rattfratzIcon.png")),
+        new javax.swing.ImageIcon(getClass().getResource("/automat/img/kirsche.png")),
+        new javax.swing.ImageIcon(getClass().getResource("/automat/img/sonne.png")),
+        new javax.swing.ImageIcon(getClass().getResource("/automat/img/7.png"))
     };
-    public final int[] WINSUMS={25,25,25,15,10,12,50,100};
-    public final int[] INDICES1={0,7,1,2,3,4,5,6};
-    public final int[] INDICES2={6,7,3,4,2,1,0,4,3,5,3};
-    public final int[] INDICES3={4,7,5,4,3,0,2,3,4,6,3,4,2,1};
-    public final int BILDERANZ=3;
-        // Indices der Räder
-    private final int[] RAD1=new int[BILDERANZ];
-    private final int[] RAD2=new int[BILDERANZ];
-    private final int[] RAD3=new int[BILDERANZ];
-    private int geld=100;
-    private int freispiele=0;
+    public final int[] WINSUMS = {25, 25, 25, 15, 10, 12, 50, 100};
+    public final int[] INDICES1 = {0, 7, 1, 2, 3, 4, 5, 6};
+    public final int[] INDICES2 = {6, 7, 3, 4, 2, 1, 0, 4, 3, 5, 3};
+    public final int[] INDICES3 = {4, 7, 5, 4, 3, 0, 2, 3, 4, 6, 3, 4, 2, 1};
+    public final int BILDERANZ = 3;
+    // Indices der Räder
+    private final int[] RAD1 = new int[BILDERANZ];
+    private final int[] RAD2 = new int[BILDERANZ];
+    private final int[] RAD3 = new int[BILDERANZ];
+    private int geld = 100;
+    private int freispiele = 0;
 
     /**
      * Creates new form Spielautomat
      */
     public Spielautomat() {
         initComponents();
-        t=new Timer(0,this);
-        t.setDelay(50);
-        spinning=3;
-        for(int i=0;i<BILDERANZ;i++){
-          RAD1[i]=i;
-          RAD2[i]=i;
-          RAD3[i]=i;
+        t = new Timer(0, this);
+        t.setDelay(TIMER_DELAY);
+        spinning = 3;
+        for (int i = 0; i < BILDERANZ; i++) {
+            RAD1[i] = i;
+            RAD2[i] = i;
+            RAD3[i] = i;
         }
-        konto.setText("Konto: "+geld);
+        konto.setText("Konto: " + geld);
         paintLabels();
         setMinimumSize(this.getSize());
     }
-    
-    private void paintLabels(){
-      bild1.setIcon(getIconAt(INDICES1[RAD1[2]]));
-      bild2.setIcon(getIconAt(INDICES1[RAD1[1]]));
-      bild3.setIcon(getIconAt(INDICES1[RAD1[0]]));
-      bild4.setIcon(getIconAt(INDICES2[RAD2[2]]));
-      bild5.setIcon(getIconAt(INDICES2[RAD2[1]]));
-      bild6.setIcon(getIconAt(INDICES2[RAD2[0]]));
-      bild7.setIcon(getIconAt(INDICES3[RAD3[2]]));
-      bild8.setIcon(getIconAt(INDICES3[RAD3[1]]));
-      bild9.setIcon(getIconAt(INDICES3[RAD3[0]]));
+
+    private void paintLabels() {
+        bild1.setIcon(getIconAt(INDICES1[RAD1[2]]));
+        bild2.setIcon(getIconAt(INDICES1[RAD1[1]]));
+        bild3.setIcon(getIconAt(INDICES1[RAD1[0]]));
+        bild4.setIcon(getIconAt(INDICES2[RAD2[2]]));
+        bild5.setIcon(getIconAt(INDICES2[RAD2[1]]));
+        bild6.setIcon(getIconAt(INDICES2[RAD2[0]]));
+        bild7.setIcon(getIconAt(INDICES3[RAD3[2]]));
+        bild8.setIcon(getIconAt(INDICES3[RAD3[1]]));
+        bild9.setIcon(getIconAt(INDICES3[RAD3[0]]));
     }
 
     /**
@@ -265,45 +267,45 @@ public class Spielautomat extends javax.swing.JFrame implements ActionListener{
     }// </editor-fold>//GEN-END:initComponents
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-      einsatz.setEnabled(!t.isRunning()&&freispiele==0);
-      if(t.isRunning()){
-        spinning--;
-        if(spinning==0){
-          t.stop();
-          int gewinn=checkWin();
-          if(gewinn>0){
-            win.setForeground(new java.awt.Color(0, 204, 0));
-            win.setText("! WINNER !");
-            gewinn=gewinn*(int)einsatz.getValue()/5;
-            geld+=gewinn;
-            lastWin.setText("letzter Gewinn: "+gewinn);
-          }else{
-            win.setForeground(new java.awt.Color(205,0, 0));
-            win.setText("Loser");
-          }
-          start.setText("OK");
-        }
-      }
-      else{
-        if(spinning!=3){
-          spinning=3;
-          win.setText("");
-          start.setText("START");
-        }else{
-          if(geld<(int)einsatz.getValue()){
-            System.out.println("Nicht genug Geld");
-          }else{
-            if(freispiele>0){
-              freispiele--;
-              freie.setText("Freispiele: "+freispiele);
+        einsatz.setEnabled(!t.isRunning() && freispiele == 0);
+        if (t.isRunning()) {
+            spinning--;
+            if (spinning == 0) {
+                t.stop();
+                int gewinn = checkWin();
+                if (gewinn > 0) {
+                    win.setForeground(new java.awt.Color(0, 204, 0));
+                    win.setText("! WINNER !");
+                    gewinn = gewinn * (int) einsatz.getValue() / 5;
+                    geld += gewinn;
+                    lastWin.setText("letzter Gewinn: " + gewinn);
+                } else {
+                    win.setForeground(new java.awt.Color(205, 0, 0));
+                    win.setText("Loser");
+                }
+                start.setText("OK");
             }
-            else geld-=(int)einsatz.getValue();
-            t.start();
-            start.setText("STOP");
-          }
+        } else {
+            if (spinning != 3) {
+                spinning = 3;
+                win.setText("");
+                start.setText("START");
+            } else {
+                if (geld < (int) einsatz.getValue()) {
+                    System.out.println("Nicht genug Geld");
+                } else {
+                    if (freispiele > 0) {
+                        freispiele--;
+                        freie.setText("Freispiele: " + freispiele);
+                    } else {
+                        geld -= (int) einsatz.getValue();
+                    }
+                    t.start();
+                    start.setText("STOP");
+                }
+            }
         }
-      }
-      konto.setText("Konto: "+geld);
+        konto.setText("Konto: " + geld);
     }//GEN-LAST:event_startActionPerformed
 
     /**
@@ -313,7 +315,7 @@ public class Spielautomat extends javax.swing.JFrame implements ActionListener{
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -363,56 +365,71 @@ public class Spielautomat extends javax.swing.JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if(spinning>=1){
-        for(int i=0;i<RAD3.length;i++){
-          RAD3[i]++;
-          if(RAD3[i]>=INDICES3.length)RAD3[i]=0;
-        }
-      }
-      if(spinning>=2){
-        for(int i=0;i<RAD2.length;i++){
-          RAD2[i]++;
-          if(RAD2[i]>=INDICES2.length)RAD2[i]=0;
-        }
-      }
-      if(spinning==3){
-        for(int i=0;i<RAD1.length;i++){
-          RAD1[i]++;
-          if(RAD1[i]>=INDICES1.length)RAD1[i]=0;
-        }
-      }
-      paintLabels();
-    }
-    
-    public ImageIcon getIconAt(int i){
-      return ICONS[i];
-    }
-    
-    public int checkWin(){
-      int winsum=0;
-      //horiontal
-      for(int i=0;i<BILDERANZ;i++){
-        if(INDICES1[RAD1[i]]==INDICES2[RAD2[i]]&&INDICES1[RAD1[i]]==INDICES3[RAD3[i]]){
-            if(INDICES1[RAD1[i]]==6){
-                freispiele+=10;
-                freie.setText("Freispiele: "+freispiele);
+        if (spinning >= 1) {
+            for (int i = 0; i < RAD3.length; i++) {
+                RAD3[i]++;
+                if (RAD3[i] >= INDICES3.length) {
+                    RAD3[i] = 0;
+                }
             }
-            else winsum+=WINSUMS[INDICES1[RAD1[i]]];
         }
-      }
-      // diagonal
-      if(INDICES1[RAD1[0]]==INDICES2[RAD2[1]]&&INDICES2[RAD2[1]]==INDICES3[RAD3[2]])
-          winsum+=WINSUMS[INDICES1[RAD1[0]]];
-      if(INDICES1[RAD1[2]]==INDICES2[RAD2[1]]&&INDICES2[RAD2[1]]==INDICES3[RAD3[0]])
-          winsum+=WINSUMS[INDICES1[RAD1[2]]];
-      // kirschen
-      if(winsum==0){
-        for(int i=0;i<BILDERANZ;i++){
-          if(INDICES1[RAD1[i]]==5) winsum+=WINSUMS[INDICES1[RAD1[i]]]/4;
-          if(INDICES2[RAD2[i]]==5) winsum+=WINSUMS[INDICES2[RAD2[i]]]/4;
-          if(INDICES3[RAD3[i]]==5) winsum+=WINSUMS[INDICES3[RAD3[i]]]/4;
+        if (spinning >= 2) {
+            for (int i = 0; i < RAD2.length; i++) {
+                RAD2[i]++;
+                if (RAD2[i] >= INDICES2.length) {
+                    RAD2[i] = 0;
+                }
+            }
         }
-      }
-      return winsum;
+        if (spinning == 3) {
+            for (int i = 0; i < RAD1.length; i++) {
+                RAD1[i]++;
+                if (RAD1[i] >= INDICES1.length) {
+                    RAD1[i] = 0;
+                }
+            }
+        }
+        paintLabels();
+    }
+
+    public ImageIcon getIconAt(int i) {
+        return ICONS[i];
+    }
+
+    public int checkWin() {
+        int winsum = 0;
+        //horiontal
+        for (int i = 0; i < BILDERANZ; i++) {
+            if (INDICES1[RAD1[i]] == INDICES2[RAD2[i]] && INDICES1[RAD1[i]] == INDICES3[RAD3[i]]) {
+                if (INDICES1[RAD1[i]] == 6) {
+                    freispiele += 10;
+                    freie.setText("Freispiele: " + freispiele);
+                } else {
+                    winsum += WINSUMS[INDICES1[RAD1[i]]];
+                }
+            }
+        }
+        // diagonal
+        if (INDICES1[RAD1[0]] == INDICES2[RAD2[1]] && INDICES2[RAD2[1]] == INDICES3[RAD3[2]]) {
+            winsum += WINSUMS[INDICES1[RAD1[0]]];
+        }
+        if (INDICES1[RAD1[2]] == INDICES2[RAD2[1]] && INDICES2[RAD2[1]] == INDICES3[RAD3[0]]) {
+            winsum += WINSUMS[INDICES1[RAD1[2]]];
+        }
+        // kirschen
+        if (winsum == 0) {
+            for (int i = 0; i < BILDERANZ; i++) {
+                if (INDICES1[RAD1[i]] == 5) {
+                    winsum += WINSUMS[INDICES1[RAD1[i]]] / 4;
+                }
+                if (INDICES2[RAD2[i]] == 5) {
+                    winsum += WINSUMS[INDICES2[RAD2[i]]] / 4;
+                }
+                if (INDICES3[RAD3[i]] == 5) {
+                    winsum += WINSUMS[INDICES3[RAD3[i]]] / 4;
+                }
+            }
+        }
+        return winsum;
     }
 }

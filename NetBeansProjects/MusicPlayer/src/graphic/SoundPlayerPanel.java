@@ -18,40 +18,57 @@ package graphic;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
+import java.io.File;
+import sound.LineListener;
 
 /**
  *
  * @author Dominik Messerschmidt <dominik_messerschmidt@yahoo.de>
  */
-public class SoundPlayerPanel extends javax.swing.JPanel implements java.awt.event.MouseMotionListener, java.awt.event.MouseListener{
+public class SoundPlayerPanel extends javax.swing.JPanel implements java.awt.event.MouseMotionListener, java.awt.event.MouseListener
+{
+
     private int selIndex;
-    
+
     /**
      * Creates new form SoundPlayerPanel
      */
-    public SoundPlayerPanel() {
+    public SoundPlayerPanel()
+    {
         initComponents();
         seekBar.addMouseListener(this);
         seekBar.addMouseMotionListener(this);
-        cliplist.setModel(new javax.swing.AbstractListModel() {
-            public int getSize() { return sound.Sound.getSoundfilesLength(); }
-            public Object getElementAt(int i) { return sound.Sound.getSoundFileName(i); }
+        cliplist.setModel(new javax.swing.AbstractListModel()
+        {
+            public int getSize()
+            {
+                return sound.Sound.getSoundfilesLength();
+            }
+
+            public Object getElementAt(int i)
+            {
+                return sound.Sound.getSoundFileName(i);
+            }
         });
-        sound.Sound.addLineListener(new LineListener() {
+        sound.Sound.addLineListener(new LineListener()
+        {
 
             @Override
-            public void update(LineEvent event) {
-                if(event.getType() == LineEvent.Type.STOP){
+            public void update(LineEvent event)
+            {
+                if (event == LineEvent.STOP)
+                {
                     play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/play.png")));
-                    if(seekBar.getValue() == seekBar.getMaximum())
+                    if (seekBar.getValue() == seekBar.getMaximum())
                     {
                         sound.Sound.setMicrosecondPosition(0);
                         seekBar.setValue(0);
                     }
-                }else if(event.getType() == LineEvent.Type.START)
+                }
+                else if (event == LineEvent.START)
+                {
                     play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pause.png")));
+                }
             }
         });
     }
@@ -154,84 +171,106 @@ public class SoundPlayerPanel extends javax.swing.JPanel implements java.awt.eve
     }// </editor-fold>//GEN-END:initComponents
 
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
-        if(sound.Sound.isPlaying())
+        if (sound.Sound.isPlaying())
         {
-            sound.Sound.stopSound();
+            sound.Sound.stop();
         }
         else
         {
-            if(selIndex == cliplist.getSelectedIndex())
-                sound.Sound.startSound();
-            else playSelected();
+            if (selIndex == cliplist.getSelectedIndex())
+            {
+                sound.Sound.play();
+            }
+            else
+            {
+                playSelected();
+            }
         }
     }//GEN-LAST:event_playActionPerformed
 
     private void cliplistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cliplistMouseClicked
-        if(evt.getClickCount() > 1)
+        if (evt.getClickCount() > 1)
+        {
             playSelected();
+        }
     }//GEN-LAST:event_cliplistMouseClicked
 
     private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
-        int index = cliplist.getSelectedIndex()+1;
-        if(index >= sound.Sound.getSoundfilesLength())
+        int index = cliplist.getSelectedIndex() + 1;
+        if (index >= sound.Sound.getSoundfilesLength())
+        {
             index = 0;
+        }
         cliplist.setSelectedIndex(index);
         skip();
     }//GEN-LAST:event_nextActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
-        int index = cliplist.getSelectedIndex()-1;
-        if(index < 0)
-            index = sound.Sound.getSoundfilesLength()-1;
+        int index = cliplist.getSelectedIndex() - 1;
+        if (index < 0)
+        {
+            index = sound.Sound.getSoundfilesLength() - 1;
+        }
         cliplist.setSelectedIndex(index);
         skip();
     }//GEN-LAST:event_backActionPerformed
 
     private void skip()
     {
-        sound.Sound.stopSound();
+        sound.Sound.stop();
         playSelected();
     }
-    
+
     public void playSelected()
     {
         int index = cliplist.getSelectedIndex();
-        if(index >=0 && index <= sound.Sound.getSoundfilesLength())
+        if (index >= 0 && index <= sound.Sound.getSoundfilesLength())
         {
-            sound.Sound.playSoundClip(index);
+            File soundfile = sound.Sound.getSoundFiles()[index];
+            sound.Sound.playSoundClip(soundfile, 0);
             selIndex = index;
-            seekBar.setMaximum((int) (sound.Sound.getMicrosecondLength()/1000000));
+            seekBar.setMaximum((int) (sound.Sound.getMicrosecondLength() / 1000000));
         }
     }
-    
-        @Override
-    public void mouseDragged(MouseEvent e) {
-        seekBar.setValue(e.getX()*seekBar.getMaximum()/seekBar.getWidth());
+
+    @Override
+    public void mouseDragged(MouseEvent e)
+    {
+        seekBar.setValue(e.getX() * seekBar.getMaximum() / seekBar.getWidth());
         sound.Sound.setMicrosecondPosition(sound.Sound.getMicrosecondLength() * seekBar.getValue() / seekBar.getMaximum());
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e)
+    {
+    }
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e)
+    {
+    }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        seekBar.setValue(e.getX()*seekBar.getMaximum()/seekBar.getWidth());
+    public void mousePressed(MouseEvent e)
+    {
+        seekBar.setValue(e.getX() * seekBar.getMaximum() / seekBar.getWidth());
         sound.Sound.setMicrosecondPosition(sound.Sound.getMicrosecondLength() * seekBar.getValue() / seekBar.getMaximum());
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e)
+    {
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent e)
+    {
         seekBar.setColor(Color.blue);
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent e)
+    {
         seekBar.setColor(Color.cyan);
     }
 

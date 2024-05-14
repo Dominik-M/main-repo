@@ -30,37 +30,37 @@ import javax.swing.Timer;
  *
  * @author Dominik Messerschmidt
  */
-public class HexaPanel extends JPanel
-{
+public class HexaPanel extends JPanel {
 
     private HexaGOL game;
-    private int spot = 32, stencil = 2;
+    private final int SPOT = 32, STENCIL = 2;
     private int mouseX, mouseY;
 
-    private final MouseAdapter mouseEventHandler = new MouseAdapter()
-    {
+    private final MouseAdapter mouseEventHandler = new MouseAdapter() {
         @Override
-        public void mouseMoved(MouseEvent me)
-        {
+        public void mouseMoved(MouseEvent me) {
             mouseX = me.getX();
             mouseY = me.getY();
+            repaint();
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            System.out.println("MouseClicked at " + me.getX() + " | " + me.getY());
+            repaint();
         }
 
     };
 
-    public HexaPanel()
-    {
+    public HexaPanel() {
         this(new HexaGOL(9, 23));
     }
 
-    public HexaPanel(HexaGOL hgol)
-    {
+    public HexaPanel(HexaGOL hgol) {
         game = hgol;
-        new Timer(20, new ActionListener()
-        {
+        new Timer(20, new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 repaint();
             }
         }).start();
@@ -69,46 +69,35 @@ public class HexaPanel extends JPanel
         this.addMouseListener(mouseEventHandler);
     }
 
-    public HexaGOL getGame()
-    {
+    public HexaGOL getGame() {
         return game;
     }
 
-    public void setGame(HexaGOL game)
-    {
+    public void setGame(HexaGOL game) {
         this.game = game;
     }
 
     @Override
-    public Dimension getPreferredSize()
-    {
-        return new Dimension(3 * game.WIDTH * spot / 2 + spot / 4, game.HEIGHT * spot / 2 + spot / 2);
+    public Dimension getPreferredSize() {
+        return new Dimension(3 * game.WIDTH * SPOT / 2 + SPOT / 4, game.HEIGHT * SPOT / 2 + SPOT / 2);
     }
 
-    public void drawHexagon(Graphics g, int x, int y, int width, int height)
-    {
-        int[] ints = new int[]
-        {
+    public void drawHexagon(Graphics g, int x, int y, int width, int height) {
+        int[] ints = new int[]{
             x, x + width / 4, x + 3 * width / 4, x + width, x + 3 * width / 4, x + width / 4
         };
-        int[] ints1 = new int[]
-        {
+        int[] ints1 = new int[]{
             y + height / 2, y, y, y + height / 2, y + height, y + height
         };
 
         g.fillPolygon(ints, ints1, 6);
     }
 
-    public Color getStateColor(CellState state)
-    {
-        if (null == state)
-        {
+    public Color getStateColor(CellState state) {
+        if (null == state) {
             return Color.RED;
-        }
-        else
-        {
-            switch (state)
-            {
+        } else {
+            switch (state) {
                 case ALIVE:
                     return Color.GREEN;
 
@@ -120,51 +109,44 @@ public class HexaPanel extends JPanel
         }
     }
 
-    public int getIndexX(int screenX, int screenY)
-    {
+    public int getIndexX(int screenX, int screenY) {
         int y = getIndexY(screenY);
-        return (2 * screenX - (y % 2 == 0 ? 0 : 3 * spot / 4)) / 3 * spot;
+        return (2 * screenX - (y % 2 == 0 ? 0 : 3 * SPOT / 4)) / 3 * SPOT;
     }
 
-    public int getIndexY(int screenY)
-    {
-        return 2 * screenY / spot;
+    public int getIndexY(int screenY) {
+        return 2 * screenY / SPOT;
     }
 
-    public int getScreenX(int indexX, int indexY)
-    {
-        return 3 * indexX * spot / 2 + (indexY % 2 == 0 ? 0 : 3 * spot / 4);
+    public int getScreenX(int indexX, int indexY) {
+        return 3 * indexX * SPOT / 2 + (indexY % 2 == 0 ? 0 : 3 * SPOT / 4);
     }
 
-    public int getScreenY(int indexY)
-    {
-        return indexY * spot / 2;
+    public int getScreenY(int indexY) {
+        return indexY * SPOT / 2;
     }
 
     @Override
-    protected void paintComponent(Graphics g)
-    {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Dimension d = getPreferredSize();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, d.width, d.height);
-        for (int x = 0; x < game.WIDTH; x++)
-        {
-            for (int y = 0; y < game.HEIGHT; y++)
-            {
+        for (int x = 0; x < game.WIDTH; x++) {
+            for (int y = 0; y < game.HEIGHT; y++) {
                 CellState state = game.getCellState(x, y);
                 int screenX = getScreenX(x, y);
                 int screenY = getScreenY(y);
                 g.setColor(Color.BLACK);
-                drawHexagon(g, screenX, screenY, spot, spot);
+                drawHexagon(g, screenX, screenY, SPOT, SPOT);
                 g.setColor(getStateColor(state));
-                drawHexagon(g, screenX + stencil, screenY + stencil, spot - 2 * stencil, spot - 2 * stencil);
+                drawHexagon(g, screenX + STENCIL, screenY + STENCIL, SPOT - 2 * STENCIL, SPOT - 2 * STENCIL);
             }
         }
 
         g.setColor(Color.YELLOW);
         int screenX = getScreenX(getIndexX(mouseX, mouseY), getIndexY(mouseY));
         int screenY = getScreenY(getIndexY(mouseY));
-        drawHexagon(g, screenX + stencil, screenY + stencil, spot - 2 * stencil, spot - 2 * stencil);
+        drawHexagon(g, screenX + STENCIL, screenY + STENCIL, SPOT - 2 * STENCIL, SPOT - 2 * STENCIL);
     }
 }

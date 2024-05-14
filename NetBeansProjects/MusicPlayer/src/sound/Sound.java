@@ -1,205 +1,365 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright (C) 2016 Dominik Messerschmidt
+ * <dominik.messerschmidt@continental-corporation.com>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package sound;
 
 import graphic.ProgressPanel;
 import java.io.File;
-import java.net.URL;
+import java.io.FileFilter;
 import java.util.LinkedList;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
+import sound.LineListener.LineEvent;
+import utils.IO;
+import utils.Settings;
 
 /**
+ * Created 10.03.2016
  *
- * @author Dominik
+ * @author Dominik Messerschmidt
+ * (dominik.messerschmidt@continental-corporation.com)
+ *
  */
-public class Sound{
-    private static final LinkedList<String> soundfiles = new LinkedList<>();
-    private static final LinkedList<Clip> clips = new LinkedList<>();
-    private static Clip currentClip;
-    private static boolean soundOn=true;
+public class Sound
+{
+
+    public static final File SOUNDFILE = new File(utils.Constants.SOUND_DIRECTORY);
+    private static final utils.Dictionary<File, Soundclip> soundclips = new utils.Dictionary<>();
+    private static Soundclip currentClip;
     private static final LinkedList<LineListener> listener = new LinkedList<>();
-    
-    public static String getSoundFileName(int i)
+    static final LineListener lineListener = new LineListener()
     {
-        return soundfiles.get(i);
-    }
-    
-    public static int getSoundfilesLength()
-    {
-        return soundfiles.size();
-    }
-    
-    /**
-     * Adds a Soundclip to the cliplist.
-     * @param f Soundfile to add
-     * @return index of the added Soundclip in the list or -1 if there was an error.
-     */
-    public static int addSoundFile(File f)
-    {
-        Clip c = initClip(f);
-        if(c != null)
+
+        @Override
+        public void update(LineEvent event)
         {
-            soundfiles.add(f.getName());
-            clips.add(c);
-            return clips.size()-1;
+            for (LineListener l : listener)
+            {
+                l.update(event);
+            }
         }
-        return -1;
+    };
+    static final javax.sound.sampled.LineListener sampledLineListener = new javax.sound.sampled.LineListener()
+    {
+
+        @Override
+        public void update(javax.sound.sampled.LineEvent event)
+        {
+            if (event.getType() == javax.sound.sampled.LineEvent.Type.START)
+            {
+                for (LineListener l : listener)
+                {
+                    l.update(LineEvent.START);
+                }
+            }
+            else if (event.getType() == javax.sound.sampled.LineEvent.Type.STOP)
+            {
+                for (LineListener l : listener)
+                {
+                    l.update(LineEvent.STOP);
+                }
+            }
+        }
+    };
+
+    public static File[] getSoundFiles()
+    {
+        return soundclips.getKeys();
     }
-    
+
+    public static boolean containsSoundfile(File f)
+    {
+        return soundclips.containsKey(f);
+    }
+
+    /**
+     * Initializes a Soundclip and adds it to the cliplist.
+     *
+     * @param file the Soundfile to add
+     * @return true if the soundfile was added to the list or has already been
+     * contained.
+     */
+    public static boolean addSoundFile(File file)
+    {
+        if (soundclips.containsKey(file))
+        {
+            return true;
+        }
+        Soundclip c = initClip(file);
+        if (c != null)
+        {
+            if (soundclips.add(file, c))
+            {
+                IO.println("initialized soundfile: " + file.getName(), IO.MessageType.DEBUG);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void addLineListener(LineListener ll)
     {
         listener.add(ll);
     }
-    
+
     public static boolean removeLineListener(LineListener ll)
     {
         return listener.remove(ll);
     }
-    
+
     public static boolean isPlaying()
     {
         return (currentClip != null) && (currentClip.isRunning());
     }
-    
-    public static long getMicrosecondPosition()
+
+    public static long getMillisecondPosition()
     {
-        if(currentClip != null)
-            return currentClip.getMicrosecondPosition();
+        if (currentClip != null)
+        {
+            return currentClip.getMillisecondPosition();
+        }
         return 0;
     }
-    
+
     public static void setMicrosecondPosition(long mys)
     {
-        if(currentClip != null)
-            currentClip.setMicrosecondPosition(mys);
-    }
-    
-    public static long getMicrosecondLength()
-    {
-        if(currentClip != null)
-            return currentClip.getMicrosecondLength();
-        else return 1;
-    }
-    
-    public static boolean isSoundOn()
-    {
-        return soundOn;
-    }
-    
-    public static void setSoundOn(boolean on)
-    {
-        soundOn = on;
-        if(currentClip != null)
+        if (currentClip != null)
         {
-            if(!soundOn)stopSound();
-            else startSound();
+            currentClip.setMicrosecondPosition(mys);
+            IO.println("sound microsecond position set to " + mys, IO.MessageType.DEBUG);
         }
     }
-    
-    public static boolean startSound()
+
+    public static long getMicrosecondLength()
     {
-        if(currentClip != null && soundOn)
+        if (currentClip != null)
+        {
+            return currentClip.getMicrosecondLength();
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    public static boolean isSoundOn()
+    {
+        return Settings.settings.soundOn;
+    }
+
+    public static void setSoundOn(boolean on)
+    {
+        Settings.settings.soundOn = on;
+        if (currentClip != null)
+        {
+            if (!isSoundOn())
+            {
+                pause();
+            }
+            else
+            {
+                play();
+            }
+        }
+    }
+
+    public static boolean play()
+    {
+        if (currentClip != null && isSoundOn())
+        {
             currentClip.start();
-        else return false;
+        }
+        else
+        {
+            return false;
+        }
         return true;
     }
-    
-    public static void stopSound()
+
+    public static void pause()
     {
-        if(currentClip != null)
+        if (currentClip != null)
+        {
+            currentClip.pause();
+        }
+    }
+
+    public static void stop()
+    {
+        if (currentClip != null)
+        {
             currentClip.stop();
+        }
     }
-    
-    public static boolean playSoundClip(int index)
+
+    /**
+     * Plays the soundclip with the specified name.
+     *
+     * @param file the soundfile.
+     * @param loops number of loops. If less than 0 it loops continuously.
+     * @return true if the soundfile was loaded succesfully, false otherwise.
+     */
+    public static boolean playSoundClip(File file, int loops)
     {
-        return playSoundClip(index, 1);
-    }
-    
-    public static boolean playSoundClip(int index, int loops) {
-        try{
-            Clip soundclip = clips.get(index);
-            if(currentClip != null) 
+        try
+        {
+            Soundclip soundclip = soundclips.get(file);
+            if (currentClip != null)
+            {
                 currentClip.stop();
+            }
             currentClip = soundclip;
             soundclip.stop();
-            soundclip.setFramePosition(0);
-            if(soundOn)
+            if (isSoundOn())
             {
-                if(loops > 1)
+                if (loops > 1)
+                {
                     soundclip.loop(loops);
-                else if(loops < 0) soundclip.loop(Clip.LOOP_CONTINUOUSLY);
-                else soundclip.start();
+                }
+                else if (loops < 0)
+                {
+                    soundclip.loop(Clip.LOOP_CONTINUOUSLY);
+                }
+                else
+                {
+                    soundclip.start();
+                }
+                IO.println("Now playing sounfile: " + file.getName(), IO.MessageType.DEBUG);
             }
-        }catch(Exception e){ 
-            System.out.println("Sound Fehler:#"+e.toString());
-            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            IO.println("Sound error: " + e.toString(), IO.MessageType.ERROR);
+            if (utils.Constants.DEBUG_ENABLE)
+            {
+                e.printStackTrace();
+            }
             return false;
-        }   
+        }
         return true;
     }
-    
-    public static void initClips()
+
+    /**
+     * Initializes all compatible soundfiles in the specified sound directory.
+     * Supported soundfile formats are .wav and .mid. Announces the
+     * ProgressPanel to display the progress.
+     */
+    public static File[] initClips()
     {
         ProgressPanel.setProgress(0);
-        ProgressPanel.setText("Searching sound files...");
-        File file = new File(Sound.class.getResource("/sound").getFile());
-        File[] files = file.listFiles(new java.io.FileFilter() {
+        ProgressPanel.setText("Searching Soundfiles...");
+        File[] files = listSoundFilesInDirectory(SOUNDFILE);
+        return initClips(files);
+    }
+
+    public static File[] initClips(File[] files)
+    {
+        int totallength = 0;
+        int length = 0;
+        java.util.LinkedList<File> added = new java.util.LinkedList<File>();
+        IO.println("found soundfiles:", IO.MessageType.DEBUG);
+        for (File f : files)
+        {
+            IO.println(f.toString(), IO.MessageType.DEBUG);
+            totallength += f.length();
+        }
+        ProgressPanel.setText("Loading Sounds...");
+        ProgressPanel.setProgress(0);
+        for (int i = 0; i < files.length; i++)
+        {
+            if (Sound.addSoundFile(files[i]))
+            {
+                added.add(files[i]);
+            }
+            else
+            {
+                IO.println("Error while loading " + files[i], IO.MessageType.ERROR);
+            }
+            length += files[i].length();
+            ProgressPanel.setProgress(length * 100 / totallength);
+        }
+        File[] addedFiles = new File[added.size()];
+        for (int i = 0; i < addedFiles.length; i++)
+        {
+            addedFiles[i] = added.get(i);
+        }
+        return addedFiles;
+    }
+
+    public static File[] listSoundFilesInDirectory(File directory)
+    {
+        if (!directory.exists() || !directory.isDirectory())
+        {
+            IO.println("Sound directory not found.", IO.MessageType.ERROR);
+            return null;
+        }
+        File[] files = directory.listFiles(new FileFilter()
+        {
+
             @Override
-            public boolean accept(File pathname) {
-                if(pathname.isFile())
+            public boolean accept(File file)
+            {
+                String name = file.getName();
+                int index = name.lastIndexOf(".");
+                if (index > 0)
                 {
-                    int index = pathname.toString().lastIndexOf(".");
-                    return pathname.toString().substring(index).matches(".mid|.wav");
+                    return name.substring(index).matches(".mid|.wav|.mp3");
                 }
                 return false;
             }
         });
-        long totalLength = 0;
-        for (File f: files) {
-            totalLength += f.length();
-            System.out.println(f.getName());
-        }
-        ProgressPanel.setText("Loading Sounds...");
-        long length = 0;
-        for(int i=0; i<files.length; i++)
-        {
-            Sound.addSoundFile(files[i]);
-            length += files[i].length();
-            ProgressPanel.setProgress((int)(length*100/totalLength));
-        }
+        return files;
     }
-    
-    public static Clip initClip(File file){
-        try{
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream((file));
-            AudioFormat af     = audioInputStream.getFormat();
-            int size      = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
-            byte[] audio       = new byte[size];
-            DataLine.Info info      = new DataLine.Info(Clip.class, af, size);
-            audioInputStream.read(audio, 0, size);
-                Clip clip = (Clip) AudioSystem.getLine(info);
-                clip.open(af, audio, 0, size);
-                clip.addLineListener(new LineListener() {
 
-                @Override
-                public void update(LineEvent event) {
-                    for(LineListener l: listener)
-                        l.update(event);
-                }
-            });
-                return clip;
-        }catch(Exception e){
-            System.out.println("Sound Fehler:#"+e.toString());
-            e.printStackTrace();
+    /**
+     * Initialize a given soundfile. Reads data from the file and stores it in a
+     * buffer.
+     *
+     * @param file a soundfile with a supported format. Supported soundfile
+     * formats are .wav and .mid.
+     * @return The clip containing sound data or null if there was an error.
+     */
+    public static Soundclip initClip(File file)
+    {
+        try
+        {
+            Soundclip clip = new Soundclip(file);
+            return clip;
+        }
+        catch (Exception e)
+        {
+            IO.println("Sound error: " + e.toString(), IO.MessageType.ERROR);
+            if (utils.Constants.DEBUG_ENABLE)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static int getSoundfilesLength()
+    {
+        return soundclips.size();
+    }
+
+    public static Object getSoundFileName(int i)
+    {
+        if (i < soundclips.size())
+        {
+            return soundclips.getKey(i);
         }
         return null;
     }

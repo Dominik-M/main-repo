@@ -1,5 +1,0 @@
-03_09_2017_13:24:23:254[E]>> Chess.moveFigure(): Cannot move Figure at 3|7 onto Figure of same Team at 4|7
-03_09_2017_13:24:31:899[E]>> Chess.moveFigure(): Cannot move Figure at 4|7 onto Figure of same Team at 3|6
-03_09_2017_13:24:33:523[E]>> Chess.moveFigure(): Cannot move Figure at 4|7 onto Figure of same Team at 3|7
-03_09_2017_13:24:35:099[E]>> Chess.moveFigure(): Cannot move Figure at 4|7 onto Figure of same Team at 5|7
-03_09_2017_13:24:40:326[E]>> Chess.moveFigure(): Cannot move Figure at 4|7 onto Figure of same Team at 5|6

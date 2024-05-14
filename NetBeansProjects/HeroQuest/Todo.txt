@@ -1,12 +1,18 @@
 - Select and Start Quests
 - Save and Load game
 - Parse Quest meta data from file
+
 - Refresh spells at start
-- Graphic for dropped items
-- Secret Doors
-- Buffs/Debuffs
 - Check path moved
 - Move after opening door
+- Buffs/Debuffs
+
+- Localization
+- Graphic for dropped items
+- Secret Doors
+- Add more spells
+
 - More Quests
 - Improve fields in sight algorithm
 - Improve enemy AI
+- Documentation and Manual

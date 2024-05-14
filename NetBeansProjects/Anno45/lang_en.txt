@@ -1,6 +1,0 @@
-HELLO = "Hello World"
-EXIT_QUESTION = "Exit Anno45?"
-CONFIRM_EXIT = "Confirm exit"
-SEARCHING_SOUNDFILES = "Searching Soundfiles..."
-LOADING_SOUNDFILES = "Loading Soundfiles..."
-READY = "Ready"

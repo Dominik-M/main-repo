@@ -20,25 +20,31 @@ package hexagol;
  *
  * @author Dominik Messerschmidt
  */
-public class MainFrame extends javax.swing.JFrame
-{
+public class MainFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form MainFrame
      */
-    public MainFrame()
-    {
+    public MainFrame() {
         initComponents();
+        updateUI();
     }
 
-    public HexaGOL getGame()
-    {
-        return hexaPanel2.getGame();
+    public HexaGOL getGame() {
+        return hexaPanel.getGame();
     }
 
-    public void setGame(HexaGOL game)
-    {
-        hexaPanel2.setGame(game);
+    public void setGame(HexaGOL game) {
+        hexaPanel.setGame(game);
+    }
+
+    public final void updateUI() {
+        getGame().setInterval(1000 / speedSlider.getValue());
+        if (hexaPanel.getGame().getRunning()) {
+            startBtn.setText("Stop");
+        } else {
+            startBtn.setText("Start");
+        }
     }
 
     /**
@@ -48,49 +54,87 @@ public class MainFrame extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        hexaPanel2 = new hexagol.HexaPanel();
+        hexaPanel = new hexagol.HexaPanel();
+        startBtn = new javax.swing.JButton();
+        speedSlider = new javax.swing.JSlider();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout hexaPanel2Layout = new javax.swing.GroupLayout(hexaPanel2);
-        hexaPanel2.setLayout(hexaPanel2Layout);
-        hexaPanel2Layout.setHorizontalGroup(
-            hexaPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 378, Short.MAX_VALUE)
+        javax.swing.GroupLayout hexaPanelLayout = new javax.swing.GroupLayout(hexaPanel);
+        hexaPanel.setLayout(hexaPanelLayout);
+        hexaPanelLayout.setHorizontalGroup(
+            hexaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 590, Short.MAX_VALUE)
         );
-        hexaPanel2Layout.setVerticalGroup(
-            hexaPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 276, Short.MAX_VALUE)
+        hexaPanelLayout.setVerticalGroup(
+            hexaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 434, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(hexaPanel2);
+        jScrollPane1.setViewportView(hexaPanel);
+
+        startBtn.setText("Start");
+        startBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startBtnActionPerformed(evt);
+            }
+        });
+
+        speedSlider.setMaximum(1000);
+        speedSlider.setMinimum(1);
+        speedSlider.setToolTipText("Simulation speed in ticks per second");
+        speedSlider.setValue(1);
+        speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                speedSliderStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(startBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(startBtn)
+                    .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void startBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBtnActionPerformed
+        getGame().setRunning(!getGame().getRunning());
+        updateUI();
+    }//GEN-LAST:event_startBtnActionPerformed
+
+    private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
+        updateUI();
+    }//GEN-LAST:event_speedSliderStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private hexagol.HexaPanel hexaPanel2;
+    private hexagol.HexaPanel hexaPanel;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSlider speedSlider;
+    private javax.swing.JButton startBtn;
     // End of variables declaration//GEN-END:variables
 }
